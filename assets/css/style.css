@@ -48,10 +48,10 @@ a {
 
 /* Buttons */ 
 
-.custom-my-button {
+.custom-button {
     font-family: var(--m-headings);
     font-weight: 700;
-    border-radius: 50%;
+    border-radius: 50px;
     font-size: 1.25rem;
     text-transform: uppercase;
     padding: .3rem 1rem .3rem 1rem;
