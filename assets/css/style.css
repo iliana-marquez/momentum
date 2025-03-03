@@ -36,6 +36,10 @@ h1 {
     text-transform: uppercase;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* to overwrite round borders of bootstrap classes */
 .sharp-corners
 .sharp-corners * {
@@ -96,6 +100,45 @@ h1 {
     outline: none !important;
     box-shadow: none !important;
     border: none !important;
+}
+
+/* Header Hero */
+#hero {
+    background-color: var(--m-dark);
+    color: var(--m-light);
+}
+
+#hero img {
+    width: 100%; /* Ensures responsiveness inside columns */
+    max-width: 500px; /* Adjust this to control max image size */
+    height: auto; /* Maintains aspect ratio */ /* Ensures images scale properly without cropping */
+}
+
+
+#hero #img-left {
+    background: url('../images/homepage-hand-left.png') no-repeat left / contain;
+    height: 150px;
+}
+
+#hero #cta-center {
+    background: url('../images/homepage-start-now-link-bg.png') no-repeat center / contain;
+    height: 250px;
+}
+
+#hero #img-right {
+    background: url('../images/homepage-hand-right.png') no-repeat right / contain;
+    height: 150px;
+}
+
+#hero h3 {
+    margin-bottom: 0;
+}
+
+#hero a {
+    font-family: var(--m-headings);
+    color: var(--m-dark);
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 
