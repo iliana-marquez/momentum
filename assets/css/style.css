@@ -117,7 +117,7 @@ a {
 
 #hero #img-left {
     background: url('../images/homepage-hand-left.png') no-repeat left / contain;
-    height: 150px;
+    height: 100px;
 }
 
 #hero #cta-center {
@@ -127,7 +127,7 @@ a {
 
 #hero #img-right {
     background: url('../images/homepage-hand-right.png') no-repeat right / contain;
-    height: 150px;
+    height: 100px;
 }
 
 #hero h3 {
