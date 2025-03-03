@@ -83,6 +83,8 @@ h1 {
 /* Navbar */
 #navbar {
     background-color: var(--m-dark) !important;
+    font-family: var(--m-headings);
+    text-transform: uppercase;
 }
 
 #navbar .logo {
