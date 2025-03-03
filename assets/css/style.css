@@ -61,11 +61,25 @@ a {
     color: var(--m-light-bg-highlight); 
 }
 
-/* to overwrite round borders of bootstrap classes */
-.sharp-corners
-.sharp-corners * {
-    border-radius: 0;
-} 
+/* to override bootstrap classes */
+
+.sharp-corners, 
+.sharp-corners .form-control, 
+.sharp-corners .accordion-button, 
+.sharp-corners .accordion-item, 
+.sharp-corners .btn, 
+.sharp-corners textarea {
+    border-radius: 0 !important;
+}
+
+/* Remove Bootstrap's default blue focus border & shadow */
+.form-control:focus, 
+.form-select:focus, 
+.form-check-input:focus {
+    box-shadow: none !important;
+    border-color: inherit !important; 
+    outline: none !important;
+}
 
 /* Buttons */ 
 
