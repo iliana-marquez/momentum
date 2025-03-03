@@ -4,7 +4,8 @@
     /* Colors */
     --m-dark: #1d0221; 
     --m-light: #f2f2f2;
-    --m-dark-bg-highlight: #9E7C9F;   
+    --m-dark-bg-highlight: #b1b1b1;   
+    /* --m-dark-bg-highlight: #9E7C9F;    */
     --m-light-bg-highlight: #590b5a;
     /* Fonts */ 
     --m-headings: 'Montserrat', serif;
@@ -217,14 +218,19 @@ a {
 footer ul li {
     display: flex;
     align-items: center; 
-    padding: 5px;
+    padding: 10px;
 }
 
 footer a {
     color: var(--m-light);
     font-family: var(--m-headings);
-    font-size: 16px;
+    font-size: 13px;
     text-transform: uppercase;
+}
+
+footer p,
+footer span {
+    font-size: 10px;
 }
 
 footer img {
