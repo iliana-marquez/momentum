@@ -130,8 +130,9 @@ a {
     height: 125px;
 }
 
-#hero h3 {
+#hero p {
     margin-bottom: 0;
+    font-size: 1.5rem;
 }
 
 #hero a {
@@ -142,3 +143,12 @@ a {
 }
 
 
+/* About Section */
+#about {
+    background-color: var(--m-light);   
+    color: var(--m-dark);
+}
+
+#about h1, h2 {
+    color: var(--m-light-bg-highlight);
+}
