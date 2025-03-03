@@ -167,7 +167,36 @@ a {
     width: auto;
 }
 
-/* Contact Section */
+/* Q&A Section */
+.accordion-button {
+    color: inherit; 
+    border: none; 
+}
+
+.accordion-button:not(.collapsed) {
+    color: inherit; 
+}
+
+.accordion-button {
+    border: none !important;  
+    box-shadow: none !important;  
+}
+
+.accordion-button:focus, 
+.accordion-button:active {
+    border: none !important;  
+    box-shadow: none !important;  
+}
+
+.accordion-item {
+    border: none !important;  
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: transparent; 
+    color: inherit; 
+    border: none; 
+}
 
 
 

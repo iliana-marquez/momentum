@@ -20,7 +20,6 @@
   </head>
   
   <body class="d-flex flex-column min-vh-100">
-  <!-- Classes on body set to work with mt-auto on footer to ensure it always stays at the  bottom of the page -->
 
      <!-- Navigation -->
      <nav id="navbar" class="navbar navbar-expand-lg fixed-top" data-bs-theme="dark">
@@ -41,7 +40,7 @@
                 <a class="nav-link" href="#contact">Contact</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#faq">Q&A</a>
+                <a class="nav-link" href="#frequent-questions">Q&A</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#login"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
@@ -104,27 +103,169 @@
      </section>
 
      <!-- Contact Section -->
-     <section id="contact" class="container-fluid m-dark-background">
+     <section id="contact" class="container-fluid text-center m-dark-background py-4">
         <div class="row">
-            <div class="col-12">Keep the Momentum Going</div>
-            <div class="col-12">Form</div>
-            <div class="col-12">Send</div>
+            <div class="col-12">
+                <h1>Keep the Momentum Going</h1>  
+                <p>Have questions or ideas? <br>
+                   We're here to help you reach your next milestone.</p>  
+            </div>
+            <div class="col-12">
+                <form class="row g-3 sharp-corners text-start p-3">
+                    <div class="col-lg-4">
+                        <label for="full-name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="full-name">
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="phonenumber" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phonenumber">
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="col-12">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="3"></textarea>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="custom-button my-button-dark-bg">send</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
 
     <!-- Q&A Section -->
-    <section class="container-fluid m-light-background">
+    <section id="frequent-questions" class="container-fluid m-light-background text-center py-4">
         <div class="row align-items-center">
-            <div class="col-12 col-md-4 align-items-center">q&a img</div>
-            <div class="col-12 col-md-8">q&a list</div>
+            <div class="col-12 align-items-center pb-2">
+                <h1>q&a</h1>
+            </div>
+            <div class="col-12">
+                <div class="container">              
+                    <div class="accordion" id="faqAccordion">
+                        <!-- Question 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    What's Momentum?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Momentum is your edge—a tool to sync your life's key areas (work, health, relationships, and more) into one clear, balanced flow without the chaos.
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Question 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    How does it work?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    It tracks your daily tasks, weekly progress, and long-term milestones across five core categories, giving you a simple dashboard to stay on top of everything effortlessly.
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Question 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Is it free?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes, Momentum starts free—jump in now! Premium features to supercharge your sync are coming soon.
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Question 4 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    What areas of my life can I track?
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    You can sync five key areas: work goals, health habits, relationships, career progress, and financial wins—customizable to your life.
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Question 5 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Can Momentum help me stay focused?
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Absolutely—it cuts distractions with a clear daily view and milestone tracking, keeping your priorities sharp and on track.
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Question 6 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSix">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                    Can I use Momentum on multiple devices?
+                                </button>
+                            </h2>
+                            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Right now, it's web-based—use it anywhere online. Multi-device sync is in the works for the future!
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Question 7 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSeven">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                    Will Momentum help me avoid burnout?
+                                </button>
+                            </h2>
+                            <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes—by balancing your tasks and goals across life's areas, it prevents overload and keeps you thriving, not just surviving.
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Question 8 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingEight">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                    Can I get support if I need help?
+                                </button>
+                            </h2>
+                            <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Definitely—reach out at info@momentum.com or write us in our contact section. We’re here to keep your sync smooth and stress-free.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     </section>
 
 
  
      <!--  Footer -->
-     
-     <!-- class to ensure bottom position of the footer -->
      <footer class="mt-auto">
          <div class="container">
              <div class="row justify-content-center">
