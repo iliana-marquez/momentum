@@ -2,14 +2,13 @@
 
 :root {
     /* Colors */
-    --dark: #1d0221; 
-    --light: #f2f2f2;
-    --dark-bg-highlight: #9E7C9F;   
-    --dark-bg-highlight: #d1d5db;   
-    --light-bg-highlight: #590b5a;
+    --m-dark: #1d0221; 
+    --m-light: #f2f2f2;
+    --m-dark-bg-highlight: #9E7C9F;   
+    --m-light-bg-highlight: #590b5a;
     /* Fonts */ 
-    --headings: 'Montserrat', serif;
-    --content: 'Poppins', sans-serif;
+    --m-headings: 'Montserrat', serif;
+    --m-content: 'Poppins', sans-serif;
 }
 
 * {
@@ -18,18 +17,18 @@
     box-sizing: border-box;
 }
 
-/* General Stlyes */
+/* General Styles */
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: var(--primary-font);
-    /* padding-top: 58px; /* pushes the top of the header down under the fixed navbar */
+    font-family: var(--m-content);
+    padding-top: 61px; /* pushes the top of the header down under the fixed navbar */
 }
 
 h1, 
 h2 {
-    font-family: var(--headings);
+    font-family: var(--m-headings);
     font-weight: 700;
 }
 
@@ -37,20 +36,16 @@ h1 {
     text-transform: uppercase;
 }
 
-p {
-    font-family: var(--content);
-}
-
 /* to overwrite round borders of bootstrap classes */
 .sharp-corners
 .sharp-corners * {
     border-radius: 0;
-}
+} 
 
 /* Buttons */ 
 
-.custom-btn {
-    font-family: var(--headings);
+.custom-my-button {
+    font-family: var(--m-headings);
     font-weight: 700;
     border-radius: 50%;
     font-size: 1.25rem;
@@ -59,32 +54,46 @@ p {
     text-decoration: none;
 }
 
-.btn-dark-bg {
+.my-button-dark-bg {
     background-color: transparent;
-    border: var(--dark-bg-highlight) solid 3px;
-    color: var(--dark-bg-highlight);
+    border: var(--m-dark-bg-highlight) solid 3px;
+    color: var(--m-dark-bg-highlight);
     transition: 0.2s ease-in-out;
-};
+}
 
-.btn-dark-bg:hover {
-    background-color: var(--dark-bg-highlight);
-    border: var(--dark-bg-highlight) solid 3px;
-    color: var(--dark);
-};
+.my-button-dark-bg:hover {
+    background-color: var(--m-dark-bg-highlight);
+    border: var(--m-dark-bg-highlight) solid 3px;
+    color: var(--m-dark);
+}
 
-.btn-light-bg {
+.my-button-light-bg {
     background-color: transparent;
-    border: var(--light-bg-highlight) solid 3px;
-    color: var(--light-bg-highlight);
+    border: var(--m-light-bg-highlight) solid 3px;
+    color: var(--m-light-bg-highlight);
     transition: 0.2s ease-in-out;
-};
+}
 
-.btn-light-bg:hover {
-    background-color: var(--light-bg-highlight);
-    border: var(--light-bg-highlight) solid 3px;
-    color: var(--light);
-};
+.my-button-light-bg:hover {
+    background-color: var(--m-light-bg-highlight);
+    border: var(--m-light-bg-highlight) solid 3px;
+    color: var(--m-light);
+}
 
+/* Navbar */
+#navbar {
+    background-color: var(--m-dark) !important;
+}
 
+#navbar .logo {
+    height: 35px;
+}
+
+.navbar-toggler:focus, 
+.navbar-toggler:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
 
 
