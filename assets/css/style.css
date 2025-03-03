@@ -31,6 +31,7 @@ h1,
 h2 {
     font-family: var(--headings);
     text-transform: uppercase;
+    font-weight: 700;
 }
 
 p {
@@ -42,3 +43,45 @@ p {
 .sharp-corners * {
     border-radius: 0;
 }
+
+/* Buttons */ 
+
+.custom-btn {
+    font-family: var(--headings);
+    font-weight: 700;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    padding: .3rem 1rem .3rem 1rem;
+    text-decoration: none;
+}
+
+.btn-dark-bg {
+    background-color: transparent;
+    border: var(--dark-bg-highlight) solid 3px;
+    color: var(--dark-bg-highlight);
+    transition: 0.2s ease-in-out;
+};
+
+.btn-dark-bg:hover {
+    background-color: var(--dark-bg-highlight);
+    border: var(--dark-bg-highlight) solid 3px;
+    color: var(--dark);
+};
+
+.btn-light-bg {
+    background-color: transparent;
+    border: var(--light-bg-highlight) solid 3px;
+    color: var(--light-bg-highlight);
+    transition: 0.2s ease-in-out;
+};
+
+.btn-light-bg:hover {
+    background-color: var(--light-bg-highlight);
+    border: var(--light-bg-highlight) solid 3px;
+    color: var(--light);
+};
+
+
+
+
