@@ -199,5 +199,23 @@ a {
 }
 
 
+/* FOOTER */
+footer ul li {
+    display: flex;
+    align-items: center; 
+    padding: 5px;
+}
+
+footer a {
+    color: var(--m-light);
+    font-family: var(--m-headings);
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+footer img {
+    height: 45px;
+    width: 45px;
+}
 
 
