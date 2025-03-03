@@ -1,2 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+:root {
+    /* Colors */
+    --dark: #1d0221; 
+    --light: #f2f2f2;
+    --dark-bg-highlight: #9E7C9F;   
+    --dark-bg-highlight: #d1d5db;   
+    --light-bg-highlight: #590b5a;
+    /* Fonts */ 
+    --headings: 'Montserrat', serif;
+    --content: 'Poppins', sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* General Stlyes */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--primary-font);
+    /* padding-top: 58px; /* pushes the top of the header down under the fixed navbar */
+}
+
+h1, 
+h2 {
+    font-family: var(--headings);
+    text-transform: uppercase;
+}
+
+p {
+    font-family: var(--content);
+}
+
+/* to overwrite round borders of bootstrap classes */
+.sharp-corners
+.sharp-corners * {
+    border-radius: 0;
+}
