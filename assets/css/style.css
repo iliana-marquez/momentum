@@ -30,8 +30,11 @@ body {
 h1, 
 h2 {
     font-family: var(--headings);
-    text-transform: uppercase;
     font-weight: 700;
+}
+
+h1 {
+    text-transform: uppercase;
 }
 
 p {
