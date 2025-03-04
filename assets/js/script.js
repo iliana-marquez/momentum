@@ -60,18 +60,18 @@ document.querySelector('#login-form').addEventListener('submit', function login(
 
 
 // *** DASBOARD LOGIC *** //
-// * Life Sync Chart After Login
 
-
-// count all the active tasks
-
+// ** Prepares the percentages of each category tasks to update the life sync chart
 function updateChart() {
+
+    let totalPercentage = 100;
     let totalTasks = userData.tasks.length;
     let totalCategoryTasks = {};
 
     for (let category of userData.lifeGoalCategories) {
         totalCategoryTasks[category.name] = 0;
     }
+
     for (let task of userData.tasks) {
         let category = task.category;
         if (totalCategoryTasks[category] !== undefined) {
@@ -79,10 +79,18 @@ function updateChart() {
         }
     }
 
-    console.log("Total Tasks:", totalTasks);
-    console.log("Tasks per Category:", totalCategoryTasks);
-}
+    for (let category in totalCategoryTasks) {
+        let categoryPercentage = (totalCategoryTasks[category] * totalPercentage) / totalTasks;
+        console.log(`${category}: ${categoryPercentage.toFixed(2)}%`);
+    }
 
+
+    
+    
+}
+        
+
+// * Life Sync Chart After Login
 if (window.location.pathname.includes('dashboard.html')) {
     document.addEventListener('DOMContentLoaded', function() {
         updateChart(); 
