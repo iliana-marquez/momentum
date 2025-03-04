@@ -41,6 +41,11 @@ a {
     text-decoration: none;
 }
 
+.error-message {
+    color: #900c5e;
+    font-size: 10px;
+}
+
 /* DARK & LIGHT Backgrounds */
 /* Ligth background */
 .m-light-background {
