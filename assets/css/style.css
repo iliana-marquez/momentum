@@ -61,27 +61,6 @@ a {
     color: var(--m-dark-bg-highlight); /* Text color for h1 and h2 inside dark background */
 }
 
-
-/* to override bootstrap classes */
-
-.sharp-corners, 
-.sharp-corners .form-control, 
-.sharp-corners .accordion-button, 
-.sharp-corners .accordion-item, 
-.sharp-corners .btn, 
-.sharp-corners textarea {
-    border-radius: 0 !important;
-}
-
-/* Remove Bootstrap's default blue focus border & shadow */
-.form-control:focus, 
-.form-select:focus, 
-.form-check-input:focus {
-    box-shadow: none !important;
-    border-color: inherit !important; 
-    outline: none !important;
-}
-
 /* Buttons */ 
 
 .custom-button {
@@ -119,6 +98,62 @@ a {
     border: var(--m-light-bg-highlight) solid 3px;
     color: var(--m-light);
 }
+
+/* BOOTSTRAP RETOUCH */
+/* to override bootstrap classes */
+.sharp-corners, 
+.sharp-corners .form-control, 
+.sharp-corners .accordion-button, 
+.sharp-corners .accordion-item, 
+.sharp-corners .btn, 
+.sharp-corners textarea {
+    border-radius: 0 !important;
+}
+
+/* Remove Bootstrap's default blue focus border & shadow */
+.form-control:focus, 
+.form-select:focus, 
+.form-check-input:focus {
+    box-shadow: none !important;
+    border-color: inherit !important; 
+    outline: none !important;
+}
+/* Bootstrap Accordions */
+.accordion-button {
+    background-color: var(--dark);
+    color: var(--dark-bg-highlight);
+    font-family: var(--headings);
+    box-shadow: none;
+    border: none;
+    padding: .3rem 1rem .3rem 1rem;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border: none;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--dark);
+    color: var(--dark-bg-highlight);
+}
+
+.accordion-button.collapsed {
+    background-color: var(--dark);
+    color: var(--dark-bg-highlight);
+}
+
+.accordion-item {
+    background-color: var(--dark);
+    border: none;
+}
+
+.accordion-body {
+    background-color: var(--dark);
+    color: var(--light);
+    padding: 1rem;
+}
+
 
 /* Navbar */
 #navbar {
@@ -180,37 +215,6 @@ a {
     padding: 1rem;
     max-height: 150px;  
     width: auto;
-}
-
-/* Q&A Section */
-.accordion-button {
-    color: inherit; 
-    border: none; 
-}
-
-.accordion-button:not(.collapsed) {
-    color: inherit; 
-}
-
-.accordion-button {
-    border: none !important;  
-    box-shadow: none !important;  
-}
-
-.accordion-button:focus, 
-.accordion-button:active {
-    border: none !important;  
-    box-shadow: none !important;  
-}
-
-.accordion-item {
-    border: none !important;  
-}
-
-.accordion-button:not(.collapsed) {
-    background-color: transparent; 
-    color: inherit; 
-    border: none; 
 }
 
 /* DASHBOARD PAGE */
@@ -283,6 +287,49 @@ a {
     width: 326px;
     border-radius: 10px;
 }
+
+/* TASKS PAGE */
+/* Task Rows */
+.task-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.task-checkbox {
+    margin-right: 1rem;
+}
+
+.task-title {
+    flex: 1;
+    font-weight: bold;
+}
+
+.task-title.coding {
+    color: var(--coding);
+}
+
+.task-title.health {
+    color: var(--health);
+}
+
+.task-title.relationships {
+    color: var(--relationships);
+}
+
+.task-title.work {
+    color: var(--work);
+}
+
+.task-title.finances {
+    color: var(--finances);
+}
+
+.task-dates {
+    font-size: 0.9rem;
+    color: var(--light);
+}
+
 
 /* FOOTER */
 footer * {
