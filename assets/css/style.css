@@ -42,6 +42,15 @@ a {
 }
 
 /* DARK & LIGHT Backgrounds */
+/* Ligth background */
+.m-light-background {
+    background-color: var(--m-light);
+    color: var(--m-dark);
+}
+.m-light-background * h1,
+.m-light-background * h2 {
+    color: var(--m-light-bg-highlight); 
+}
 /* Dark background */
 .m-dark-background {
     background-color: var(--m-dark);
@@ -52,15 +61,6 @@ a {
     color: var(--m-dark-bg-highlight); /* Text color for h1 and h2 inside dark background */
 }
 
-/* Ligth background */
-.m-light-background {
-    background-color: var(--m-light);
-    color: var(--m-dark);
-}
-.m-light-background * h1,
-.m-light-background * h2 {
-    color: var(--m-light-bg-highlight); 
-}
 
 /* to override bootstrap classes */
 
@@ -213,6 +213,27 @@ a {
     border: none; 
 }
 
+/* DASHBOARD PAGE */
+.dashboard-grid h1, 
+.dashboard-grid h2 {
+    color: var(--m-dark-bg-highlight);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to 1 column for small screens */
+    grid-template-rows: auto; /* Rows will stack automatically on small devices */
+    grid-gap: 16px; /* Space between grid items */
+    margin: 16px; /* Optional: Add some margin around the grid */
+}
+
+/* Layout for Pie Chart, Today Box, and Week Box on mobile (default 1 column) */
+.dashboard-grid .pie-chart,
+.dashboard-grid .week-box,
+.dashboard-grid .today-box {
+    grid-column: span 1; /* Each item spans the entire width */
+    grid-row: span 1; /* Each item spans 1 row */
+}
 
 /* FOOTER */
 footer * {
@@ -247,3 +268,45 @@ footer img {
 }
 
 
+/* @MEDIA QUERIES */
+
+/* DASHBOARD PAGE*/
+/* Layout for larger screens (Tablets and up) */
+@media (min-width: 600px) {
+    .dashboard-grid {
+        min-height: 60vh;
+        min-width: 60vw;
+        grid-template-columns: 1fr 1fr 1fr; /* 3 equal columns for large screens */
+        grid-template-rows: 1fr 1fr 1fr; /* 3 equal rows for large screens */
+    }
+
+    /* Pie Chart takes up 2 columns x 2 rows */
+    .dashboard-grid .pie-chart {
+        grid-column: span 2; /* Pie Chart takes 2 columns */
+        grid-row: span 2; /* Pie Chart takes 2 rows */
+        position: relative; /* Relative positioning of the pie chart container */
+    }
+    
+    .dashboard-grid > .pie-chart .circle {
+        width: 350px;   /* Define the circle's size */
+        height: 350px;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center it both vertically and horizontally */
+    }
+    
+
+    /* Week Box takes 2 columns x 1 row */
+    .dashboard-grid .week-box {
+        grid-column: span 2; /* Week Box takes 2 columns */
+        grid-row: span 1; /* Week Box takes 1 row */
+    }
+
+    /* Today Box takes 1 column x 3 rows */
+    .dashboard-grid .today-box {
+        grid-column: span 1; /* Today Box takes 1 column */
+        grid-row: span 3; /* Today Box takes 3 rows */
+    }
+}
