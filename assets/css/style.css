@@ -248,6 +248,7 @@ a {
     margin: 10px; 
     max-width: 350px; 
 }
+
 .dashboard-grid > .pie-chart {
     grid-column: 1;  
     grid-row: 1;     
