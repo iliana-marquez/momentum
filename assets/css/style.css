@@ -99,6 +99,12 @@ a {
     color: var(--m-light);
 }
 
+.my-button-icon {
+    font-size: 16px;
+    padding:1px 6px 1px 6px;
+    border-color: transparent;
+}
+
 /* BOOTSTRAP RETOUCH */
 /* to override bootstrap classes */
 .sharp-corners, 
@@ -439,8 +445,5 @@ footer img {
     }
     .task-dates {
         margin-top: 0.25rem;
-    }
-    #add-task .form-control, #add-task .form-select {
-        width: 100%;
     }
 }

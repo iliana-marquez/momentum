@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
 
-  <body class="d-flex flex-column min-vh-100">
+  <body class="d-flex flex-column min-vh-100 m-light-background">
     <!-- Navigation -->
     <nav
       id="navbar"
@@ -79,72 +79,109 @@
 
     <!-- Main Content -->
     <main id="task-page" class="container mt-5 pt-5">
-        <h1>Own Every Step</h1>
-        
-        <!-- Accordion for Tasks -->
-        <div class="accordion" id="tasksAccordion">
-            <!-- Today Row -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#todayTasks" aria-expanded="true" aria-controls="todayTasks">
-                        Today [Sun 02.03.25]
-                    </button>
-                </h2>
-                <div id="todayTasks" class="accordion-collapse collapse show">
-                    <div class="accordion-body">
-                        <div class="task-row">
-                            <input type="checkbox" class="task-checkbox">
-                            <span class="task-title coding">Code 1hr</span>
-                            <span class="task-dates">To Do: 02.03.25 | Deadline: 02.03.25</span>
-                        </div>
-                        <div class="task-row">
-                            <input type="checkbox" class="task-checkbox" checked>
-                            <span class="task-title health">Workout 30min</span>
-                            <span class="task-dates">To Do: 02.03.25 | Deadline: 02.03.25</span>
-                        </div>
-                        <div class="task-row">
-                            <input type="checkbox" class="task-checkbox">
-                            <span class="task-title relationships">Call Partner</span>
-                            <span class="task-dates">To Do: 02.03.25 | Deadline: 02.03.25</span>
-                        </div>
-                    </div>
+      <h1>Own Every Step</h1>
+
+      <!-- Accordion for Tasks -->
+      <div class="accordion" id="tasksAccordion">
+        <!-- Today Row -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button dark-mode"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#todayTasks"
+              aria-expanded="true"
+              aria-controls="todayTasks"
+            >
+              Today [Sun 02.03.25]
+            </button>
+          </h2>
+          <div id="todayTasks" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              <div class="task-row justify-content-between">
+                <div>
+                    <input type="checkbox" class="task-checkbox" />
+                    <span class="task-title coding">Code 1hr</span>
                 </div>
-            </div>
-            <!-- Week Row -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#weekTasks" aria-expanded="false" aria-controls="weekTasks">
-                        Week Nr[9] [24.02 - 02.03]
-                    </button>
-                </h2>
-                <div id="weekTasks" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <div class="task-row">
-                            <input type="checkbox" class="task-checkbox">
-                            <span class="task-title work">Plan Project</span>
-                            <span class="task-dates">To Do: 25.02.25 | Deadline: 28.02.25</span>
-                        </div>
-                    </div>
+                <div class="task-dates-actions text-end">
+                <span class="task-dates"
+                      >To Do: 02.03.25 | Deadline: 02.03.25</span
+                    >
+                <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-pencil"></i></button>
+                <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
+              </div>
+              <div class="task-row justify-content-end">
+                <input type="checkbox" class="task-checkbox" checked />
+                <span class="task-title health">Workout 30min</span>
+                <span class="task-dates"
+                  >To Do: 02.03.25 | Deadline: 02.03.25</span
+                >
+              </div>
+              <div class="task-row">
+                <input type="checkbox" class="task-checkbox" />
+                <span class="task-title relationships">Call Partner</span>
+                <span class="task-dates"
+                  >To Do: 02.03.25 | Deadline: 02.03.25</span
+                >
+              </div>
             </div>
-            <!-- After Row -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#afterTasks" aria-expanded="false" aria-controls="afterTasks">
-                        After
-                    </button>
-                </h2>
-                <div id="afterTasks" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <div class="task-row">
-                            <input type="checkbox" class="task-checkbox">
-                            <span class="task-title finances">Save $500</span>
-                            <span class="task-dates">To Do: 10.03.25 | Deadline: 31.03.25</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+        <!-- Week Row -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#weekTasks"
+              aria-expanded="false"
+              aria-controls="weekTasks"
+            >
+              Week Nr[9] [24.02 - 02.03]
+            </button>
+          </h2>
+          <div id="weekTasks" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              <div class="task-row">
+                <input type="checkbox" class="task-checkbox" />
+                <span class="task-title work">Plan Project</span>
+                <span class="task-dates"
+                  >To Do: 25.02.25 | Deadline: 28.02.25</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- After Row -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#afterTasks"
+              aria-expanded="false"
+              aria-controls="afterTasks"
+            >
+              After
+            </button>
+          </h2>
+          <div id="afterTasks" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              <div class="task-row">
+                <input type="checkbox" class="task-checkbox" />
+                <span class="task-title finances">Save $500</span>
+                <span class="task-dates"
+                  >To Do: 10.03.25 | Deadline: 31.03.25</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <!--  Footer -->
