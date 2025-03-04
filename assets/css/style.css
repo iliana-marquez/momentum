@@ -214,22 +214,15 @@ a {
 }
 
 /* DASHBOARD PAGE */
-
-
-
-#dashboard h1, 
-#dashboard h2 {
-    color: var(--m-dark-bg-highlight);
-}
-
 #dashboard ul {
     list-style: none;
 }
 
-.dashboard-grid h1,
-.dashboard-grid progress,
+.dashboard-grid p,
 .dashboard-grid ul {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    color: var(--m-dark-bg-highlight);
 }
 
 .dashboard-grid progress {
