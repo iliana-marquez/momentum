@@ -1,19 +1,43 @@
-// *** FETCH USER DATA FOR GLOBAL USAGE *** //
-let userData; 
-
-fetch('assets/js/user_data.json')
-    .then(response => {
-        if (!response.ok) throw new Error ('Failed to fetch user data');
-        return response.json();
-     })
-    .then(data => {
-        userData = data;
-        console.log(userData);
-    })
-    .catch(error => console.error('Fetch error', error));
+// *** USER DATA FOR GLOBAL USAGE *** //
+let userData =  {
+    "info": {
+        "username": "Ili",
+        "email": "iliana.marquez@mail.com",
+        "password": "MyPassord123",
+        "firstname": "Iliana",
+        "lastname": "Marquez",
+        "dateOfBirth": "15.09.1986"
+    },
+    "lifeGoalCategories": [
+        {"name": "Coding", "focus": "Career Change", "color": "#9E7C9F"},
+        {"name": "Health", "focus": "Stay Fit", "color": "#cb0e16"},
+        {"name": "Relationships", "focus": "Deepen Bonds", "color": "#900c5e"},
+        {"name": "Work", "focus": "Project Success", "color": "#f2f2f2"},
+        {"name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c"}
+    ],
+    "tasks": [
+        {"title": "Code 1hr", "category": "Coding", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": false},
+        {"title": "Workout 30min", "category": "Health", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": true},
+        {"title": "Call Partner", "category": "Relationships", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": false},
+        {"title": "Plan Project", "category": "Work", "toDoDate": "25.04.2025", "deadline": "28.04.2025", "done": false},
+        {"title": "Save $500", "category": "Finances", "toDoDate": "31.03.2025", "deadline": "31.03.2025", "done": false},
+        {"title": "Coffee date", "category": "Relationships", "toDoDate": "11.03.2025", "deadline": "11.03.2025", "done": false},
+        {"title": "Confirm Container", "category": "Work", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false},
+        {"title": "Code Review", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false},
+        {"title": "Singing lesson", "category": "Health", "toDoDate": "12.03.2025", "deadline": "12.03.2025", "done": false}
+    ],
+    "milestones": [
+        {"title": "Finish Freelance Site", "category": "Coding", "due": "05.03.2025", "done": false},
+        {"title": "Workout 4x/week", "category": "Health", "due": "31.03.2025", "done": false},
+        {"title": "Adventure w/Partner", "category": "Relationships", "due": "25.03.2025", "done": false},
+        {"title": "Launch Project", "category": "Work", "due": "07.03.2025", "done": false},
+        {"title": "Save $500", "category": "Finances", "due": "31.03.2025", "done": false}
+    ]
+}
 
 // *** LOGIN LOGIC *** //
 // * get data from login form, compares and validate
+if (window.location.pathname.includes('login.html')) {
 document.querySelector('#login-form').addEventListener('submit', function login(e) {
     e.preventDefault();
     let email = document.querySelector('#email').value;
@@ -32,6 +56,8 @@ document.querySelector('#login-form').addEventListener('submit', function login(
         document.getElementById('errorMessage').innerHTML = `Invalid username or password. Please try again`;
     };
 });
+}
+
 
 // *** DASBOARD LOGIC *** //
 // * Life Sync Chart After Login
@@ -39,29 +65,26 @@ document.querySelector('#login-form').addEventListener('submit', function login(
 
 // count all the active tasks
 
-let totalTasks = userData.tasks.length();
+function updateChart() {
+    let totalTasks = userData.tasks.length;
+    let totalCategoryTasks = {};
 
-let totalCategoryTasks = {};
-
-for (let category of userData.lifeGoalCategories) {
-    totalCategoryTasks[category.name] = 0;
-}
-
-for (let task of userData.tasks) {
-    let category = task.category;
-
-    if (taskCounts[category] !== undefined) {
-    taskCounts[category]++;
+    for (let category of userData.lifeGoalCategories) {
+        totalCategoryTasks[category.name] = 0;
+    }
+    for (let task of userData.tasks) {
+        let category = task.category;
+        if (totalCategoryTasks[category] !== undefined) {
+            totalCategoryTasks[category]++;
+        }
     }
 
+    console.log("Total Tasks:", totalTasks);
+    console.log("Tasks per Category:", totalCategoryTasks);
 }
 
-console.log (totalTasks);
-console.log (totalCategoryTasks);
-
-
-
-    
-
-
-  
+if (window.location.pathname.includes('dashboard.html')) {
+    document.addEventListener('DOMContentLoaded', function() {
+        updateChart(); 
+    });
+}
