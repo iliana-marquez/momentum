@@ -430,3 +430,17 @@ footer img {
         width: 708px;
     }
 }
+
+/* TASK PAGE */
+@media (max-width: 768px) {
+    .task-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .task-dates {
+        margin-top: 0.25rem;
+    }
+    #add-task .form-control, #add-task .form-select {
+        width: 100%;
+    }
+}
