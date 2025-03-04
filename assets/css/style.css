@@ -219,6 +219,16 @@ a {
     color: var(--m-dark-bg-highlight);
 }
 
+.dashboard-grid h1,
+.dashboard-grid progress,
+.dashboard-grid ul {
+    margin-bottom: 15px;
+}
+
+.dashboard-grid progress {
+    width: 90%;
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: 1fr; /* Default to 1 column for small screens */
@@ -231,8 +241,8 @@ a {
 .dashboard-grid .pie-chart,
 .dashboard-grid .week-box,
 .dashboard-grid .today-box {
-    grid-column: span 1; /* Each item spans the entire width */
-    grid-row: span 1; /* Each item spans 1 row */
+    grid-column: 1; /* Each item spans the entire width */
+    grid-row: 1; /* Each item spans 1 row */
 }
 
 /* FOOTER */
@@ -272,41 +282,65 @@ footer img {
 
 /* DASHBOARD PAGE*/
 /* Layout for larger screens (Tablets and up) */
-@media (min-width: 600px) {
+@media (min-width: 730px) {
     .dashboard-grid {
-        min-height: 60vh;
-        min-width: 60vw;
-        grid-template-columns: 1fr 1fr 1fr; /* 3 equal columns for large screens */
-        grid-template-rows: 1fr 1fr 1fr; /* 3 equal rows for large screens */
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr; /* 3 equal columns */
+        grid-template-rows: 1fr 1fr 1fr;    /* 3 equal rows */
+        height: 60vh; /* Can grow depending on content */
+        max-width: 730px;
+        position: relative;
     }
-
-    /* Pie Chart takes up 2 columns x 2 rows */
-    .dashboard-grid .pie-chart {
-        grid-column: span 2; /* Pie Chart takes 2 columns */
-        grid-row: span 2; /* Pie Chart takes 2 rows */
-        position: relative; /* Relative positioning of the pie chart container */
+    
+    .dashboard-grid > .pie-chart {
+        position: relative;
+        grid-column: span 2; /* Span 2 columns */
+        grid-row: span 2;    /* Span 2 rows */
     }
     
     .dashboard-grid > .pie-chart .circle {
-        width: 350px;   /* Define the circle's size */
+        width: 350px;   /* Circle size */
         height: 350px;
         border-radius: 50%;
+
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%); /* Center it both vertically and horizontally */
+        transform: translate(-50%, -50%);
     }
     
-
-    /* Week Box takes 2 columns x 1 row */
-    .dashboard-grid .week-box {
-        grid-column: span 2; /* Week Box takes 2 columns */
-        grid-row: span 1; /* Week Box takes 1 row */
+    /* Today Box: Horizontal Rectangle */
+    .dashboard-grid > .today-box {
+        position: relative;
+        grid-column: 3; /* Place in the 3rd column */
+        grid-row: span 3; /* Spans all 3 rows */
+        min-height: 200px; /* Ensure it's at least this tall */
+        background-color: var(--m-dark);
+        border-radius: 10px;
+        padding: 20px;
+    }
+    
+    .dashboard-grid .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center content */
+        text-align: center;
+        height: 100%;
+        width: 100%;
+        color: var(--m-dark);
+    }
+      
+    /* Week Box: Vertical Rectangle */
+    .dashboard-grid > .week-box {
+        position: relative;
+        grid-column: 1 / span 2; /* Place in the first two columns */
+        grid-row: 3;    /* Spans the last row */
+        background-color: var(--m-dark);
+        border-radius: 10px;
+        padding: 20px;
     }
 
-    /* Today Box takes 1 column x 3 rows */
-    .dashboard-grid .today-box {
-        grid-column: span 1; /* Today Box takes 1 column */
-        grid-row: span 3; /* Today Box takes 3 rows */
-    }
+   
+
 }
