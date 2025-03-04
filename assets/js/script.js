@@ -59,7 +59,7 @@ document.querySelector('#login-form').addEventListener('submit', function login(
 }
 
 
-// *** DASBOARD LOGIC *** //
+// *** DASHBOARD LOGIC *** //
 
 // ** Prepares the percentages of each category tasks to update the life sync chart
 function updateChart() {
@@ -123,9 +123,6 @@ function updateChart() {
     // Apply to the pie chart
     document.querySelector(".circle").style.background = gradientString;
 }
-    
-
-        
 
 // * Life Sync Chart After Login
 if (window.location.pathname.includes('dashboard.html')) {
@@ -133,3 +130,20 @@ if (window.location.pathname.includes('dashboard.html')) {
         updateChart(); 
     });
 }
+
+// *** DATE LOGIC
+// * Print date function ()
+
+
+// * To populate today-box in dashboard
+
+
+// Print today's date
+
+// Update progress bar
+
+
+// Print todays Tasks in today-box
+
+
+// Mark task done, update done:true and progress 
