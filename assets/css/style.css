@@ -266,14 +266,7 @@ a {
     width: 250px;     
     height: 250px;
     border-radius: 50%;
-    background: conic-gradient(
-        #92bf1c 0% 35%,  /* Apple slice (35%) */
-        #900c5e 35% 65%, /* Strawberry slice (30%) */
-        #f89e37 65% 80%, /* Pumpkin slice (15%) */
-        #cb0e16 80% 95%, /* Cherry slice (15%) */
-        #bdbdbd 95% 100% /* Blueberry slice (5%) */
-    );
-    border: 30px solid #1d0221; /* Border between slices  */
+    border: 30px solid #1d0221;
     box-sizing: border-box; 
 }
 
