@@ -132,8 +132,48 @@ if (window.location.pathname.includes('dashboard.html')) {
 }
 
 // *** DATE LOGIC
-// * Print date function ()
+// * Print date 
+function udpateDateInfo () {
+    let today = new Date();
 
+    // get weeday abbreviation (Mon, Tue, Wed, etc.)
+    let weekdayOptions = { weekday: 'short'}
+    let dayAbbreviation = today.toLocaleDateString('en-US', weekdayOptions);
+
+    // format today's date
+    let day = String(today.getDate()).padStart(2,'0');
+    let month = String(today.getMonth() + 1).padStart(2,'0');
+    let todayFormat = `${dayAbbreviation}-${day}.${month}.`;
+
+    // get the current week number
+    let weekNumber = getWeekNumber(today);
+
+    // get start and end of current-week
+    let weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay() + 1); // Monday start
+    let weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6); // Sunday end
+
+    // format week range
+    let startDay = String(weekStart.getDate()).padStart(2, '0');
+    let endDay = String(weekEnd.getDate()).padStart(2, '0');
+    let weekRange = `${startDay}.-${endDay}.${month}`;
+
+    // inject 
+    document.getElementById('today-date').innerHTML = `Today, ${todayFormat}`;
+    document.getElementById('actual-week').innerHTML = `Week ${weekNumber}, ${weekRange}`;
+}
+
+// Function to get the week number
+function getWeekNumber(date) {
+    let startOfYear = new Date(date.getFullYear(), 0, 1);
+    let pastDays = (date - startOfYear) / (1000 * 60 * 60 * 24);
+    return Math.ceil((pastDays + startOfYear.getDay() + 1) / 7);
+}
+
+
+// Run the function on page load
+document.addEventListener("DOMContentLoaded", udpateDateInfo);
 
 // * To populate today-box in dashboard
 
