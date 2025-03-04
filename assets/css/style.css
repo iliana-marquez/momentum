@@ -326,9 +326,10 @@ footer img {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr; 
         grid-template-rows: 1fr 1fr 1fr;    
-        height: 60vh; /* Can grow depending on content */
+        min-height: 600px;
         max-width: 730px;
         position: relative;
+        overflow: hidden;
     }
     
     .dashboard-grid > .pie-chart {
