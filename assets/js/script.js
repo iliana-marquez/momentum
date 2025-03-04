@@ -9,11 +9,11 @@ let userData =  {
         "dateOfBirth": "15.09.1986"
     },
     "lifeGoalCategories": [
-        {"name": "Coding", "focus": "Career Change", "color": "#f89e37"},
-        {"name": "Health", "focus": "Stay Fit", "color": "#cb0e16"},
-        {"name": "Relationships", "focus": "Deepen Bonds", "color": "#900c5e"},
-        {"name": "Work", "focus": "Project Success", "color": "#bdbdbd"},
-        {"name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c"}
+        {"name": "Coding", "focus": "Career Change", "color": "#f89e37", "icon": "laptop-code"},
+        {"name": "Health", "focus": "Stay Fit", "color": "#cb0e16", "icon": "heart-pulse"},
+        {"name": "Relationships", "focus": "Deepen Bonds", "color": "#900c5e", "icon": "peace"},
+        {"name": "Work", "focus": "Project Success", "color": "#bdbdbd", "icon": "briefcase"},
+        {"name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c", "icon": "hand-holding-dolar"}
     ],
     "tasks": [
         {"title": "Code 1hr", "category": "Coding", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": false},
