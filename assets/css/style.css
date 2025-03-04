@@ -337,6 +337,11 @@ a {
 }
 
 
+/* PROFILE PAGE */
+#profile-page img {
+    height: 180px;
+}
+
 /* FOOTER */
 footer * {
     color: var(--m-dark-bg-highlight);
