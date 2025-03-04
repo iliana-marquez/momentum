@@ -214,9 +214,16 @@ a {
 }
 
 /* DASHBOARD PAGE */
-.dashboard-grid h1, 
-.dashboard-grid h2 {
+
+
+
+#dashboard h1, 
+#dashboard h2 {
     color: var(--m-dark-bg-highlight);
+}
+
+#dashboard ul {
+    list-style: none;
 }
 
 .dashboard-grid h1,
@@ -270,6 +277,12 @@ a {
     grid-row: 3;      
 }
 
+.milestones-box {
+    color: var(--m-dark-bg-highlight);
+    width: 326px;
+    border-radius: 10px;
+}
+
 /* FOOTER */
 footer * {
     color: var(--m-dark-bg-highlight);
@@ -307,7 +320,7 @@ footer img {
 
 /* DASHBOARD PAGE*/
 /* Layout for larger screens (Tablets and up) */
-@media (min-width: 730px) {
+@media (min-width: 693px) {
     .dashboard-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr; 
@@ -362,5 +375,9 @@ footer img {
         background-color: var(--m-dark);
         border-radius: 10px;
         padding: 20px;
+    }
+
+    .milestones-box {
+        width: 708px;
     }
 }
