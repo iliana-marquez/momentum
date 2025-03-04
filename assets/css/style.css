@@ -257,7 +257,8 @@ a {
         #cb0e16 80% 95%, /* Cherry slice (15%) */
         #bdbdbd 95% 100% /* Blueberry slice (5%) */
       );
-      border: 30px solid #1d0221; /* Border between slices */
+      border: 30px solid #1d0221; /* Border between slices  */
+      box-sizing: border-box; 
 }
 
 .dashboard-grid .content {
