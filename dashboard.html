@@ -81,7 +81,7 @@
     <section id="dashboard" class="container-fluid m-light-background">
       <div class="row justify-content-center">
         <div class="dashboard-grid">
-          <div class="item pie-chart">
+          <div class="pie-chart">
             <div class="circle m-dark-background">
               <p class="text-center">life sync</p>
             </div>
@@ -100,7 +100,7 @@
               </ul>
             </div>
           </div>
-          <div class="item week-box">
+          <div class="week-box">
             <div class="content">
               <p>Week [#] [dd.mm.yy]</p>
               <progress value="50" max="100"></progress>
@@ -138,10 +138,55 @@
         <div class="checkup text-center py-4">
             <h2 class="m-0 pb-2">How is it going today?</h2>
             <div class="d-flex flex-row flex-wrap flex-sm-nowrap justify-content-center align-items-center gap-2 pb-1">
-                <div>(icon) Question 1 - check yes or no</div>
-                <div>(icon) Question 2 - check yes or no</div>
-                <div>(icon) Question 2 - check yes or no</div>
-                <div>(icon) Question 2 - check yes or no</div>
+                <div class="question" data-question="1">
+                    <i class="fa-solid fa-child-reaching"></i>
+                    <p>Made good decisions?</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="q1" value="true">
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="q1" value="false">
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+                <div class="question" data-question="2">
+                    <i class="fa-solid fa-seedling"></i>
+                    <p>Eat clean?</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="q2" value="true">
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="q2" value="false">
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+                <div class="question" data-question="3">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    <p>Stayed focused?</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="q3" value="true">
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="q3" value="false">
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+                <div class="question" data-question="4">
+                    <i class="fa-solid fa-people-carry-box"></i>
+                    <p>Connected w/someone?</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="q4" value="true">
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="q4" value="false">
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+                
             </div>
             <p class="m-0 pt-1">Dynamic message: feedback message to wrap the day up</p>
         </div>
