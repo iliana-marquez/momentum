@@ -61,7 +61,7 @@ document.querySelector('#login-form').addEventListener('submit', function login(
 
 // *** DASHBOARD LOGIC *** //
 
-// ** Prepares the percentages of each category tasks to update the life sync chart
+// * Function to prepare and print percentages of each category tasks to update the life sync chart
 function updateChart() {
     if (!userData) {
         console.log("User data not loaded yet.");
@@ -118,8 +118,6 @@ function updateChart() {
 
     gradientString += ")";
 
-    console.log("Final Gradient String:", gradientString);
-
     // Apply to the pie chart
     document.querySelector(".circle").style.background = gradientString;
 }
@@ -131,8 +129,8 @@ if (window.location.pathname.includes('dashboard.html')) {
     });
 }
 
-// *** DATE LOGIC
-// * Print date 
+// *** DATE LOGIC *** //
+// * Function to print date and reuse for dynamic tasks
 function udpateDateInfo () {
     let today = new Date();
 
@@ -162,28 +160,82 @@ function udpateDateInfo () {
     // inject 
     document.getElementById('today-date').innerHTML = `Today, ${todayFormat}`;
     document.getElementById('actual-week').innerHTML = `Week ${weekNumber}, ${weekRange}`;
+
+    //calls the function here to recycle date arguments 
+    updateProgressBars(todayFormat, weekStart, weekEnd);
+    updateTaskList(todayFormat);
+
 }
 
-// Function to get the week number
+// * Function to get the week number
 function getWeekNumber(date) {
     let startOfYear = new Date(date.getFullYear(), 0, 1);
     let pastDays = (date - startOfYear) / (1000 * 60 * 60 * 24);
     return Math.ceil((pastDays + startOfYear.getDay() + 1) / 7);
 }
-
-
 // Run the function on page load
 document.addEventListener("DOMContentLoaded", udpateDateInfo);
 
-// * To populate today-box in dashboard
+
+// *** PROGRESS BARS LOGIC *** //
+// * Function to update 
+function updateProgressBars(todayFormat, weekStart, weekEnd) {
+    // get date from todayFormat
+    let todayStr = todayFormat.split('-')[1];
+
+    // convert start and end of the week to string type
+    let weekStartStr = weekStart.toISOString().split('T')[0];
+    let weekEndStr = weekEnd.toISOString().split('T')[0];
+
+    // counters 
+    let todayTotal = 0;
+    let todayDone = 0;
+    let weekTotal = 0;
+    let weekDone = 0;
 
 
-// Print today's date
+    // counts taks for day and week for max and filters done for value
+    userData.tasks.forEach(task => {
+        let taskDateStr = task.toDoDate.split('.'); 
+        let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
+        // check if task is today
+        if (task.toDoDate.includes(`${todayStr}`)) {
+            todayTotal++;
+            if (task.done) todayDone++;
+        }
 
-// Update progress bar
+        //check if task is in this week
+        if (taskDate >= weekStartStr && taskDate <= weekEndStr) {
+            weekTotal++;
+            if (task.done) weekDone++;
+        }
+    });
+
+    // update progress bars
+    let todayProgress = document.getElementById('today-progress');
+    let weekProgress = document.getElementById('week-progress');
+
+    // get max and value
+    if (todayProgress) {
+        todayProgress.max = todayTotal;
+        todayProgress.value = todayDone;
+    }
+    
+    if (weekProgress) {
+        weekProgress.max = weekTotal;
+        weekProgress.value = weekDone;
+    }
+
+    // to print in overlay on progress bar - for the future
+    console.log(`Today's Progress: ${todayDone}/${todayTotal}`);
+    console.log(`Week's Progress: ${weekDone}/${weekTotal}`); 
+}
+
+// *** TASKS LOGIC *** //
+// * Function to print tasks
 
 
-// Print todays Tasks in today-box
 
 
+// * C R U D
 // Mark task done, update done:true and progress 
