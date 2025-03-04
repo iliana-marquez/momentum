@@ -1,4 +1,4 @@
-// *** Let user data for global usage *** //
+// *** FETCH USER DATA FOR GLOBAL USAGE *** //
 let userData; 
 
 fetch('assets/js/user_data.json')
@@ -12,12 +12,12 @@ fetch('assets/js/user_data.json')
     })
     .catch(error => console.error('Fetch error', error));
 
-// ** LOGIN LOGIC ** //
-// ** get data from login form and compare
-    document.querySelector('#login-form').addEventListener('submit', function login(e) {
-        e.preventDefault();
-        let email = document.querySelector('#email').value;
-        let password = document.querySelector('#password').value;
+// *** LOGIN LOGIC *** //
+// * get data from login form, compares and validate
+document.querySelector('#login-form').addEventListener('submit', function login(e) {
+    e.preventDefault();
+    let email = document.querySelector('#email').value;
+    let password = document.querySelector('#password').value;
         
 
     if (!userData) {
@@ -26,11 +26,39 @@ fetch('assets/js/user_data.json')
     }
     if (userData.info.email === email && userData.info.password === password) {
         console.log('Login success:', userData.info.username);
-        window.location.href = 'dashboard.html'; // Redirect
+        window.location.href = 'dashboard.html'; 
     } else {
         console.log('Login failed');
+        document.getElementById('errorMessage').innerHTML = `Invalid username or password. Please try again`;
     };
 });
+
+// *** DASBOARD LOGIC *** //
+// * Life Sync Chart After Login
+
+
+// count all the active tasks
+
+let totalTasks = userData.tasks.length();
+
+let totalCategoryTasks = {};
+
+for (let category of userData.lifeGoalCategories) {
+    totalCategoryTasks[category.name] = 0;
+}
+
+for (let task of userData.tasks) {
+    let category = task.category;
+
+    if (taskCounts[category] !== undefined) {
+    taskCounts[category]++;
+    }
+
+}
+
+console.log (totalTasks);
+console.log (totalCategoryTasks);
+
 
 
     
