@@ -230,8 +230,6 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 
 }
 
-// *** TASKS LOGIC *** //
-
 // *** TASKS LOGIC ***
 // Function handle tasks: print, add new
 function updateTaskList() {
@@ -251,7 +249,7 @@ function updateTaskList() {
         expired: { title: "Expired", tasks: [] }
     };
 
-    // Sort tasks into categories
+    // sort tasks into categories
     userData.tasks.forEach(task => {
         let taskDate = task.toDoDate;
         let taskDateObj = parseDate(task.toDoDate);
@@ -264,7 +262,7 @@ function updateTaskList() {
         if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
     });
 
-      // Add Task Listener—Inside updateTaskList
+      // add task listener—inside updateTaskList
       let addForm = document.querySelector('#add-task-form');
       if (addForm) {
           addForm.addEventListener('submit', function(e) {
@@ -302,7 +300,7 @@ function updateTaskList() {
 
       }
 
-    // Updates task list in dashboard page
+    // updates task list in dashboard page
     if (window.location.pathname.includes('dashboard.html')) {
         let todayTaskList = document.getElementById("today-task-list");
         todayTaskList.innerHTML = "";
@@ -317,7 +315,7 @@ function updateTaskList() {
         });
     }
 
-    // Updates task list in tasks page
+    // updates task list in tasks page
     if (window.location.pathname.includes('tasks.html')) {
         let taskContainer = document.getElementById('tasksAccordion');
         taskContainer.innerHTML = ""; // Clear previous content
@@ -359,12 +357,12 @@ function updateTaskList() {
     }
 }
 
-// Call on DOM Load—Keep Your Existing
+// call when  page loads or after updating tasks
 document.addEventListener('DOMContentLoaded', () => {
     updateTaskList();
 });
 
-// Refresh Tasks—Keep Your Existing
+// refresh tasks
 function refreshTasksAfterCRUD() {
     updateTaskList();
     if (window.location.pathname.includes('dashboard.html')) {
@@ -446,7 +444,7 @@ function updateWeeklyPercentageDisplay() {
 }
 
 
-// Call the function when the page loads or after updating the tasks
+// call when  page loads or after updating tasks
 if (window.location.pathname.includes('dashboard.html')) {
 document.addEventListener('DOMContentLoaded', () => {
     updateWeeklyPercentageDisplay();
