@@ -236,13 +236,16 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 
 // *** TASKS LOGIC *** //
 // * Function to print tasks
+// Replace your existing updateTaskList() in script.js
+
+// *** TASKS LOGIC ***
+// Function to print tasks and handle Add
 function updateTaskList() {
     let today = new Date();
     let todayStr = formatDate(today);
 
     let weekStart = new Date(today);
     weekStart.setDate(today.getDate() - today.getDay() + 1);
-
     let weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6);
 
@@ -254,7 +257,7 @@ function updateTaskList() {
         expired: { title: "Expired", tasks: [] }
     };
 
-    //sort tasks into categories
+    // Sort tasks into categories
     userData.tasks.forEach(task => {
         let taskDate = task.toDoDate;
         let taskDateObj = parseDate(task.toDoDate);
@@ -267,73 +270,116 @@ function updateTaskList() {
         if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
     });
 
-    // updates task list in dashboard page
+    // Updates task list in dashboard page
     if (window.location.pathname.includes('dashboard.html')) {
-        // for today box in dashboard
         let todayTaskList = document.getElementById("today-task-list");
         todayTaskList.innerHTML = "";
-
-        // update today-box with category color
         categories.today.tasks.forEach(task => {
             let categoryColor = getCategoryColor(task.category);
             let todayTaskHTML = `
-            <li style="color: ${categoryColor};">
-                <i class="fa-solid fa-circle-check"></i> ${task.title}
-            </li>
-        `;
+                <li style="color: ${categoryColor};">
+                    <i class="fa-solid fa-circle-check"></i> ${task.title}
+                </li>
+            `;
             todayTaskList.innerHTML += todayTaskHTML;
         });
     }
-    
-    // updates task list in task page
+
+    // Updates task list in tasks page
     if (window.location.pathname.includes('tasks.html')) {
         let taskContainer = document.getElementById('tasksAccordion');
         taskContainer.innerHTML = ""; // Clear previous content
 
-        // Generate accordion sections (without category colors)
         Object.keys(categories).forEach((key, index) => {
             let section = categories[key];
-
             let tasksHTML = section.tasks.map(task => `
-            <div class="task-row justify-content-between">
-                <div>
-                    <input type="checkbox" class="task-checkbox" ${task.done ? "checked" : ""} />
-                    <span class="task-title">${task.title}</span>
-                </div>
-                <div class="task-dates-actions text-end">
-                    <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
-                    <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-pencil"></i></button>
-                    <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-trash-can"></i></button>
-                </div>
-            </div>
-        `).join("");
-
-            let accordionHTML = `
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button dark-mode" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#taskSection${index}"
-                        aria-expanded="true" aria-controls="taskSection${index}">
-                        ${section.title}
-                    </button>
-                </h2>
-                <div id="taskSection${index}" class="accordion-collapse collapse ${index === 0 ? "show" : ""}">
-                    <div class="accordion-body">
-                        ${tasksHTML || "<p class='text-muted'>No tasks</p>"}
+                <div class="task-row justify-content-between">
+                    <div>
+                        <input type="checkbox" class="task-checkbox" ${task.done ? "checked" : ""}>
+                        <span class="task-title">${task.title}</span>
+                    </div>
+                    <div class="task-dates-actions text-end">
+                        <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
+                        <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-pencil"></i></button>
+                        <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
-            </div>
-        `;
+            `).join("");
+
+            let accordionHTML = `
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button dark-mode" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#taskSection${index}" aria-expanded="${index === 0 ? 'true' : 'false'}" 
+                            aria-controls="taskSection${index}">
+                            ${section.title}
+                        </button>
+                    </h2>
+                    <div id="taskSection${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}">
+                        <div class="accordion-body">
+                            ${tasksHTML || "<p class='text-muted'>No tasks</p>"}
+                        </div>
+                    </div>
+                </div>
+            `;
             taskContainer.innerHTML += accordionHTML;
         });
+
+        // Add Task Listener—Inside updateTaskList
+        let addForm = document.querySelector('#add-task-form');
+        if (addForm) {
+            addForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let title = document.querySelector('#task-title').value;
+                let category = document.querySelector('#task-category').value;
+                let toDoDate = document.querySelector('#task-todo').value.split('-'); // yyyy-mm-dd
+                toDoDate = `${toDoDate[2]}.${toDoDate[1]}.${toDoDate[0]}`; // dd.mm.yyyy
+                let deadline = document.querySelector('#task-deadline').value.split('-');
+                deadline = `${deadline[2]}.${deadline[1]}.${deadline[0]}`;
+
+                let newTask = {
+                    title: title,
+                    category: category,
+                    toDoDate: toDoDate,
+                    deadline: deadline,
+                    done: false
+                };
+                if (!userData.tasks) {
+                    userData.tasks = [];
+                }
+                console.log("Before Push:", userData.tasks);
+                userData.tasks.push(newTask);
+                console.log("After Push:", userData.tasks);
+                addForm.closest('.modal').querySelector('.btn-close').click(); 
+                updateTaskList();
+            });
+        }
     }
 }
-// call updateTaskList() when DOM is ready
+
+// Call on DOM Load—Keep Your Existing
 document.addEventListener('DOMContentLoaded', () => {
     updateTaskList();
 });
 
+// Refresh Tasks—Keep Your Existing
+function refreshTasksAfterCRUD() {
+    updateTaskList();
+    if (window.location.pathname.includes('dashboard.html')) {
+        updateChart();
+        let today = new Date();
+        let todayFormat = formatDate(today);
+        let weekStart = new Date(today);
+        weekStart.setDate(today.getDate() - today.getDay() + 1);
+        let weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+        updateProgressBars(todayFormat, weekStart, weekEnd);
+    }
+}
+
+
 // print list tags in ul week-box
+if (window.location.pathname.includes('dashboard.html')) {
 function updateWeeklyPercentageDisplay() {
     let categoryContainer = document.getElementById('weekly-percentage-display');
     categoryContainer.innerHTML = ''; // Clear previous content
@@ -391,12 +437,15 @@ function updateWeeklyPercentageDisplay() {
         }
     });
 }
+}
 
 
 // Call the function when the page loads or after updating the tasks
+if (window.location.pathname.includes('dashboard.html')) {
 document.addEventListener('DOMContentLoaded', () => {
     updateWeeklyPercentageDisplay();
 });
+}
 
 
 // gets the color of lifeGoalCategories
@@ -405,7 +454,7 @@ function getCategoryColor(categoryName) {
     return category ? category.color : "#000"; // Default black if category not found
 }
 
-// gets the date for filtering purposes
+// // gets the date for filtering purposes
 function formatDate(date) {
     let day = String(date.getDate()).padStart(2, "0");
     let month = String(date.getMonth() + 1).padStart(2, "0");
@@ -419,13 +468,5 @@ function parseDate(dateString) {
     return new Date(parts[2], parts[1] - 1, parts[0]);
 }
 
-// *** C R U D
-// Mark task done, update done:true and progress 
-
-
-// refresh tasks dynamically after CRUD operations
-function refreshTasksAfterCRUD() {
-    updateTaskList();
-}
 
 
