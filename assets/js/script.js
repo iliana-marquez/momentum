@@ -293,10 +293,12 @@ function updateTaskList() {
               
 
               refreshTasksAfterCRUD();
-
-              alert(`Task Added: ${title}!`);
+              // gives feed back in tasks page for tasks that arent displyed by default (within an collapsed list)
+              if (window.location.pathname.includes('tasks.html')) {
+                alert(`Task Added: ${title}!`);
+              }  
           });
-          
+
       }
 
     // Updates task list in dashboard page
