@@ -16,11 +16,11 @@ let userData = {
         { "name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c", "icon": "hand-holding-dolar" }
     ],
     "tasks": [
-        { "title": "Code 1hr", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "04.03.2025", "done": false },
+        { "title": "Code 1hr", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "04.03.2025", "done": true },
         { "title": "Workout 30min", "category": "Health", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": true },
-        { "title": "Call Partner", "category": "Relationships", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": false },
+        { "title": "Call Partner", "category": "Relationships", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": true },
         { "title": "Plan Project", "category": "Work", "toDoDate": "25.04.2025", "deadline": "28.04.2025", "done": false },
-        { "title": "Save $500", "category": "Finances", "toDoDate": "05.03.2025", "deadline": "31.03.2025", "done": false },
+        { "title": "Save $500", "category": "Finances", "toDoDate": "05.03.2025", "deadline": "31.03.2025", "done": true },
         { "title": "Coffee date", "category": "Relationships", "toDoDate": "05.03.2025", "deadline": "11.03.2025", "done": false },
         { "title": "Confirm Container", "category": "Work", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false },
         { "title": "Code Submit", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false },
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", udpateDateInfo);
 // *** PROGRESS BARS LOGIC *** //
 // * Function to update 
 function updateProgressBars(todayFormat, weekStart, weekEnd) {
-    // get date from todayFormat
+    // get date from todayFormat (today's day)
     let todayStr = todayFormat.split('-')[1];
 
     // convert start and end of the week to string type
@@ -193,19 +193,20 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
     let weekTotal = 0;
     let weekDone = 0;
 
-
-    // counts taks for day and week for max and filters done for value
+    // counts tasks for today and week
     userData.tasks.forEach(task => {
+        // Convert task date (dd.mm.yyyy) to a Date object
         let taskDateStr = task.toDoDate.split('.');
         let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
+
         // check if task is today
-        if (task.toDoDate.includes(`${todayStr}`)) {
+        if (task.toDoDate.includes(todayStr)) {
             todayTotal++;
             if (task.done) todayDone++;
         }
 
-        //check if task is in this week
-        if (taskDate >= weekStartStr && taskDate <= weekEndStr) {
+        // check if task is in this week (using Date objects for comparison)
+        if (taskDate >= weekStart && taskDate <= weekEnd) {
             weekTotal++;
             if (task.done) weekDone++;
         }
@@ -215,12 +216,13 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
     let todayProgress = document.getElementById('today-progress');
     let weekProgress = document.getElementById('week-progress');
 
-    // get max and value
+    // get max and value for today's progress
     if (todayProgress) {
         todayProgress.max = todayTotal;
         todayProgress.value = todayDone;
     }
 
+    // get max and value for this week's progress
     if (weekProgress) {
         weekProgress.max = weekTotal;
         weekProgress.value = weekDone;
