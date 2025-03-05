@@ -16,13 +16,14 @@ let userData =  {
         {"name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c", "icon": "hand-holding-dolar"}
     ],
     "tasks": [
-        {"title": "Code 1hr", "category": "Coding", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": false},
+        {"title": "Code 1hr", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "04.03.2025", "done": false},
         {"title": "Workout 30min", "category": "Health", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": true},
         {"title": "Call Partner", "category": "Relationships", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": false},
         {"title": "Plan Project", "category": "Work", "toDoDate": "25.04.2025", "deadline": "28.04.2025", "done": false},
-        {"title": "Save $500", "category": "Finances", "toDoDate": "31.03.2025", "deadline": "31.03.2025", "done": false},
-        {"title": "Coffee date", "category": "Relationships", "toDoDate": "11.03.2025", "deadline": "11.03.2025", "done": false},
+        {"title": "Save $500", "category": "Finances", "toDoDate": "05.03.2025", "deadline": "31.03.2025", "done": false},
+        {"title": "Coffee date", "category": "Relationships", "toDoDate": "05.03.2025", "deadline": "11.03.2025", "done": false},
         {"title": "Confirm Container", "category": "Work", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false},
+        {"title": "Code Submit", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false},
         {"title": "Code Review", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false},
         {"title": "Singing lesson", "category": "Health", "toDoDate": "12.03.2025", "deadline": "12.03.2025", "done": false}
     ],
@@ -163,8 +164,6 @@ function udpateDateInfo () {
 
     //calls the function here to recycle date arguments 
     updateProgressBars(todayFormat, weekStart, weekEnd);
-    updateTaskList(todayFormat);
-
 }
 
 // * Function to get the week number
@@ -233,7 +232,93 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 
 // *** TASKS LOGIC *** //
 // * Function to print tasks
+function updateTaskList() {
+    // for today box in dashboard
+    let todayTaskList = document.getElementById("today-task-list");
+    todayTaskList.innerHTML = ""; 
 
+    // for task page
+    let taskContainer = document.getElementById('tasksAccordion');
+    // taskContainer.innerHTML = ""; // Clear previous content
+
+    let today = new Date();
+    let todayStr = formatDate(today); 
+
+    let weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay() + 1); 
+    
+    let weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+
+    let categories = {
+        today: { title: `Today [${todayStr}]`, tasks: [] },
+        week: { title: "This Week", tasks: [] },
+        after: { title: "After", tasks: [] },
+        done: { title: "Done", tasks: [] },
+        expired: { title: "Expired", tasks: [] }
+    };
+
+    //sort tasks into categories
+    userData.tasks.forEach(task => {
+        let taskDate = task.toDoDate;
+        let taskDateObj = parseDate(task.toDoDate);
+        let deadlineDateObj = task.deadline ? parseDate(task.deadline) : null;
+
+        if (taskDate === todayStr) categories.today.tasks.push(task);
+        if (taskDateObj >= weekStart && taskDateObj <= weekEnd) categories.week.tasks.push(task);
+        if (taskDateObj > weekEnd) categories.after.tasks.push(task);
+        if (task.done) categories.done.tasks.push(task);
+        if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
+    });
+
+    // update today-box with category color
+    categories.today.tasks.forEach(task => {
+        let categoryColor = getCategoryColor(task.category);
+        let todayTaskHTML = `
+            <li style="color: ${categoryColor};">
+                <i class="fa-solid fa-circle-check"></i> ${task.title}
+            </li>
+        `;
+        todayTaskList.innerHTML += todayTaskHTML;
+    });
+    
+
+
+
+
+
+}
+
+
+// call updateTaskList() when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    updateTaskList();
+});
+
+// refresh tasks dynamically after CRUD operations
+function refreshTasksAfterCRUD() {
+    updateTaskList();
+}
+
+// gets the color of lifeGoalCategories
+function getCategoryColor(categoryName) {
+    let category = userData.lifeGoalCategories.find(cat => cat.name === categoryName);
+    return category ? category.color : "#000"; // Default black if category not found
+}
+
+// gets the date for filtering purposes
+function formatDate(date) {
+    let day = String(date.getDate()).padStart(2, "0");
+    let month = String(date.getMonth() + 1).padStart(2, "0");
+    let year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+}
+
+// formats date
+function parseDate(dateString) {
+    let parts = dateString.split(".");
+    return new Date(parts[2], parts[1] - 1, parts[0]);
+}
 
 
 
