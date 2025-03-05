@@ -290,9 +290,13 @@ function updateTaskList() {
               userData.tasks.push(newTask);
               console.log("After Push:", userData.tasks);
               addForm.closest('.modal').querySelector('.btn-close').click(); 
+              
 
               refreshTasksAfterCRUD();
+
+              alert(`Task Added: ${title}!`);
           });
+          
       }
 
     // Updates task list in dashboard page
