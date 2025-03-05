@@ -1,5 +1,5 @@
 // *** USER DATA FOR GLOBAL USAGE *** //
-let userData =  {
+let userData = {
     "info": {
         "username": "Ili",
         "email": "iliana.marquez@mail.com",
@@ -9,54 +9,54 @@ let userData =  {
         "dateOfBirth": "15.09.1986"
     },
     "lifeGoalCategories": [
-        {"name": "Coding", "focus": "Career Change", "color": "#f89e37", "icon": "laptop-code"},
-        {"name": "Health", "focus": "Stay Fit", "color": "#cb0e16", "icon": "heart-pulse"},
-        {"name": "Relationships", "focus": "Deepen Bonds", "color": "#900c5e", "icon": "peace"},
-        {"name": "Work", "focus": "Project Success", "color": "#bdbdbd", "icon": "briefcase"},
-        {"name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c", "icon": "hand-holding-dolar"}
+        { "name": "Coding", "focus": "Career Change", "color": "#f89e37", "icon": "laptop-code" },
+        { "name": "Health", "focus": "Stay Fit", "color": "#cb0e16", "icon": "heart-pulse" },
+        { "name": "Relationships", "focus": "Deepen Bonds", "color": "#900c5e", "icon": "peace" },
+        { "name": "Work", "focus": "Project Success", "color": "#bdbdbd", "icon": "briefcase" },
+        { "name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c", "icon": "hand-holding-dolar" }
     ],
     "tasks": [
-        {"title": "Code 1hr", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "04.03.2025", "done": false},
-        {"title": "Workout 30min", "category": "Health", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": true},
-        {"title": "Call Partner", "category": "Relationships", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": false},
-        {"title": "Plan Project", "category": "Work", "toDoDate": "25.04.2025", "deadline": "28.04.2025", "done": false},
-        {"title": "Save $500", "category": "Finances", "toDoDate": "05.03.2025", "deadline": "31.03.2025", "done": false},
-        {"title": "Coffee date", "category": "Relationships", "toDoDate": "05.03.2025", "deadline": "11.03.2025", "done": false},
-        {"title": "Confirm Container", "category": "Work", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false},
-        {"title": "Code Submit", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false},
-        {"title": "Code Review", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false},
-        {"title": "Singing lesson", "category": "Health", "toDoDate": "12.03.2025", "deadline": "12.03.2025", "done": false}
+        { "title": "Code 1hr", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "04.03.2025", "done": false },
+        { "title": "Workout 30min", "category": "Health", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": true },
+        { "title": "Call Partner", "category": "Relationships", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": false },
+        { "title": "Plan Project", "category": "Work", "toDoDate": "25.04.2025", "deadline": "28.04.2025", "done": false },
+        { "title": "Save $500", "category": "Finances", "toDoDate": "05.03.2025", "deadline": "31.03.2025", "done": false },
+        { "title": "Coffee date", "category": "Relationships", "toDoDate": "05.03.2025", "deadline": "11.03.2025", "done": false },
+        { "title": "Confirm Container", "category": "Work", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false },
+        { "title": "Code Submit", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false },
+        { "title": "Code Review", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false },
+        { "title": "Singing lesson", "category": "Health", "toDoDate": "12.03.2025", "deadline": "12.03.2025", "done": false }
     ],
     "milestones": [
-        {"title": "Finish Freelance Site", "category": "Coding", "due": "05.03.2025", "done": false},
-        {"title": "Workout 4x/week", "category": "Health", "due": "31.03.2025", "done": false},
-        {"title": "Adventure w/Partner", "category": "Relationships", "due": "25.03.2025", "done": false},
-        {"title": "Launch Project", "category": "Work", "due": "07.03.2025", "done": false},
-        {"title": "Save $500", "category": "Finances", "due": "31.03.2025", "done": false}
+        { "title": "Finish Freelance Site", "category": "Coding", "due": "05.03.2025", "done": false },
+        { "title": "Workout 4x/week", "category": "Health", "due": "31.03.2025", "done": false },
+        { "title": "Adventure w/Partner", "category": "Relationships", "due": "25.03.2025", "done": false },
+        { "title": "Launch Project", "category": "Work", "due": "07.03.2025", "done": false },
+        { "title": "Save $500", "category": "Finances", "due": "31.03.2025", "done": false }
     ]
 }
 
 // *** LOGIN LOGIC *** //
 // * get data from login form, compares and validate
 if (window.location.pathname.includes('login.html')) {
-document.querySelector('#login-form').addEventListener('submit', function login(e) {
-    e.preventDefault();
-    let email = document.querySelector('#email').value;
-    let password = document.querySelector('#password').value;
-        
+    document.querySelector('#login-form').addEventListener('submit', function login(e) {
+        e.preventDefault();
+        let email = document.querySelector('#email').value;
+        let password = document.querySelector('#password').value;
 
-    if (!userData) {
-        console.log('Data not loaded—try again');
-        return;
-    }
-    if (userData.info.email === email && userData.info.password === password) {
-        console.log('Login success:', userData.info.username);
-        window.location.href = 'dashboard.html'; 
-    } else {
-        console.log('Login failed');
-        document.getElementById('errorMessage').innerHTML = `Invalid username or password. Please try again`;
-    };
-});
+
+        if (!userData) {
+            console.log('Data not loaded—try again');
+            return;
+        }
+        if (userData.info.email === email && userData.info.password === password) {
+            console.log('Login success:', userData.info.username);
+            window.location.href = 'dashboard.html';
+        } else {
+            console.log('Login failed');
+            document.getElementById('errorMessage').innerHTML = `Invalid username or password. Please try again`;
+        };
+    });
 }
 
 
@@ -68,7 +68,7 @@ function updateChart() {
         console.log("User data not loaded yet.");
         return;
     }
-    
+
     // get total tasks
     let totalTasks = userData.tasks.length;
     if (totalTasks === 0) {
@@ -79,12 +79,12 @@ function updateChart() {
     let totalPercentage = 100;
     let totalCategoryTasks = {};
 
-    
+
     // Initialise count for each category
     for (let category of userData.lifeGoalCategories) {
         totalCategoryTasks[category.name] = 0;
     }
-    
+
     // Count tasks per category
     for (let task of userData.tasks) {
         let category = task.category;
@@ -102,12 +102,12 @@ function updateChart() {
         let categoryName = category.name;
         let categoryColor = category.color;
         let categoryPercentage = (totalCategoryTasks[categoryName] / totalTasks) * totalPercentage;
-        
+
         let endPercentage = startPercentage + categoryPercentage;
 
         // Append to gradient string
         gradientString += `${categoryColor} ${startPercentage.toFixed(2)}% ${endPercentage.toFixed(2)}%`;
-        
+
         // Only add a comma if it's not the last item
         if (index < userData.lifeGoalCategories.length - 1) {
             gradientString += ", ";
@@ -125,23 +125,23 @@ function updateChart() {
 
 // * Life Sync Chart After Login
 if (window.location.pathname.includes('dashboard.html')) {
-    document.addEventListener('DOMContentLoaded', function() {
-        updateChart(); 
+    document.addEventListener('DOMContentLoaded', function () {
+        updateChart();
     });
 }
 
 // *** DATE LOGIC *** //
 // * Function to print date and reuse for dynamic tasks
-function udpateDateInfo () {
+function udpateDateInfo() {
     let today = new Date();
 
     // get weeday abbreviation (Mon, Tue, Wed, etc.)
-    let weekdayOptions = { weekday: 'short'}
+    let weekdayOptions = { weekday: 'short' }
     let dayAbbreviation = today.toLocaleDateString('en-US', weekdayOptions);
 
     // format today's date
-    let day = String(today.getDate()).padStart(2,'0');
-    let month = String(today.getMonth() + 1).padStart(2,'0');
+    let day = String(today.getDate()).padStart(2, '0');
+    let month = String(today.getMonth() + 1).padStart(2, '0');
     let todayFormat = `${dayAbbreviation}-${day}.${month}.`;
 
     // get the current week number
@@ -158,10 +158,11 @@ function udpateDateInfo () {
     let endDay = String(weekEnd.getDate()).padStart(2, '0');
     let weekRange = `${startDay}.-${endDay}.${month}`;
 
-    // inject 
+    // inject in dashboard
+    if (window.location.pathname.includes('dashboard.html')) {
     document.getElementById('today-date').innerHTML = `Today, ${todayFormat}`;
     document.getElementById('actual-week').innerHTML = `Week ${weekNumber}, ${weekRange}`;
-
+    }
     //calls the function here to recycle date arguments 
     updateProgressBars(todayFormat, weekStart, weekEnd);
 }
@@ -195,7 +196,7 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 
     // counts taks for day and week for max and filters done for value
     userData.tasks.forEach(task => {
-        let taskDateStr = task.toDoDate.split('.'); 
+        let taskDateStr = task.toDoDate.split('.');
         let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
         // check if task is today
         if (task.toDoDate.includes(`${todayStr}`)) {
@@ -219,7 +220,7 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
         todayProgress.max = todayTotal;
         todayProgress.value = todayDone;
     }
-    
+
     if (weekProgress) {
         weekProgress.max = weekTotal;
         weekProgress.value = weekDone;
@@ -227,26 +228,18 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 
     // to print in overlay on progress bar - for the future
     console.log(`Today's Progress: ${todayDone}/${todayTotal}`);
-    console.log(`Week's Progress: ${weekDone}/${weekTotal}`); 
+    console.log(`Week's Progress: ${weekDone}/${weekTotal}`);
 }
 
 // *** TASKS LOGIC *** //
 // * Function to print tasks
 function updateTaskList() {
-    // for today box in dashboard
-    let todayTaskList = document.getElementById("today-task-list");
-    todayTaskList.innerHTML = ""; 
-
-    // for task page
-    let taskContainer = document.getElementById('tasksAccordion');
-    // taskContainer.innerHTML = ""; // Clear previous content
-
     let today = new Date();
-    let todayStr = formatDate(today); 
+    let todayStr = formatDate(today);
 
     let weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - today.getDay() + 1); 
-    
+    weekStart.setDate(today.getDate() - today.getDay() + 1);
+
     let weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6);
 
@@ -271,34 +264,71 @@ function updateTaskList() {
         if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
     });
 
-    // update today-box with category color
-    categories.today.tasks.forEach(task => {
-        let categoryColor = getCategoryColor(task.category);
-        let todayTaskHTML = `
+    // updates task list in dashboard page
+    if (window.location.pathname.includes('dashboard.html')) {
+        // for today box in dashboard
+        let todayTaskList = document.getElementById("today-task-list");
+        todayTaskList.innerHTML = "";
+
+        // update today-box with category color
+        categories.today.tasks.forEach(task => {
+            let categoryColor = getCategoryColor(task.category);
+            let todayTaskHTML = `
             <li style="color: ${categoryColor};">
                 <i class="fa-solid fa-circle-check"></i> ${task.title}
             </li>
         `;
-        todayTaskList.innerHTML += todayTaskHTML;
-    });
+            todayTaskList.innerHTML += todayTaskHTML;
+        });
+    }
     
+    // updates task list in task page
+    if (window.location.pathname.includes('tasks.html')) {
+        let taskContainer = document.getElementById('tasksAccordion');
+        taskContainer.innerHTML = ""; // Clear previous content
 
+        // Generate accordion sections (without category colors)
+        Object.keys(categories).forEach((key, index) => {
+            let section = categories[key];
 
+            let tasksHTML = section.tasks.map(task => `
+            <div class="task-row justify-content-between">
+                <div>
+                    <input type="checkbox" class="task-checkbox" ${task.done ? "checked" : ""} />
+                    <span class="task-title">${task.title}</span>
+                </div>
+                <div class="task-dates-actions text-end">
+                    <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
+                    <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-pencil"></i></button>
+                    <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            </div>
+        `).join("");
 
-
-
+            let accordionHTML = `
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button dark-mode" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#taskSection${index}"
+                        aria-expanded="true" aria-controls="taskSection${index}">
+                        ${section.title}
+                    </button>
+                </h2>
+                <div id="taskSection${index}" class="accordion-collapse collapse ${index === 0 ? "show" : ""}">
+                    <div class="accordion-body">
+                        ${tasksHTML || "<p class='text-muted'>No tasks</p>"}
+                    </div>
+                </div>
+            </div>
+        `;
+            taskContainer.innerHTML += accordionHTML;
+        });
+    }
 }
-
-
 // call updateTaskList() when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     updateTaskList();
 });
-
-// refresh tasks dynamically after CRUD operations
-function refreshTasksAfterCRUD() {
-    updateTaskList();
-}
 
 // gets the color of lifeGoalCategories
 function getCategoryColor(categoryName) {
@@ -320,7 +350,10 @@ function parseDate(dateString) {
     return new Date(parts[2], parts[1] - 1, parts[0]);
 }
 
-
-
-// * C R U D
+// *** C R U D
 // Mark task done, update done:true and progress 
+
+// refresh tasks dynamically after CRUD operations
+function refreshTasksAfterCRUD() {
+    updateTaskList();
+}
