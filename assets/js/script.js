@@ -196,7 +196,7 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
         let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
 
         // check if task is today
-        if (task.toDoDate === todayFormat) {  // <- FIXED CONDITION
+        if (task.toDoDate === todayFormat || task.toDoDate.includes(todayStr)) { 
             todayTotal++;
             if (task.done) todayDone++;
         }
