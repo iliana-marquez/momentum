@@ -30,7 +30,7 @@ Momentum is a web app designed to help anyone who wants to grow and stay present
 
 - **Responsive:** Mobile/tablet-first—larger screens need polish.
 
-![Image 3](assets/images/design-elements.png)
+![Image 3](assets/images/dashboard-responsiveness.png)
 
 ---
 ## Features
