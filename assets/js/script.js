@@ -422,7 +422,10 @@ function parseDate(dateString) {
 // *** C R U D
 // Mark task done, update done:true and progress 
 
+
 // refresh tasks dynamically after CRUD operations
 function refreshTasksAfterCRUD() {
     updateTaskList();
 }
+
+
