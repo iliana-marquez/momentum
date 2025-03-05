@@ -184,8 +184,8 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
     let todayStr = todayFormat.split('-')[1];
 
     // convert start and end of the week to string type
-    let weekStartStr = weekStart.toISOString().split('T')[0];
-    let weekEndStr = weekEnd.toISOString().split('T')[0];
+    // let weekStartStr = weekStart.toISOString().split('T')[0];
+    // let weekEndStr = weekEnd.toISOString().split('T')[0];
 
     // counters 
     let todayTotal = 0;
@@ -296,7 +296,15 @@ function updateTaskList() {
               userData.tasks.push(newTask);
               console.log("After Push:", userData.tasks);
               addForm.closest('.modal').querySelector('.btn-close').click(); 
-              updateTaskList();
+
+              refreshTasksAfterCRUD();
+
+              //   updateTaskList();
+
+            //   if (window.location.pathname.includes('dashboard.html')) {
+            //   updateChart();
+            //   updateProgressBars();
+            //   }
           });
       }
 
@@ -366,16 +374,20 @@ document.addEventListener('DOMContentLoaded', () => {
 function refreshTasksAfterCRUD() {
     updateTaskList();
     if (window.location.pathname.includes('dashboard.html')) {
-        updateChart();
+        updateChart(); // Update life sync chart
+        
         let today = new Date();
         let todayFormat = formatDate(today);
         let weekStart = new Date(today);
         weekStart.setDate(today.getDate() - today.getDay() + 1);
         let weekEnd = new Date(weekStart);
         weekEnd.setDate(weekStart.getDate() + 6);
-        updateProgressBars(todayFormat, weekStart, weekEnd);
+        
+        updateProgressBars(todayFormat, weekStart, weekEnd); // Update progress bars
+        updateWeeklyPercentageDisplay(); // Update week box
     }
 }
+
 
 
 // print list tags in ul week-box
