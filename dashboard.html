@@ -97,6 +97,7 @@
               <progress id="today-progress" value="" max=""></progress>
               <ul id="today-task-list" class="p-2 text-start">
               </ul>
+              <button class="custom-button btn my-button-light-bg mb-3" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="fa-solid fa-plus"></i></button>
             </div>
           </div>
           <div class="week-box">
@@ -104,16 +105,6 @@
               <p class="pt-1" id="actual-week"></p>
               <progress id="week-progress" value="" max=""></progress>
               <ul id="weekly-percentage-display" class="d-flex flex-row flex-wrap flex-md-nowrap justify-content-center align-items-center gap-1 gap-md-4 p-0">
-                <!-- <li>
-                    <div class="category-percentage">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <p>25%</p>
-                    </div>
-                </li>
-                <li>Cat 2%</li>
-                <li>Cat 3%</li>
-                <li>Cat 4%</li>
-                <li>Cat 5%</li> -->
               </ul>
             </div>
           </div>
@@ -193,6 +184,46 @@
 
       </div>
     </section>
+
+
+        <!-- Modal for Add new task form -->
+     <!-- Bootstrap Modal for Add Task -->
+<div class="modal fade sharp-corners" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content dark-mode">
+          <div class="modal-header">
+              <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="add-task-form">
+                  <div class="mb-3">
+                      <input type="text" class="form-control" id="task-title" placeholder="Task Title" required>
+                  </div>
+                  <div class="mb-3">
+                      <select class="form-select" id="task-category" required>
+                          <option value="" disabled selected>Select Category</option>
+                          <option value="Coding">Coding</option>
+                          <option value="Health">Health</option>
+                          <option value="Relationships">Relationships</option>
+                          <option value="Work">Work</option>
+                          <option value="Finances">Finances</option>
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label for="task-todo">To Do Date:</label>
+                      <input type="date" class="form-control" id="task-todo" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="task-deadline">Deadline:</label>
+                      <input type="date" class="form-control" id="task-deadline" required>
+                  </div>
+                  <button type="submit" class="my-button-light-bg w-100">Add Task</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
 
     <!--  Footer -->
     <footer class="mt-auto m-dark-background text center py-1">

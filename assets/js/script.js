@@ -270,6 +270,36 @@ function updateTaskList() {
         if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
     });
 
+      // Add Task Listener—Inside updateTaskList
+      let addForm = document.querySelector('#add-task-form');
+      if (addForm) {
+          addForm.addEventListener('submit', function(e) {
+              e.preventDefault();
+              let title = document.querySelector('#task-title').value;
+              let category = document.querySelector('#task-category').value;
+              let toDoDate = document.querySelector('#task-todo').value.split('-'); 
+              toDoDate = `${toDoDate[2]}.${toDoDate[1]}.${toDoDate[0]}`; 
+              let deadline = document.querySelector('#task-deadline').value.split('-');
+              deadline = `${deadline[2]}.${deadline[1]}.${deadline[0]}`;
+
+              let newTask = {
+                  title: title,
+                  category: category,
+                  toDoDate: toDoDate,
+                  deadline: deadline,
+                  done: false
+              };
+              if (!userData.tasks) {
+                  userData.tasks = [];
+              }
+              console.log("Before Push:", userData.tasks);
+              userData.tasks.push(newTask);
+              console.log("After Push:", userData.tasks);
+              addForm.closest('.modal').querySelector('.btn-close').click(); 
+              updateTaskList();
+          });
+      }
+
     // Updates task list in dashboard page
     if (window.location.pathname.includes('dashboard.html')) {
         let todayTaskList = document.getElementById("today-task-list");
@@ -324,36 +354,6 @@ function updateTaskList() {
             `;
             taskContainer.innerHTML += accordionHTML;
         });
-
-        // Add Task Listener—Inside updateTaskList
-        let addForm = document.querySelector('#add-task-form');
-        if (addForm) {
-            addForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                let title = document.querySelector('#task-title').value;
-                let category = document.querySelector('#task-category').value;
-                let toDoDate = document.querySelector('#task-todo').value.split('-'); // yyyy-mm-dd
-                toDoDate = `${toDoDate[2]}.${toDoDate[1]}.${toDoDate[0]}`; // dd.mm.yyyy
-                let deadline = document.querySelector('#task-deadline').value.split('-');
-                deadline = `${deadline[2]}.${deadline[1]}.${deadline[0]}`;
-
-                let newTask = {
-                    title: title,
-                    category: category,
-                    toDoDate: toDoDate,
-                    deadline: deadline,
-                    done: false
-                };
-                if (!userData.tasks) {
-                    userData.tasks = [];
-                }
-                console.log("Before Push:", userData.tasks);
-                userData.tasks.push(newTask);
-                console.log("After Push:", userData.tasks);
-                addForm.closest('.modal').querySelector('.btn-close').click(); 
-                updateTaskList();
-            });
-        }
     }
 }
 
