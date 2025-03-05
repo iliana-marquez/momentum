@@ -183,10 +183,6 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
     // get date from todayFormat (today's day)
     let todayStr = todayFormat.split('-')[1];
 
-    // convert start and end of the week to string type
-    // let weekStartStr = weekStart.toISOString().split('T')[0];
-    // let weekEndStr = weekEnd.toISOString().split('T')[0];
-
     // counters 
     let todayTotal = 0;
     let todayDone = 0;
@@ -200,7 +196,7 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
         let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
 
         // check if task is today
-        if (task.toDoDate.includes(todayStr)) {
+        if (task.toDoDate === todayFormat) {  // <- FIXED CONDITION
             todayTotal++;
             if (task.done) todayDone++;
         }
@@ -235,11 +231,9 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 }
 
 // *** TASKS LOGIC *** //
-// * Function to print tasks
-// Replace your existing updateTaskList() in script.js
 
 // *** TASKS LOGIC ***
-// Function to print tasks and handle Add
+// Function handle tasks: print, add new
 function updateTaskList() {
     let today = new Date();
     let todayStr = formatDate(today);
@@ -298,13 +292,6 @@ function updateTaskList() {
               addForm.closest('.modal').querySelector('.btn-close').click(); 
 
               refreshTasksAfterCRUD();
-
-              //   updateTaskList();
-
-            //   if (window.location.pathname.includes('dashboard.html')) {
-            //   updateChart();
-            //   updateProgressBars();
-            //   }
           });
       }
 
