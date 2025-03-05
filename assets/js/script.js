@@ -269,7 +269,8 @@ function updateTaskList() {
       if (addForm) {
           addForm.addEventListener('submit', function(e) {
               e.preventDefault();
-              let title = document.querySelector('#task-title').value;
+              let title = document.querySelector('#task-title').value.trim();
+              title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();   
               let category = document.querySelector('#task-category').value;
               let toDoDate = document.querySelector('#task-todo').value.split('-'); 
               toDoDate = `${toDoDate[2]}.${toDoDate[1]}.${toDoDate[0]}`; 
