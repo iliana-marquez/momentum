@@ -13,7 +13,7 @@ let userData = {
         { "name": "Health", "focus": "Stay Fit", "color": "#cb0e16", "icon": "heart-pulse" },
         { "name": "Relationships", "focus": "Deepen Bonds", "color": "#900c5e", "icon": "peace" },
         { "name": "Work", "focus": "Project Success", "color": "#bdbdbd", "icon": "briefcase" },
-        { "name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c", "icon": "hand-holding-dolar" }
+        { "name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c", "icon": "hand-holding-dollar" }
     ],
     "tasks": [
         { "title": "Code 1hr", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "04.03.2025", "done": true },
@@ -162,9 +162,9 @@ function udpateDateInfo() {
     if (window.location.pathname.includes('dashboard.html')) {
     document.getElementById('today-date').innerHTML = `Today, ${todayFormat}`;
     document.getElementById('actual-week').innerHTML = `Week ${weekNumber}, ${weekRange}`;
-    }
     //calls the function here to recycle date arguments 
     updateProgressBars(todayFormat, weekStart, weekEnd);
+    }
 }
 
 // * Function to get the week number
@@ -231,6 +231,7 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
     // to print in overlay on progress bar - for the future
     console.log(`Today's Progress: ${todayDone}/${todayTotal}`);
     console.log(`Week's Progress: ${weekDone}/${weekTotal}`);
+
 }
 
 // *** TASKS LOGIC *** //
@@ -331,6 +332,72 @@ function updateTaskList() {
 document.addEventListener('DOMContentLoaded', () => {
     updateTaskList();
 });
+
+// print list tags in ul week-box
+function updateWeeklyPercentageDisplay() {
+    let categoryContainer = document.getElementById('weekly-percentage-display');
+    categoryContainer.innerHTML = ''; // Clear previous content
+
+    // Get today's date and calculate the start and end of the current week (Monday-Sunday)
+    let today = new Date();
+    let weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay() + 1); // Start of this week (Monday)
+    let weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6); // End of this week (Sunday)
+
+    // Categories data
+    let categories = userData.lifeGoalCategories;
+
+    // Initialize category counts for the week
+    let categoryCounts = {};
+    categories.forEach(category => {
+        categoryCounts[category.name] = {
+            totalTasks: 0 // Count only tasks for this week
+        };
+    });
+
+    // Loop through tasks and count tasks for each category that fall within the current week
+    userData.tasks.forEach(task => {
+        let taskDateStr = task.toDoDate.split('.'); // Assuming task.toDoDate is in 'dd.mm.yyyy' format
+        let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`); // Convert to Date object
+
+        // Check if the task date is within this week
+        if (taskDate >= weekStart && taskDate <= weekEnd) {
+            // Increment total tasks for the category
+            categoryCounts[task.category].totalTasks++;
+        }
+    });
+
+    // For each category, calculate the percentage of tasks dedicated to that category this week
+    categories.forEach(category => {
+        let count = categoryCounts[category.name];
+
+        // Only show categories that have tasks within this week
+        if (count.totalTasks > 0) {
+            // Calculate the percentage of total tasks dedicated to this category
+            let percentage = Math.round((count.totalTasks / userData.tasks.length) * 100);
+
+            // Build the HTML for each category
+            let categoryHTML = `
+                <li>
+                    <div class="category-percentage">
+                        <i class="display-6 fa-solid fa-${category.icon}" style="color: ${category.color};"></i>
+                        <p>${percentage}%</p>
+                    </div>
+                </li>
+            `;
+            // Append the calculated percentage for each category
+            categoryContainer.innerHTML += categoryHTML;
+        }
+    });
+}
+
+
+// Call the function when the page loads or after updating the tasks
+document.addEventListener('DOMContentLoaded', () => {
+    updateWeeklyPercentageDisplay();
+});
+
 
 // gets the color of lifeGoalCategories
 function getCategoryColor(categoryName) {
