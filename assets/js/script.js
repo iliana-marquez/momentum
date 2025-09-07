@@ -462,15 +462,14 @@ function initializeTaskCheckboxes() {
         if (e.target.classList.contains('task-checkbox')) {
             e.preventDefault();
 
-            let checbok = e.target;
-            let taskRow = checbok.closest('.task-row, li');
-            let taskTitle = taskRow.querySelector('.task-title').textContent;
+            let checkbox = e.target;
+            let taskIndex = parseInt(checkbox.getAttribute('data-task-index'));
 
-            // find and toogle task
-            let task = userData.tasks.find(t => t.title === taskTitle);
+            // use index to find the exact task
+            let task = userData.tasks[taskIndex];
             if (task) {
                 task.done = !task.done;
-                checbok.checked = task.done;
+                checkbox.checked = task.done;
 
                 saveToLocalStorage();
                 refreshTasksAfterCRUD();
@@ -517,10 +516,11 @@ function updateTaskList() {
         let todayTaskList = document.getElementById("today-task-list");
         todayTaskList.innerHTML = "";
         categories.today.tasks.forEach(task => {
+            let taskIndex = userData.tasks.findIndex(t => t === task);
             let categoryColor = getCategoryColor(task.category);
             let todayTaskHTML = `
-                <li style="color: ${categoryColor};">
-                    <input type="checkbox" class="task-checkbox" ${task.done ? "checked" : ""}>
+                <li class="task-row" style="color: ${categoryColor};">
+                    <input type="checkbox" class="task-checkbox" data-task-index="${taskIndex}" ${task.done ? "checked" : ""}>
                     <span class="task-title">${task.title}</span>
                 </li>
             `;
@@ -535,19 +535,23 @@ function updateTaskList() {
 
         Object.keys(categories).forEach((key, index) => {
             let section = categories[key];
-            let tasksHTML = section.tasks.map(task => `
-                <div class="task-row justify-content-between">
-                    <div>
-                        <input type="checkbox" class="task-checkbox" ${task.done ? "checked" : ""}>
-                        <span class="task-title">${task.title}</span>
+            let tasksHTML = section.tasks.map(task => {
+                let taskIndex = userData.tasks.findIndex(t => t === task);
+                let categoryColor = getCategoryColor(task.category);
+                return `
+                    <div class="task-row justify-content-between">
+                        <div>
+                            <input type="checkbox" class="task-checkbox" data-task-index="${taskIndex}" ${task.done ? "checked" : ""}>
+                            <span style="color: ${categoryColor};" class="task-title">${task.title}</span>
+                        </div>
+                        <div class="task-dates-actions text-end">
+                            <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
+                            <button class="custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-pencil"></i></button>
+                            <button class="custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
                     </div>
-                    <div class="task-dates-actions text-end">
-                        <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
-                        <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-pencil"></i></button>
-                        <button class="custom-button my-button-light-bg my-button-icon"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </div>
-            `).join("");
+                    `;
+                }).join("");
 
             let accordionHTML = `
                 <div class="accordion-item">
@@ -566,7 +570,7 @@ function updateTaskList() {
                 </div>
             `;
             taskContainer.innerHTML += accordionHTML;
-        });
+        })
     }
 }
 
