@@ -251,7 +251,46 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 }
 
 // *** TASKS LOGIC ***
-// Function handle tasks: print, add new
+
+// Add a new task
+function registerTaskFormListener() {
+    let taskForm = document.querySelector('#add-task-form');
+    if (taskForm) {
+        taskForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let title = document.querySelector('#task-title').value.trim();
+            title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();   
+            let category = document.querySelector('#task-category').value;
+            let toDoDate = document.querySelector('#task-todo').value.split('-'); 
+            toDoDate = `${toDoDate[2]}.${toDoDate[1]}.${toDoDate[0]}`; 
+            let deadline = document.querySelector('#task-deadline').value.split('-');
+            deadline = `${deadline[2]}.${deadline[1]}.${deadline[0]}`;
+            let newTask = {
+                title: title,
+                category: category,
+                toDoDate: toDoDate,
+                deadline: deadline,
+                done: false
+            };
+            if (!userData.tasks) {
+                userData.tasks = [];
+            }
+            console.log("Before Push:", userData.tasks);
+            userData.tasks.push(newTask);
+            console.log("After Push:", userData.tasks);
+            saveToLocalStorage();
+            taskForm.closest('.modal').querySelector('.btn-close').click(); 
+            
+            refreshTasksAfterCRUD();
+            // gives feed back in tasks page for tasks that arent displyed by default (within an collapsed list)
+            if (window.location.pathname.includes('dashboard.html') || window.location.pathname.includes('tasks.html')) {
+              alert(`Task Added: ${title}!`);
+            }  
+        });
+    }
+}
+
+// Update tasks list afer submitting new task
 function updateTaskList() {
     let today = new Date();
     let todayStr = formatDate(today);
@@ -281,45 +320,6 @@ function updateTaskList() {
         if (task.done) categories.done.tasks.push(task);
         if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
     });
-
-      // add task listener—inside updateTaskList
-      let addForm = document.querySelector('#add-task-form');
-      if (addForm) {
-          addForm.addEventListener('submit', function(e) {
-              e.preventDefault();
-              let title = document.querySelector('#task-title').value.trim();
-              title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();   
-              let category = document.querySelector('#task-category').value;
-              let toDoDate = document.querySelector('#task-todo').value.split('-'); 
-              toDoDate = `${toDoDate[2]}.${toDoDate[1]}.${toDoDate[0]}`; 
-              let deadline = document.querySelector('#task-deadline').value.split('-');
-              deadline = `${deadline[2]}.${deadline[1]}.${deadline[0]}`;
-
-              let newTask = {
-                  title: title,
-                  category: category,
-                  toDoDate: toDoDate,
-                  deadline: deadline,
-                  done: false
-              };
-              if (!userData.tasks) {
-                  userData.tasks = [];
-              }
-              console.log("Before Push:", userData.tasks);
-              userData.tasks.push(newTask);
-              console.log("After Push:", userData.tasks);
-              saveToLocalStorage();
-              addForm.closest('.modal').querySelector('.btn-close').click(); 
-              
-
-              refreshTasksAfterCRUD();
-              // gives feed back in tasks page for tasks that arent displyed by default (within an collapsed list)
-              if (window.location.pathname.includes('tasks.html')) {
-                alert(`Task Added: ${title}!`);
-              }  
-          });
-
-      }
 
     // updates task list in dashboard page
     if (window.location.pathname.includes('dashboard.html')) {
@@ -392,7 +392,7 @@ function refreshTasksAfterCRUD() {
         weekEnd.setDate(weekStart.getDate() + 6);
         
         updateProgressBars(todayFormat, weekStart, weekEnd); // Update progress bars
-        updateWeeklyPercentageDisplay(); // Update week box
+        // updateWeeklyPercentageDisplay(); // Update week box
     }
 }
 
@@ -465,7 +465,13 @@ document.addEventListener('DOMContentLoaded', function() {
             logout();
         });
     });
-}
+    }
+
+    // NEW TASK FORM EVENT LISTENER ONCE PER PAGE LOAD!
+    if (currentPage === 'dashboard.html' || currentPage === 'tasks.html') {
+        registerTaskFormListener();
+    }
+
 })
 
 
