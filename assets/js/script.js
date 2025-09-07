@@ -365,20 +365,32 @@ function registerTaskFormListener() {
                 deadline: deadline,
                 done: false
             };
-            if (!userData.tasks) {
-                userData.tasks = [];
+
+            // Clear focus and close modal immediately for better UX
+            if (document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
             }
-            console.log("Before Push:", userData.tasks);
-            userData.tasks.push(newTask);
-            console.log("After Push:", userData.tasks);
-            saveToLocalStorage();
-            taskForm.closest('.modal').querySelector('.btn-close').click(); 
+            taskForm.closest('.modal').querySelector('.btn-close').click();
+
+            // Reset form before closing modal
+            taskForm.reset();
+
+            // Defer all heavy DOM operations
+            setTimeout(() => {
+                if (!userData.tasks) {
+                    userData.tasks = [];
+                }
+                console.log("Before Push:", userData.tasks);
+                userData.tasks.push(newTask);
+                console.log("After Push:", userData.tasks);
+                saveToLocalStorage();
+                refreshTasksAfterCRUD();
+                // gives feed back in tasks page for tasks that arent displyed by default (within the dashboard display or collapsed lists)
+                if (window.location.pathname.includes('dashboard.html') || window.location.pathname.includes('tasks.html')) {
+                  alert(`Task Added: ${title}!`);
+                }  
+            }, 0);
             
-            refreshTasksAfterCRUD();
-            // gives feed back in tasks page for tasks that arent displyed by default (within an collapsed list)
-            if (window.location.pathname.includes('dashboard.html') || window.location.pathname.includes('tasks.html')) {
-              alert(`Task Added: ${title}!`);
-            }  
         });
     }
 }
