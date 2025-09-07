@@ -36,8 +36,9 @@ let userData = {
     ]
 }
 
-// *** DATA PERSISTANCE *** //
-// 
+// ==========================================
+// *** DATA PERSISTENCE & AUTHENTICATION ***
+// ==========================================
 function saveToLocalStorage() {
     localStorage.setItem('momentumUserData', JSON.stringify(userData));
     localStorage.setItem('momentumLoggedIn', 'true');
@@ -89,9 +90,63 @@ function logout() {
     window.location.href = 'index.html';
 }
 
-// *** DASHBOARD LOGIC *** //
+// ==========================================
+// *** UTILITY FUNCTIONS ***
+// ==========================================
 
-// * Function to prepare and print percentages of each category tasks to update the life sync chart
+// Gets the date for filtering purposes
+function formatDate(date) {
+    let day = String(date.getDate()).padStart(2, "0");
+    let month = String(date.getMonth() + 1).padStart(2, "0");
+    let year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+}
+
+// Formats date
+function parseDate(dateString) {
+    let parts = dateString.split(".");
+    return new Date(parts[2], parts[1] - 1, parts[0]);
+}
+
+// Gets the week number
+function getWeekNumber(date) {
+    let startOfYear = new Date(date.getFullYear(), 0, 1);
+    let pastDays = (date - startOfYear) / (1000 * 60 * 60 * 24);
+    return Math.ceil((pastDays + startOfYear.getDay() + 1) / 7);
+}
+
+// Calculates Monday-Sunday week range for any given date
+function getCurrentWeekRange(date = new Date()) {
+    let weekStart = new Date(date);
+    
+    if (date.getDay() === 0) {
+        // If Sunday, go back 6 days to get previous Monday
+        weekStart.setDate(date.getDate() - 6);
+        // Week end should be today (Sunday), not tomorrow
+        let weekEnd = new Date(date);
+        return { weekStart, weekEnd };
+    } else {
+        // For other days, use normal calculation
+        weekStart.setDate(date.getDate() - date.getDay() + 1);
+        let weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+        return { weekStart, weekEnd };
+    }
+    
+}
+
+// Gets the color of lifeGoalCategories
+function getCategoryColor(categoryName) {
+    let category = userData.lifeGoalCategories.find(cat => cat.name === categoryName);
+    return category ? category.color : "#000"; // Default black if category not found
+}
+
+
+// ==========================================
+// *** DASHBOARD FUNCTIONS ***
+// ==========================================
+
+// * Prepare and print percentages of each category tasks to update the life sync chart
 function updateChart() {
     if (!userData) {
         console.log("User data not loaded yet.");
@@ -152,9 +207,8 @@ function updateChart() {
     document.querySelector(".circle").style.background = gradientString;
 }
 
-// *** DATE LOGIC *** //
 // * Function to print date and reuse for dynamic tasks
-function udpateDateInfo() {
+function updateDateInfo() {
     let today = new Date();
 
     // get weeday abbreviation (Mon, Tue, Wed, etc.)
@@ -169,11 +223,8 @@ function udpateDateInfo() {
     // get the current week number
     let weekNumber = getWeekNumber(today);
 
-    // get start and end of current-week
-    let weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - today.getDay() + 1); // Monday start
-    let weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6); // Sunday end
+    // get start and end of current-week w/ extracted utility function
+    let { weekStart, weekEnd } = getCurrentWeekRange(today);
 
     // format week range
     let startDay = String(weekStart.getDate()).padStart(2, '0');
@@ -189,19 +240,13 @@ function udpateDateInfo() {
     }
 }
 
-// * Function to get the week number
-function getWeekNumber(date) {
-    let startOfYear = new Date(date.getFullYear(), 0, 1);
-    let pastDays = (date - startOfYear) / (1000 * 60 * 60 * 24);
-    return Math.ceil((pastDays + startOfYear.getDay() + 1) / 7);
-}
-
-
 // *** PROGRESS BARS LOGIC *** //
 // * Function to update 
 function updateProgressBars(todayFormat, weekStart, weekEnd) {
     // get date from todayFormat (today's day)
     let todayStr = todayFormat.split('-')[1];
+    let currentYear = new Date().getFullYear();
+    let todayFormatted = `${todayStr}${currentYear}`;
 
     // counters 
     let todayTotal = 0;
@@ -216,7 +261,7 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
         let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
 
         // check if task is today
-        if (task.toDoDate === todayFormat || task.toDoDate.includes(todayStr)) { 
+        if (task.toDoDate === todayFormatted || task.toDoDate.includes(todayStr)) { 
             todayTotal++;
             if (task.done) todayDone++;
         }
@@ -250,7 +295,55 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 
 }
 
-// *** TASKS LOGIC ***
+// updateWeeklyPercentageDisplay()
+function updateWeeklyPercentageDisplay() {
+    let weeklyDisplay = document.getElementById('weekly-percentage-display');
+    if (!weeklyDisplay || !userData) return;
+
+    // Calculate category percentages for this week's tasks
+    let { weekStart, weekEnd } = getCurrentWeekRange();
+
+    // Count tasks per category for this week
+    let weekCategoryTasks = {};
+    let totalWeekTasks = 0;
+
+    // Initialize category counts
+    userData.lifeGoalCategories.forEach(category => {
+        weekCategoryTasks[category.name] = 0;
+    });
+
+    // Count this week's tasks per category
+    userData.tasks.forEach(task => {
+        let taskDateStr = task.toDoDate.split('.');
+        let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
+        
+        if (taskDate >= weekStart && taskDate <= weekEnd) {
+            totalWeekTasks++;
+            if (weekCategoryTasks[task.category] !== undefined) {
+                weekCategoryTasks[task.category]++;
+            }
+        }
+    });
+
+    // Generate HTML for category indicators with percentages
+    let displayHTML = '';
+    userData.lifeGoalCategories.forEach(category => {
+        let categoryCount = weekCategoryTasks[category.name];
+        let percentage = totalWeekTasks > 0 ? Math.round((categoryCount / totalWeekTasks) * 100) : 0;
+        
+        displayHTML += `
+            <li title="${category.name}: ${categoryCount} tasks (${percentage}%)">
+                <span style="color: ${category.color};">●</span> ${percentage}%
+            </li>
+        `;
+    });
+
+    weeklyDisplay.innerHTML = displayHTML;
+}
+
+// ==========================================
+// *** TASK MANAGEMENT ***
+// ==========================================
 
 // Add a new task
 function registerTaskFormListener() {
@@ -295,10 +388,8 @@ function updateTaskList() {
     let today = new Date();
     let todayStr = formatDate(today);
 
-    let weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - today.getDay() + 1);
-    let weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6);
+    let { weekStart, weekEnd } = getCurrentWeekRange(today);
+
 
     let categories = {
         today: { title: `Today [${todayStr}]`, tasks: [] },
@@ -385,40 +476,25 @@ function refreshTasksAfterCRUD() {
         updateChart(); // Update life sync chart
         
         let today = new Date();
-        let todayFormat = formatDate(today);
-        let weekStart = new Date(today);
-        weekStart.setDate(today.getDate() - today.getDay() + 1);
-        let weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekStart.getDate() + 6);
+        let { weekStart, weekEnd } = getCurrentWeekRange(today);
         
-        updateProgressBars(todayFormat, weekStart, weekEnd); // Update progress bars
-        // updateWeeklyPercentageDisplay(); // Update week box
+        // Create the abbreviated format that updateProgressBars expects
+        let weekdayOptions = { weekday: 'short' };
+        let dayAbbreviation = today.toLocaleDateString('en-US', weekdayOptions);
+        let day = String(today.getDate()).padStart(2, '0');
+        let month = String(today.getMonth() + 1).padStart(2, '0');
+        let todayFormatForProgressBars = `${dayAbbreviation}-${day}.${month}.`;
+
+
+        updateProgressBars(todayFormatForProgressBars, weekStart, weekEnd); // Update progress bars
+        updateWeeklyPercentageDisplay(); // Update week box
     }
 }
 
+// ==========================================
+// *** PAGE INITIALIZATION ***
+// ==========================================
 
-// gets the color of lifeGoalCategories
-function getCategoryColor(categoryName) {
-    let category = userData.lifeGoalCategories.find(cat => cat.name === categoryName);
-    return category ? category.color : "#000"; // Default black if category not found
-}
-
-// // gets the date for filtering purposes
-function formatDate(date) {
-    let day = String(date.getDate()).padStart(2, "0");
-    let month = String(date.getMonth() + 1).padStart(2, "0");
-    let year = date.getFullYear();
-    return `${day}.${month}.${year}`;
-}
-
-// formats date
-function parseDate(dateString) {
-    let parts = dateString.split(".");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-}
-
-
-// *** DOMContentLoaded GLOBAL EVENT *** //
 document.addEventListener('DOMContentLoaded', function() {
     // Determine which page is loaded
     const currentPage = window.location.pathname.split('/').pop();
@@ -449,9 +525,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run page-specific initialization in the correct order
     if (currentPage === 'dashboard.html'){
         // Functions needed on the dashboard
-        udpateDateInfo();
+        updateDateInfo();
         updateChart();
-        // updateWeeklyPercentageDisplay();
+        updateWeeklyPercentageDisplay();
         updateTaskList();
     } else if (currentPage === 'tasks.html') {
         updateTaskList();
