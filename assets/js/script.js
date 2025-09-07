@@ -186,6 +186,7 @@ function updateChart() {
     // Apply to the pie chart
     document.querySelector(".circle").style.background = gradientString;
 }
+
 // * Function to print date and reuse for dynamic tasks
 function updateDateInfo() {
     let today = new Date();
@@ -227,6 +228,8 @@ function updateDateInfo() {
 function updateProgressBars(todayFormat, weekStart, weekEnd) {
     // get date from todayFormat (today's day)
     let todayStr = todayFormat.split('-')[1];
+    let currentYear = new Date().getFullYear();
+    let todayFormatted = `${todayStr}${currentYear}`;
 
     // counters 
     let todayTotal = 0;
@@ -241,7 +244,7 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
         let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
 
         // check if task is today
-        if (task.toDoDate === todayFormat || task.toDoDate.includes(todayStr)) { 
+        if (task.toDoDate === todayFormatted || task.toDoDate.includes(todayStr)) { 
             todayTotal++;
             if (task.done) todayDone++;
         }
@@ -276,6 +279,54 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 }
 
 // updateWeeklyPercentageDisplay()
+function updateWeeklyPercentageDisplay() {
+    let weeklyDisplay = document.getElementById('weekly-percentage-display');
+    if (!weeklyDisplay || !userData) return;
+
+    // Calculate category percentages for this week's tasks
+    let today = new Date();
+    let weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay() + 1);
+    let weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+
+    // Count tasks per category for this week
+    let weekCategoryTasks = {};
+    let totalWeekTasks = 0;
+
+    // Initialize category counts
+    userData.lifeGoalCategories.forEach(category => {
+        weekCategoryTasks[category.name] = 0;
+    });
+
+    // Count this week's tasks per category
+    userData.tasks.forEach(task => {
+        let taskDateStr = task.toDoDate.split('.');
+        let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
+        
+        if (taskDate >= weekStart && taskDate <= weekEnd) {
+            totalWeekTasks++;
+            if (weekCategoryTasks[task.category] !== undefined) {
+                weekCategoryTasks[task.category]++;
+            }
+        }
+    });
+
+    // Generate HTML for category indicators with percentages
+    let displayHTML = '';
+    userData.lifeGoalCategories.forEach(category => {
+        let categoryCount = weekCategoryTasks[category.name];
+        let percentage = totalWeekTasks > 0 ? Math.round((categoryCount / totalWeekTasks) * 100) : 0;
+        
+        displayHTML += `
+            <li title="${category.name}: ${categoryCount} tasks (${percentage}%)">
+                <span style="color: ${category.color};">●</span> ${percentage}%
+            </li>
+        `;
+    });
+
+    weeklyDisplay.innerHTML = displayHTML;
+}
 
 // ==========================================
 // *** TASK MANAGEMENT ***
@@ -414,14 +465,24 @@ function refreshTasksAfterCRUD() {
         updateChart(); // Update life sync chart
         
         let today = new Date();
+
+        // Use formatDate for consistency
         let todayFormat = formatDate(today);
         let weekStart = new Date(today);
         weekStart.setDate(today.getDate() - today.getDay() + 1);
         let weekEnd = new Date(weekStart);
         weekEnd.setDate(weekStart.getDate() + 6);
         
+        // Create the abbreviated format that updateProgressBars expects
+        let weekdayOptions = { weekday: 'short' };
+        let dayAbbreviation = today.toLocaleDateString('en-US', weekdayOptions);
+        let day = String(today.getDate()).padStart(2, '0');
+        let month = String(today.getMonth() + 1).padStart(2, '0');
+        let todayFormatForProgressBars = `${dayAbbreviation}-${day}.${month}.`;
+
+
         updateProgressBars(todayFormat, weekStart, weekEnd); // Update progress bars
-        // updateWeeklyPercentageDisplay(); // Update week box
+        updateWeeklyPercentageDisplay(); // Update week box
     }
 }
 
@@ -461,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Functions needed on the dashboard
         updateDateInfo();
         updateChart();
-        // updateWeeklyPercentageDisplay();
+        updateWeeklyPercentageDisplay();
         updateTaskList();
     } else if (currentPage === 'tasks.html') {
         updateTaskList();
