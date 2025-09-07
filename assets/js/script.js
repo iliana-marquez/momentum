@@ -36,6 +36,15 @@ let userData = {
     ]
 }
 
+// *** DATA PERSISTANCE *** //
+// 
+function saveToLocalStorage() {
+    localStorage.setItem('momentumUserData', JSON.stringify(userData));
+    localStorage.setItem('momentumLoggedIn', 'true');
+    console.log('data saved to localStorage')
+}
+
+
 // *** LOGIN LOGIC *** //
 // * get data from login form, compares and validate
 if (window.location.pathname.includes('login.html')) {
@@ -51,6 +60,8 @@ if (window.location.pathname.includes('login.html')) {
         }
         if (userData.info.email === email && userData.info.password === password) {
             console.log('Login success:', userData.info.username);
+             // add the save to local storage function for data-persistance after login
+            saveToLocalStorage();
             window.location.href = 'dashboard.html';
         } else {
             console.log('Login failed');
