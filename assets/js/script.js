@@ -141,6 +141,66 @@ function getCategoryColor(categoryName) {
     return category ? category.color : "#000"; // Default black if category not found
 }
 
+function showFeedbackModal(type, title, message = '') {
+    // Remove existing modal if present
+    const existingModal = document.getElementById('feedbackModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Configure icon and color based on type
+    let iconClass, bgClass;
+    switch(type) {
+        case 'success':
+            iconClass = 'fa-solid fa-check fa-2x';
+            bgClass = 'bg-success';
+            break;
+        case 'error':
+            iconClass = 'fa-solid fa-exclamation-triangle fa-2x';
+            bgClass = 'bg-danger';
+            break;
+        case 'info':
+            iconClass = 'fa-solid fa-info fa-2x';
+            bgClass = 'bg-info';
+            break;
+        default:
+            iconClass = 'fa-solid fa-bell fa-2x';
+            bgClass = 'bg-secondary';
+    }
+    
+    // Create modal HTML
+    const modalHTML = `
+        <div class="modal fade sharp-corners" id="feedbackModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content dark-mode text-center">
+                    <div class="modal-body py-4">
+                        <div class="mb-3">
+                            <span class="badge ${bgClass} rounded-circle p-3">
+                                <i class="${iconClass}"></i>
+                            </span>
+                        </div>
+                        <h5>${title}</h5>
+                        ${message ? `<p class="small text-muted">${message}</p>` : ''}
+                        <button type="button" class="custom-button my-button-light-bg mt-3" data-bs-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Insert into DOM
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+    modal.show();
+    
+    // Clean up after modal is hidden
+    document.getElementById('feedbackModal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
+}
+
 
 // ==========================================
 // *** DASHBOARD FUNCTIONS ***
@@ -387,7 +447,7 @@ function registerTaskFormListener() {
                 refreshTasksAfterCRUD();
                 // gives feed back in tasks page for tasks that arent displyed by default (within the dashboard display or collapsed lists)
                 if (window.location.pathname.includes('dashboard.html') || window.location.pathname.includes('tasks.html')) {
-                  alert(`Task Added: ${title}!`);
+                  showFeedbackModal('success', 'TASK ADDED!', `${title} has been added successfully`);
                 }  
             }, 0);
             
