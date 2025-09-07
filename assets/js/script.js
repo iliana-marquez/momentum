@@ -308,6 +308,7 @@ function updateTaskList() {
               console.log("Before Push:", userData.tasks);
               userData.tasks.push(newTask);
               console.log("After Push:", userData.tasks);
+              saveToLocalStorage();
               addForm.closest('.modal').querySelector('.btn-close').click(); 
               
 
