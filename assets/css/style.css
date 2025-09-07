@@ -279,7 +279,8 @@ a {
 
 .dashboard-grid > .today-box {
     grid-column: 1;  
-    grid-row: 2;     
+    grid-row: 2; 
+    overflow-y: auto;     
 }
 
 .dashboard-grid > .week-box {
