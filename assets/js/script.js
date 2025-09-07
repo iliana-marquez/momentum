@@ -141,6 +141,7 @@ function getCategoryColor(categoryName) {
     return category ? category.color : "#000"; // Default black if category not found
 }
 
+// Creates dynamic modal for user feedback 
 function showFeedbackModal(type, title, message = '') {
     // Remove existing modal if present
     const existingModal = document.getElementById('feedbackModal');
@@ -541,7 +542,7 @@ function updateTaskList() {
     }
 }
 
-// refresh tasks
+// Refresh tasks
 function refreshTasksAfterCRUD() {
     updateTaskList();
     if (window.location.pathname.includes('dashboard.html')) {
