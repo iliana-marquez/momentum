@@ -16,24 +16,46 @@ let userData = {
         { "name": "Finances", "focus": "Financial Freedom", "color": "#92bf1c", "icon": "hand-holding-dollar" }
     ],
     "tasks": [
-        { "title": "Code 1hr", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "04.03.2025", "done": true },
-        { "title": "Workout 30min", "category": "Health", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": true },
-        { "title": "Call Partner", "category": "Relationships", "toDoDate": "04.03.2025", "deadline": "04.03.2025", "done": true },
-        { "title": "Plan Project", "category": "Work", "toDoDate": "25.04.2025", "deadline": "28.04.2025", "done": false },
-        { "title": "Save $500", "category": "Finances", "toDoDate": "05.03.2025", "deadline": "31.03.2025", "done": true },
-        { "title": "Coffee date", "category": "Relationships", "toDoDate": "05.03.2025", "deadline": "11.03.2025", "done": false },
-        { "title": "Confirm Container", "category": "Work", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false },
-        { "title": "Code Submit", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false },
-        { "title": "Code Review", "category": "Coding", "toDoDate": "05.03.2025", "deadline": "06.03.2025", "done": false },
-        { "title": "Singing lesson", "category": "Health", "toDoDate": "12.03.2025", "deadline": "12.03.2025", "done": false }
+        { "title": "Code 1hr", "category": "Coding", "toDoDate": "07.09.2025", "deadline": "08.09.2025", "done": true },
+        { "title": "Workout 30min", "category": "Health", "toDoDate": "08.09.2025", "deadline": "08.09.2025", "done": true },
+        { "title": "Call Partner", "category": "Relationships", "toDoDate": "08.09.2025", "deadline": "08.09.2025", "done": true },
+        { "title": "Plan Project", "category": "Work", "toDoDate": "25.09.2025", "deadline": "28.09.2025", "done": false },
+        { "title": "Save $500", "category": "Finances", "toDoDate": "07.09.2025", "deadline": "31.09.2025", "done": true },
+        { "title": "Coffee date", "category": "Relationships", "toDoDate": "07.09.2025", "deadline": "11.09.2025", "done": false },
+        { "title": "Confirm Container", "category": "Work", "toDoDate": "07.09.2025", "deadline": "10.09.2025", "done": false },
+        { "title": "Code Submit", "category": "Coding", "toDoDate": "07.09.2025", "deadline": "10.09.2025", "done": false },
+        { "title": "Code Review", "category": "Coding", "toDoDate": "07.09.2025", "deadline": "10.09.2025", "done": false },
+        { "title": "Singing lesson", "category": "Health", "toDoDate": "12.09.2025", "deadline": "12.09.2025", "done": false }
     ],
     "milestones": [
-        { "title": "Finish Freelance Site", "category": "Coding", "due": "05.03.2025", "done": false },
-        { "title": "Workout 4x/week", "category": "Health", "due": "31.03.2025", "done": false },
-        { "title": "Adventure w/Partner", "category": "Relationships", "due": "25.03.2025", "done": false },
-        { "title": "Launch Project", "category": "Work", "due": "07.03.2025", "done": false },
-        { "title": "Save $500", "category": "Finances", "due": "31.03.2025", "done": false }
+        { "title": "Finish Freelance Site", "category": "Coding", "due": "15.09.2025", "done": false },
+        { "title": "Workout 4x/week", "category": "Health", "due": "31.09.2025", "done": false },
+        { "title": "Adventure w/Partner", "category": "Relationships", "due": "25.09.2025", "done": false },
+        { "title": "Launch Project", "category": "Work", "due": "12.09.2025", "done": false },
+        { "title": "Save $500", "category": "Finances", "due": "31.09.2025", "done": false }
     ]
+}
+
+// *** DATA PERSISTANCE *** //
+// 
+function saveToLocalStorage() {
+    localStorage.setItem('momentumUserData', JSON.stringify(userData));
+    localStorage.setItem('momentumLoggedIn', 'true');
+    console.log('data saved to localStorage')
+}
+
+function loadFromLocalStorage() {
+    const savedData = localStorage.getItem('momentumUserData');
+    const isLoggedIn = localStorage.getItem('momentumLoggedIn');
+
+    if (savedData && isLoggedIn === 'true') {
+        userData = JSON.parse(savedData);
+        console.log('data loaded from localStorage');
+        return true;
+    } else {
+        console.log('using default data for new user')
+        return false;
+    }
 }
 
 // *** LOGIN LOGIC *** //
@@ -44,13 +66,14 @@ if (window.location.pathname.includes('login.html')) {
         let email = document.querySelector('#email').value;
         let password = document.querySelector('#password').value;
 
-
         if (!userData) {
             console.log('Data not loaded—try again');
             return;
         }
         if (userData.info.email === email && userData.info.password === password) {
             console.log('Login success:', userData.info.username);
+             // add the save to local storage function for data-persistance after login
+            saveToLocalStorage();
             window.location.href = 'dashboard.html';
         } else {
             console.log('Login failed');
@@ -59,6 +82,12 @@ if (window.location.pathname.includes('login.html')) {
     });
 }
 
+// *** LOGOUT LOGIC *** //
+function logout() {
+    localStorage.removeItem('momentumUserData');
+    localStorage.removeItem('momentumLoggedIn');
+    window.location.href = 'index.html';
+}
 
 // *** DASHBOARD LOGIC *** //
 
@@ -123,13 +152,6 @@ function updateChart() {
     document.querySelector(".circle").style.background = gradientString;
 }
 
-// * Life Sync Chart After Login
-if (window.location.pathname.includes('dashboard.html')) {
-    document.addEventListener('DOMContentLoaded', function () {
-        updateChart();
-    });
-}
-
 // *** DATE LOGIC *** //
 // * Function to print date and reuse for dynamic tasks
 function udpateDateInfo() {
@@ -173,8 +195,6 @@ function getWeekNumber(date) {
     let pastDays = (date - startOfYear) / (1000 * 60 * 60 * 24);
     return Math.ceil((pastDays + startOfYear.getDay() + 1) / 7);
 }
-// Run the function on page load
-document.addEventListener("DOMContentLoaded", udpateDateInfo);
 
 
 // *** PROGRESS BARS LOGIC *** //
@@ -288,6 +308,7 @@ function updateTaskList() {
               console.log("Before Push:", userData.tasks);
               userData.tasks.push(newTask);
               console.log("After Push:", userData.tasks);
+              saveToLocalStorage();
               addForm.closest('.modal').querySelector('.btn-close').click(); 
               
 
@@ -357,11 +378,6 @@ function updateTaskList() {
     }
 }
 
-// call when  page loads or after updating tasks
-document.addEventListener('DOMContentLoaded', () => {
-    updateTaskList();
-});
-
 // refresh tasks
 function refreshTasksAfterCRUD() {
     updateTaskList();
@@ -378,77 +394,6 @@ function refreshTasksAfterCRUD() {
         updateProgressBars(todayFormat, weekStart, weekEnd); // Update progress bars
         updateWeeklyPercentageDisplay(); // Update week box
     }
-}
-
-
-
-// print list tags in ul week-box
-if (window.location.pathname.includes('dashboard.html')) {
-function updateWeeklyPercentageDisplay() {
-    let categoryContainer = document.getElementById('weekly-percentage-display');
-    categoryContainer.innerHTML = ''; // Clear previous content
-
-    // Get today's date and calculate the start and end of the current week (Monday-Sunday)
-    let today = new Date();
-    let weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - today.getDay() + 1); // Start of this week (Monday)
-    let weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6); // End of this week (Sunday)
-
-    // Categories data
-    let categories = userData.lifeGoalCategories;
-
-    // Initialize category counts for the week
-    let categoryCounts = {};
-    categories.forEach(category => {
-        categoryCounts[category.name] = {
-            totalTasks: 0 // Count only tasks for this week
-        };
-    });
-
-    // Loop through tasks and count tasks for each category that fall within the current week
-    userData.tasks.forEach(task => {
-        let taskDateStr = task.toDoDate.split('.'); // Assuming task.toDoDate is in 'dd.mm.yyyy' format
-        let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`); // Convert to Date object
-
-        // Check if the task date is within this week
-        if (taskDate >= weekStart && taskDate <= weekEnd) {
-            // Increment total tasks for the category
-            categoryCounts[task.category].totalTasks++;
-        }
-    });
-
-    // For each category, calculate the percentage of tasks dedicated to that category this week
-    categories.forEach(category => {
-        let count = categoryCounts[category.name];
-
-        // Only show categories that have tasks within this week
-        if (count.totalTasks > 0) {
-            // Calculate the percentage of total tasks dedicated to this category
-            let percentage = Math.round((count.totalTasks / userData.tasks.length) * 100);
-
-            // Build the HTML for each category
-            let categoryHTML = `
-                <li>
-                    <div class="category-percentage">
-                        <i class="display-6 fa-solid fa-${category.icon}" style="color: ${category.color};"></i>
-                        <p>${percentage}%</p>
-                    </div>
-                </li>
-            `;
-            // Append the calculated percentage for each category
-            categoryContainer.innerHTML += categoryHTML;
-        }
-    });
-}
-}
-
-
-// call when  page loads or after updating tasks
-if (window.location.pathname.includes('dashboard.html')) {
-document.addEventListener('DOMContentLoaded', () => {
-    updateWeeklyPercentageDisplay();
-});
 }
 
 
@@ -472,5 +417,55 @@ function parseDate(dateString) {
     return new Date(parts[2], parts[1] - 1, parts[0]);
 }
 
+
+// *** DOMContentLoaded GLOBAL EVENT *** //
+document.addEventListener('DOMContentLoaded', function() {
+    // Determine which page is loaded
+    const currentPage = window.location.pathname.split('/').pop();
+    console.log('initializing page', currentPage)
+    // Load saved data and check for authenticatio
+    if (currentPage === 'login.html'){
+        // Special case: login page should redirect if already logged in
+        const isAlreadyLoggedIn = loadFromLocalStorage();
+        if (isAlreadyLoggedIn) {
+            console.log('User already logged in, redirecting to dashboard');
+            window.location.href = 'dashboard.html';
+            return; 
+        }
+    } else if (currentPage === 'index.html') {
+        // Landing page: load data for potential navigation benefits
+        loadFromLocalStorage();
+        console.log('Data loaded on landing page for navigation');
+    } else {
+        // Protected pages: load data and check athentication
+        const isLoggedIn = loadFromLocalStorage();
+        if(!isLoggedIn){
+            console.log('Not authenticaded, redirecting to login');
+            window.location.href = 'login.html';
+            return;
+        }
+        console.log('User data loaded for authenticated page:', currentPage);
+    }
+    // Run page-specific initialization in the correct order
+    if (currentPage === 'dashboard.html'){
+        // Functions needed on the dashboard
+        udpateDateInfo();
+        updateChart();
+        // updateWeeklyPercentageDisplay();
+        updateTaskList();
+    } else if (currentPage === 'tasks.html') {
+        updateTaskList();
+    }
+
+    // Add logout functionality to all authenticated pages
+    if (currentPage === 'dashboard.html' || currentPage === 'tasks.html' || currentPage === 'profile.html' || currentPage === 'milestones.html') {
+    document.querySelectorAll('a[href="index.html"][title="Logout"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    });
+}
+})
 
 
