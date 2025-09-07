@@ -3,7 +3,7 @@ let userData = {
     "info": {
         "username": "Ili",
         "email": "iliana.marquez@mail.com",
-        "password": "MyPassord123",
+        "password": "MyPassword123",
         "firstname": "Iliana",
         "lastname": "Marquez",
         "dateOfBirth": "15.09.1986"

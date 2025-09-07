@@ -55,7 +55,7 @@ Momentum is a web app designed to help anyone who wants to grow and stay present
 
 ## Testing
 
-- **User Flow:** Login with “iliana.marquez@mail.com” / “MyPassord123”—only Dashboard link—tasks syncs live.
+- **User Flow:** Login with “iliana.marquez@mail.com” / “MyPassword123”—only Dashboard link—tasks syncs live.
 - **Features:** Add task—list updates—Chart recalculates %—Progress bars show today/week—responsive on mobile/tablet.
 - **Fixed Bugs:** Consistent live calculations—percentages sync across Dashboard sections.
 - **Validation:** Pending—HTML/CSS checks in progress (time crunch).
