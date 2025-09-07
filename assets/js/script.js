@@ -456,6 +456,33 @@ function registerTaskFormListener() {
     }
 }
 
+// Checkbox togle for task completition
+function initializeTaskCheckboxes() {
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('task-checkbox')) {
+            e.preventDefault();
+
+            let checbok = e.target;
+            let taskRow = checbok.closest('.task-row, li');
+            let taskTitle = taskRow.querySelector('.task-title').textContent;
+
+            // find and toogle task
+            let task = userData.tasks.find(t => t.title === taskTitle);
+            if (task) {
+                task.done = !task.done;
+                checbok.checked = task.done;
+
+                saveToLocalStorage();
+                refreshTasksAfterCRUD();
+
+                let status = task.done ? 'completed' : 'marked as pending';
+                showFeedbackModal('success', 'TASK UPDATED!', `${task.title} ${status}`);
+            }
+        }
+    })
+}
+
+
 // Update tasks list afer submitting new task
 function updateTaskList() {
     let today = new Date();
@@ -493,7 +520,8 @@ function updateTaskList() {
             let categoryColor = getCategoryColor(task.category);
             let todayTaskHTML = `
                 <li style="color: ${categoryColor};">
-                    <i class="fa-solid fa-circle-check"></i> ${task.title}
+                    <input type="checkbox" class="task-checkbox" ${task.done ? "checked" : ""}>
+                    <span class="task-title">${task.title}</span>
                 </li>
             `;
             todayTaskList.innerHTML += todayTaskHTML;
@@ -619,6 +647,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // NEW TASK FORM EVENT LISTENER ONCE PER PAGE LOAD!
     if (currentPage === 'dashboard.html' || currentPage === 'tasks.html') {
         registerTaskFormListener();
+        initializeTaskCheckboxes(); 
     }
 
 })
