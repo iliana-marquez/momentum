@@ -115,6 +115,26 @@ function getWeekNumber(date) {
     return Math.ceil((pastDays + startOfYear.getDay() + 1) / 7);
 }
 
+// Calculates Monday-Sunday week range for any given date
+function getCurrentWeekRange(date = new Date()) {
+    let weekStart = new Date(date);
+    
+    if (date.getDay() === 0) {
+        // If Sunday, go back 6 days to get previous Monday
+        weekStart.setDate(date.getDate() - 6);
+        // Week end should be today (Sunday), not tomorrow
+        let weekEnd = new Date(date);
+        return { weekStart, weekEnd };
+    } else {
+        // For other days, use normal calculation
+        weekStart.setDate(date.getDate() - date.getDay() + 1);
+        let weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+        return { weekStart, weekEnd };
+    }
+    
+}
+
 // Gets the color of lifeGoalCategories
 function getCategoryColor(categoryName) {
     let category = userData.lifeGoalCategories.find(cat => cat.name === categoryName);
@@ -203,11 +223,8 @@ function updateDateInfo() {
     // get the current week number
     let weekNumber = getWeekNumber(today);
 
-    // get start and end of current-week
-    let weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - today.getDay() + 1); // Monday start
-    let weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6); // Sunday end
+    // get start and end of current-week w/ extracted utility function
+    let { weekStart, weekEnd } = getCurrentWeekRange(today);
 
     // format week range
     let startDay = String(weekStart.getDate()).padStart(2, '0');
@@ -284,11 +301,7 @@ function updateWeeklyPercentageDisplay() {
     if (!weeklyDisplay || !userData) return;
 
     // Calculate category percentages for this week's tasks
-    let today = new Date();
-    let weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - today.getDay() + 1);
-    let weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6);
+    let { weekStart, weekEnd } = getCurrentWeekRange();
 
     // Count tasks per category for this week
     let weekCategoryTasks = {};
@@ -375,10 +388,8 @@ function updateTaskList() {
     let today = new Date();
     let todayStr = formatDate(today);
 
-    let weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - today.getDay() + 1);
-    let weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6);
+    let { weekStart, weekEnd } = getCurrentWeekRange(today);
+
 
     let categories = {
         today: { title: `Today [${todayStr}]`, tasks: [] },
@@ -465,13 +476,7 @@ function refreshTasksAfterCRUD() {
         updateChart(); // Update life sync chart
         
         let today = new Date();
-
-        // Use formatDate for consistency
-        let todayFormat = formatDate(today);
-        let weekStart = new Date(today);
-        weekStart.setDate(today.getDate() - today.getDay() + 1);
-        let weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekStart.getDate() + 6);
+        let { weekStart, weekEnd } = getCurrentWeekRange(today);
         
         // Create the abbreviated format that updateProgressBars expects
         let weekdayOptions = { weekday: 'short' };
@@ -481,7 +486,7 @@ function refreshTasksAfterCRUD() {
         let todayFormatForProgressBars = `${dayAbbreviation}-${day}.${month}.`;
 
 
-        updateProgressBars(todayFormat, weekStart, weekEnd); // Update progress bars
+        updateProgressBars(todayFormatForProgressBars, weekStart, weekEnd); // Update progress bars
         updateWeeklyPercentageDisplay(); // Update week box
     }
 }
