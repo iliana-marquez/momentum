@@ -87,7 +87,7 @@ Deployed via GitHub Pages:
 ## Credits
 
 - **Bootstrap:** Wireframes, images and icons.
-- **Bootstrap:** Layout, modal framework.
+- **Canva:** Layout, modal framework.
 - **Font Awesome:** Icons.
 - **Code Institute:** README inspiration.
 
