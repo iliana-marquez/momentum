@@ -154,7 +154,7 @@ function updateChart() {
 
 // *** DATE LOGIC *** //
 // * Function to print date and reuse for dynamic tasks
-function udpateDateInfo() {
+function updateDateInfo() {
     let today = new Date();
 
     // get weeday abbreviation (Mon, Tue, Wed, etc.)
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run page-specific initialization in the correct order
     if (currentPage === 'dashboard.html'){
         // Functions needed on the dashboard
-        udpateDateInfo();
+        updateDateInfo();
         updateChart();
         // updateWeeklyPercentageDisplay();
         updateTaskList();
