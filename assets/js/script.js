@@ -715,18 +715,18 @@ function updateTaskList() {
         let taskWithIndex = { ...task, arrayIndex: index };
 
         if (task.done) {
-            taskCategories.done.tasks.push(taskWithIndex); 
-        } else if (deadlineDateObj && deadlineDateObj < today) {
-            taskCategories.expired.tasks.push(taskWithIndex); 
-        } else if (taskDate < today) {
-            taskCategories.overdue.tasks.push(taskWithIndex); 
-        } else if (task.toDoDate === todayStr) {
-            taskCategories.today.tasks.push(taskWithIndex);
-        } else if (taskDate >= weekStart && taskDate <= weekEnd) {
-            taskCategories.week.tasks.push(taskWithIndex);
-        } else if (taskDate > weekEnd) {
-            taskCategories.after.tasks.push(taskWithIndex);
-        }
+    taskCategories.done.tasks.push(taskWithIndex); 
+    } else if (task.toDoDate === todayStr) {
+        taskCategories.today.tasks.push(taskWithIndex); 
+    } else if (deadlineDateObj && deadlineDateObj < today) {
+        taskCategories.expired.tasks.push(taskWithIndex); 
+    } else if (taskDate < today) {
+        taskCategories.overdue.tasks.push(taskWithIndex); 
+    } else if (taskDate >= weekStart && taskDate <= weekEnd) {
+        taskCategories.week.tasks.push(taskWithIndex);
+    } else if (taskDate > weekEnd) {
+        taskCategories.after.tasks.push(taskWithIndex);
+    }
     });
 
 
