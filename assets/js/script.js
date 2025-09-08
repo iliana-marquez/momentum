@@ -798,7 +798,56 @@ function refreshTasksAfterCRUD() {
 // ==========================================
 
 // Update milestones 
-function updateMilestoneList() {}
+function updateMilestoneList() {
+    let categories = {};
+
+    // Initialize categories based on lifeGoalCategories
+    userData.lifeGoalCategories.forEach(category => {
+        categories[category.name] = {
+            title: category.name,
+            color: category.color,
+            icon: category.icon,
+            milestones: []
+        };
+    });
+
+    // Sort milestones into their respective categories
+    userData.milestones.forEach(milestone => {
+        if (categories[milestone.category]) {
+            categories[milestone.category].milestones.push(milestone);
+        }
+    });
+
+    // Sort milestones within each category by due date (chronological order)
+    Object.keys(categories).forEach(categoryName => {
+        categories[categoryName].milestones.sort((a, b) => parseDate(a.due) - parseDate(b.due));
+    });
+
+    // Update dashboard milestones section
+    if (window.location.pathname.includes('dashboard.html')) {
+        let nextDueMilestones = document.getElementById("next-due-milestones");
+        nextDueMilestones. innerHTML = "";
+        // Get next 4-5 upcoming milestones sorted by due date across all categories
+        let allMilestones = userData.milestones
+            .filter(m => !m.done)
+            .sort((a, b) => parseDate(a.due) - parseDate(b.due))
+            .slice(0, 5);
+        
+        //loop for all the next due milestones
+        allMilestones.forEach(milestone => {
+            let category = userData.lifeGoalCategories.find(cat => cat.name === milestone.category);
+            let categoryIcon = category ? category.icon : 'circle';
+            let nextDueMilestoneHTML = `
+                <div class="due-milestone">
+                    <i class="fs-1 fa-solid fa-${categoryIcon}"></i>
+                    <p class="small">${milestone.title}</p>
+                </div>            
+            `;
+            nextDueMilestones.innerHTML += nextDueMilestoneHTML;
+        });
+    }
+}
+
 
 // Add a new milestone
 function registerMilestoneFormListener() {}
@@ -848,6 +897,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateChart();
         updateWeeklyPercentageDisplay();
         updateTaskList();
+        updateMilestoneList()
     } else if (currentPage === 'tasks.html') {
         updateTaskList();
     }
