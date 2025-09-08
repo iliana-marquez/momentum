@@ -20,7 +20,7 @@ let userData = {
         { "title": "Workout 30min", "category": "Health", "toDoDate": "08.09.2025", "deadline": "08.09.2025", "done": true },
         { "title": "Call Partner", "category": "Relationships", "toDoDate": "08.09.2025", "deadline": "08.09.2025", "done": true },
         { "title": "Plan Project", "category": "Work", "toDoDate": "25.09.2025", "deadline": "28.09.2025", "done": false },
-        { "title": "Save $500", "category": "Finances", "toDoDate": "07.09.2025", "deadline": "31.09.2025", "done": true },
+        { "title": "Save $500", "category": "Finances", "toDoDate": "07.09.2025", "deadline": "30.09.2025", "done": true },
         { "title": "Coffee date", "category": "Relationships", "toDoDate": "07.09.2025", "deadline": "11.09.2025", "done": false },
         { "title": "Confirm Container", "category": "Work", "toDoDate": "07.09.2025", "deadline": "10.09.2025", "done": false },
         { "title": "Code Submit", "category": "Coding", "toDoDate": "07.09.2025", "deadline": "10.09.2025", "done": false },
@@ -29,10 +29,10 @@ let userData = {
     ],
     "milestones": [
         { "title": "Finish Freelance Site", "category": "Coding", "due": "15.09.2025", "done": false },
-        { "title": "Workout 4x/week", "category": "Health", "due": "31.09.2025", "done": false },
+        { "title": "Workout 4x/week", "category": "Health", "due": "30.09.2025", "done": false },
         { "title": "Adventure w/Partner", "category": "Relationships", "due": "25.09.2025", "done": false },
         { "title": "Launch Project", "category": "Work", "due": "12.09.2025", "done": false },
-        { "title": "Save $500", "category": "Finances", "due": "31.09.2025", "done": false }
+        { "title": "Save $500", "category": "Finances", "due": "30.09.2025", "done": false }
     ]
 }
 
@@ -313,6 +313,88 @@ function openTaskEditModal(taskIndex) {
     });
 }
 
+// Creates a milestoneUpdateModal form for milestone editing
+function openMilestoneEditModal(milestoneIndex) {
+    let milestone = userData.milestones[milestoneIndex];
+    if (!milestone) return;
+
+    // Remove existing modal
+    const existingModal = document.getElementById('editMilestoneModal');
+    if (existingModal) existingModal.remove();
+
+    // Create edit modal
+    const editModalHTML = `
+        <div class="modal fade sharp-corners" id="editMilestoneModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content dark-mode">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Milestone</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-milestone-form">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="edit-milestone-title" value="${milestone.title}" required>
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select" id="edit-milestone-category" required>
+                                    ${userData.lifeGoalCategories.map(cat =>
+        `<option value="${cat.name}" ${milestone.category === cat.name ? 'selected' : ''}>${cat.name}</option>`
+    ).join('')}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label>Due Date:</label>
+                                <input type="date" class="form-control" id="edit-milestone-due" value="${convertToDateInput(milestone.due)}" required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="edit-milestone-done" ${milestone.done ? 'checked' : ''}>
+                                    <label class="form-check-label">Mark as completed</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="my-button-light-bg w-100">Update Milestone</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', editModalHTML);
+    const modal = new bootstrap.Modal(document.getElementById('editMilestoneModal'));
+    modal.show();
+
+    // Handle form submission
+    document.getElementById('edit-milestone-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Update milestone properties
+        userData.milestones[milestoneIndex] = {
+            title: document.getElementById('edit-milestone-title').value.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '),
+            category: document.getElementById('edit-milestone-category').value,
+            due: convertDateToUserFormat(document.getElementById('edit-milestone-due').value),
+            done: document.getElementById('edit-milestone-done').checked
+        };
+
+        if (document.activeElement && document.activeElement.blur) {
+            document.activeElement.blur();
+        }
+        modal.hide();
+
+        setTimeout(() => {
+            saveToLocalStorage();
+            updateMilestoneList();
+            showFeedbackModal('success', 'MILESTONE UPDATED!', 'Milestone updated successfully');
+        }, 0);
+    });
+
+    // Cleanup
+    document.getElementById('editMilestoneModal').addEventListener('hidden.bs.modal', function () {
+        this.remove();
+    });
+}
+
 // Creates a dynamic modal for delete confirmation
 function openDeleteConfirmModal(itemType, itemIndex, itemTitle, deleteCallback) {
     // Remove existing modal
@@ -362,6 +444,8 @@ function openDeleteConfirmModal(itemType, itemIndex, itemTitle, deleteCallback) 
         this.remove();
     });
 }
+
+
 
 
 // ==========================================
@@ -954,10 +1038,44 @@ function registerMilestoneFormListener() {
 }
 
 // Update and delete functions for milestones
-function initializeMilestoneUpdateAndDelete() {}
+function initializeMilestoneUpdateAndDelete() {
+    document.addEventListener('click', function (e) {
+        let milestoneIndex;
 
-// Updates milestone list in milestone displays
-function refreshMilestonesAfterCRUD() {}
+        // Update - Checkbox toggle
+        if (e.target.classList.contains('milestone-checkbox')) {
+            e.preventDefault();
+            milestoneIndex = parseInt(e.target.getAttribute('data-milestone-index'));
+            userData.milestones[milestoneIndex].done = !userData.milestones[milestoneIndex].done;
+            e.target.checked = userData.milestones[milestoneIndex].done;
+            saveToLocalStorage();
+            updateMilestoneList();
+            let status = userData.milestones[milestoneIndex].done ? 'completed' : 'marked as pending';
+            showFeedbackModal('success', 'MILESTONE UPDATED!', `Milestone ${status}`);
+        }
+
+        // Update - Edit milestone
+        if (e.target.closest('.edit-milestone-btn')) {
+            e.preventDefault();
+            milestoneIndex = parseInt(e.target.closest('.edit-milestone-btn').getAttribute('data-milestone-index'));
+            openMilestoneEditModal(milestoneIndex);
+        }
+
+        // Delete milestone
+        if (e.target.closest('.delete-milestone-btn')) {
+            e.preventDefault();
+            milestoneIndex = parseInt(e.target.closest('.delete-milestone-btn').getAttribute('data-milestone-index'));
+            let milestoneTitle = userData.milestones[milestoneIndex].title;
+                
+            openDeleteConfirmModal('Milestone', milestoneIndex, milestoneTitle, function() {
+                userData.milestones.splice(milestoneIndex, 1);
+                saveToLocalStorage();
+                updateMilestoneList();
+                showFeedbackModal('success', 'MILESTONE DELETED!', `${milestoneTitle} has been removed`);
+            });
+        }
+    })
+}
  
 
 // ==========================================
@@ -1021,6 +1139,7 @@ document.addEventListener('DOMContentLoaded', function () {
         registerTaskFormListener();
         initializeTaskUpdateAndDelete();
         registerMilestoneFormListener();
+        initializeMilestoneUpdateAndDelete();
     }
 
 })
