@@ -1081,23 +1081,62 @@ function initializeMilestoneUpdateAndDelete() {
 // *** PROFILE MANAGEMENT ***
 // ==========================================
 
+// Display personal information
 function profileDisplay() {
     if (!window.location.pathname.includes('profile.html')) return;
     
-    // Update motivation message
+    // Motivation message
     let motivationSection = document.querySelector('.profile-motivation');
     if (motivationSection && userData.info) {
         let username = userData.info.username || userData.info.firstname;
         motivationSection.innerHTML = `<h2>${username},</h2><h3>the conquerer!</h3>`;
     }
 
-    // Update the profile display spans 
+    // Profile personal info 
     document.getElementById('username-display').textContent = userData.info.username;
     document.getElementById('firstname-display').textContent = userData.info.firstname;
     document.getElementById('lastname-display').textContent = userData.info.lastname;
     document.getElementById('email-display').textContent = userData.info.email;
     document.getElementById('birthdate-display').textContent = userData.info.dateOfBirth;
 }
+
+// Display current life goal categories
+function displayLifeCategories() {
+    let categoriesContainer = document.getElementById('life-categories-container');
+    if (!categoriesContainer) return;
+    
+    categoriesContainer.innerHTML = '';
+    
+    // Display existing categories
+    userData.lifeGoalCategories.forEach((category, index) => {
+        let categoryCard = `
+            <div class="category-card text-center p-3" style="background-color: ${category.color}; min-width: 150px; border-radius: 10px; position: relative;">
+                <button class="btn btn-sm position-absolute top-0 end-0 m-1" style="background: rgba(0,0,0,0.3); border: none;" disabled>
+                    <i class="fa-solid fa-pencil text-white"></i>
+                </button>
+                <div class="text-white">
+                    <i class="fa-solid fa-${category.icon}" style="font-size: 2rem;"></i>
+                    <h5 class="mt-2">${category.name}</h5>
+                    <p class="small mb-0">${category.focus}</p>
+                </div>
+            </div>
+        `;
+        categoriesContainer.innerHTML += categoryCard;
+    });
+    
+    // Add "Add Category" placeholder card
+    let addCard = `
+        <div class="category-card text-center p-3 d-flex flex-column justify-content-center" style="background-color: #6c757d; min-width: 150px; border-radius: 10px; min-height: 150px;">
+            <div class="text-white">
+                <i class="fa-solid fa-plus" style="font-size: 2rem;"></i>
+                <p class="mt-2 mb-0">Add Category</p>
+            </div>
+        </div>
+    `;
+    categoriesContainer.innerHTML += addCard;
+}
+
+
 
 
 
@@ -1146,7 +1185,8 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (currentPage === 'milestones.html') {
         updateMilestoneList();
     } else if (currentPage === 'profile.html') {
-        updateProfileDisplay();
+        profileDisplay();
+        displayLifeCategories();
     }
 
     // Add logout functionality to all authenticated pages
