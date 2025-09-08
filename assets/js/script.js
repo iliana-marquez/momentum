@@ -1111,9 +1111,6 @@ function displayLifeCategories() {
     userData.lifeGoalCategories.forEach((category) => {
         let categoryCard = `
             <div class="category-card text-center p-3" style="background-color: ${category.color}; min-width: 150px; border-radius: 10px; position: relative;">
-                <button class="btn btn-sm position-absolute top-0 end-0 m-1" style="background: rgba(0,0,0,0.3); border: none;" disabled>
-                    <i class="fa-solid fa-pencil text-white"></i>
-                </button>
                 <div class="text-white">
                     <i class="fa-solid fa-${category.icon}" style="font-size: 2rem;"></i>
                     <h5 class="mt-2">${category.name}</h5>
