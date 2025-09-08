@@ -178,6 +178,10 @@ a {
     height: 35px;
 }
 
+#navbar i {
+    font-size: 2rem;
+}
+
 .navbar-toggler:focus, 
 .navbar-toggler:active {
     outline: none !important;
