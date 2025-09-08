@@ -693,76 +693,94 @@ function updateWeeklyPercentageDisplay() {
 
 // Update tasks list
 function updateTaskList() {
+
+    // Handle empty state like updateMilestoneList does
+    if (!userData.tasks || userData.tasks.length === 0) {
+        if (window.location.pathname.includes('dashboard.html')) {
+            document.getElementById("today-task-list").innerHTML = "";
+        }
+        if (window.location.pathname.includes('tasks.html')) {
+            document.getElementById('tasksAccordion').innerHTML = "<p class='text-muted'>No tasks</p>";
+        }
+        return;
+    }
+
     let today = new Date();
     let todayStr = formatDate(today);
-
     let { weekStart, weekEnd } = getCurrentWeekRange(today);
 
-
-    let categories = {
+    // Create categories sorting categories
+    let taskCategories = {
         today: { title: `Today [${todayStr}]`, tasks: [] },
         week: { title: "This Week", tasks: [] },
         after: { title: "After", tasks: [] },
+        overdue: { title: "Overdue", tasks: [] },
         done: { title: "Done", tasks: [] },
         expired: { title: "Expired", tasks: [] }
     };
 
-    // sort tasks into categories
-    userData.tasks.forEach(task => {
-        let taskDate = task.toDoDate;
-        let taskDateObj = parseDate(task.toDoDate);
+    // Task categorization logic
+    userData.tasks.forEach((task, index) => {
+        let taskDate = parseDate(task.toDoDate);
         let deadlineDateObj = task.deadline ? parseDate(task.deadline) : null;
+        let taskWithIndex = { ...task, arrayIndex: index };
 
-        if (taskDate === todayStr) categories.today.tasks.push(task);
-        if (taskDateObj >= weekStart && taskDateObj <= weekEnd) categories.week.tasks.push(task); // Now uses Date objects
-        if (taskDateObj > weekEnd) categories.after.tasks.push(task);
-        if (task.done) categories.done.tasks.push(task);
-        if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
+        if (task.done) {
+            taskCategories.done.tasks.push(taskWithIndex); 
+        } else if (deadlineDateObj && deadlineDateObj < today) {
+            taskCategories.expired.tasks.push(taskWithIndex); 
+        } else if (taskDate < today) {
+            taskCategories.overdue.tasks.push(taskWithIndex); 
+        } else if (task.toDoDate === todayStr) {
+            taskCategories.today.tasks.push(taskWithIndex);
+        } else if (taskDate >= weekStart && taskDate <= weekEnd) {
+            taskCategories.week.tasks.push(taskWithIndex);
+        } else if (taskDate > weekEnd) {
+            taskCategories.after.tasks.push(taskWithIndex);
+        }
     });
 
-    // updates task list in dashboard page
+
+    // Dashboard display
     if (window.location.pathname.includes('dashboard.html')) {
         let todayTaskList = document.getElementById("today-task-list");
         todayTaskList.innerHTML = "";
-        categories.today.tasks.forEach(task => {
-            let taskIndex = userData.tasks.findIndex(t => t === task);
+        taskCategories.today.tasks.forEach(task => {
             let categoryColor = getCategoryColor(task.category);
-            let todayTaskHTML = `
+            todayTaskList.innerHTML += `
                 <li class="task-row" style="color: ${categoryColor};">
-                    <input type="checkbox" class="task-checkbox" data-task-index="${taskIndex}" ${task.done ? "checked" : ""}>
+                    <input type="checkbox" class="task-checkbox" data-task-index="${task.arrayIndex}" ${task.done ? "checked" : ""}>
                     <span class="task-title">${task.title}</span>
                 </li>
             `;
-            todayTaskList.innerHTML += todayTaskHTML;
         });
     }
 
-    // updates task list in task displays
+    // Tasks page display
     if (window.location.pathname.includes('tasks.html')) {
         let taskContainer = document.getElementById('tasksAccordion');
-        taskContainer.innerHTML = ""; 
+        taskContainer.innerHTML = "";
 
-        Object.keys(categories).forEach((key, index) => {
-            let section = categories[key];
+        Object.keys(taskCategories).forEach((key, index) => {
+            let section = taskCategories[key];
             let tasksHTML = section.tasks.map(task => {
-                let taskIndex = userData.tasks.findIndex(t => t === task);
                 let categoryColor = getCategoryColor(task.category);
                 return `
                     <div class="task-row justify-content-between">
                         <div>
-                            <input type="checkbox" class="task-checkbox" data-task-index="${taskIndex}" ${task.done ? "checked" : ""}>
+                            <input type="checkbox" class="task-checkbox" data-task-index="${task.arrayIndex}" ${task.done ? "checked" : ""}>
                             <span style="color: ${categoryColor};" class="task-title">${task.title}</span>
                         </div>
                         <div class="task-dates-actions text-end">
                             <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
-                            <button class="edit-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-pencil"></i></button>
-                            <button class="delete-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-trash-can"></i></button>
+                            <button class="edit-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${task.arrayIndex}"><i class="fa-solid fa-pencil"></i></button>
+                            <button class="delete-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${task.arrayIndex}"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
-                    `;
+                `;
             }).join("");
 
-            let accordionHTML = `
+            taskContainer.innerHTML += `
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button dark-mode" type="button" data-bs-toggle="collapse" 
@@ -778,8 +796,7 @@ function updateTaskList() {
                     </div>
                 </div>
             `;
-            taskContainer.innerHTML += accordionHTML;
-        })
+        });
     }
 }
 
@@ -866,7 +883,7 @@ function initializeTaskUpdateAndDelete() {
             openDeleteConfirmModal('Task', taskIndex, taskTitle, function() {
                 userData.tasks.splice(taskIndex, 1);
                 saveToLocalStorage();
-                refreshTasksAfterCRUD();
+                updateTaskList();
                 showFeedbackModal('success', 'TASK DELETED!', `${taskTitle} has been removed`);
             });
         }
