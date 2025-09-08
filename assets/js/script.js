@@ -368,6 +368,18 @@ function openDeleteConfirmModal(itemType, itemIndex, itemTitle, deleteCallback) 
 // *** DASHBOARD FUNCTIONS ***
 // ==========================================
 
+// Welcome message for dashboard
+function updateWelcomeMessage() {
+    let welcomeContainer = document.querySelector('.welcome-message');
+    if (!welcomeContainer || !userData) return;
+    
+    let username = userData.info.firstname;
+    
+    welcomeContainer.innerHTML = `
+        <h3>Hey ${username}, your edge is sharp today!</h3>
+    `;
+}
+
 // *** PROGRESS LOGIC *** //
 // Prepare and print percentages of each category tasks to update the life sync chart
 function updateChart() {
@@ -894,6 +906,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Run page-specific initialization in the correct order
     if (currentPage === 'dashboard.html') {
         // Functions needed on the dashboard
+        updateWelcomeMessage();
         updateDateInfo();
         updateChart();
         updateWeeklyPercentageDisplay();
