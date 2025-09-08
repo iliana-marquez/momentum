@@ -837,8 +837,9 @@ function updateMilestoneList() {
         allMilestones.forEach(milestone => {
             let category = userData.lifeGoalCategories.find(cat => cat.name === milestone.category);
             let categoryIcon = category ? category.icon : 'circle';
+            let categoryColor = category ? category.color : '';
             let nextDueMilestoneHTML = `
-                <div class="due-milestone">
+                <div style="background-color: ${categoryColor};" class="due-milestone">
                     <i class="fs-1 fa-solid fa-${categoryIcon}"></i>
                     <p class="small">${milestone.title}</p>
                 </div>            

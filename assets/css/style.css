@@ -296,6 +296,20 @@ a {
     color: var(--m-dark-bg-highlight);
     width: 326px;
     border-radius: 10px;
+    padding-bottom: 1rem;
+}
+
+.due-milestone {
+    border-radius: 50%;
+    color: #1d0221;
+    padding: 1rem;
+    height: 131px;
+    width: 131px;
+}
+
+.due-milestone p.small {
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 /* TASKS PAGE */
