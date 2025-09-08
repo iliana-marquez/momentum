@@ -1078,6 +1078,120 @@ function initializeMilestoneUpdateAndDelete() {
  
 
 // ==========================================
+// *** PROFILE MANAGEMENT ***
+// ==========================================
+
+// Display personal information
+function profileDisplay() {
+    if (!window.location.pathname.includes('profile.html')) return;
+    
+    // Motivation message
+    let motivationSection = document.querySelector('.profile-motivation');
+    if (motivationSection && userData.info) {
+        let username = userData.info.username || userData.info.firstname;
+        motivationSection.innerHTML = `<h2>${username},</h2><h3>the conquerer!</h3>`;
+    }
+
+    // Profile personal info 
+    document.getElementById('username-display').textContent = userData.info.username;
+    document.getElementById('firstname-display').textContent = userData.info.firstname;
+    document.getElementById('lastname-display').textContent = userData.info.lastname;
+    document.getElementById('email-display').textContent = userData.info.email;
+    document.getElementById('birthdate-display').textContent = userData.info.dateOfBirth;
+}
+
+// Display current life goal categories
+function displayLifeCategories() {
+    let categoriesContainer = document.getElementById('life-categories-container');
+    if (!categoriesContainer) return;
+    
+    categoriesContainer.innerHTML = '';
+    
+    // Display existing categories
+    userData.lifeGoalCategories.forEach((category) => {
+        let categoryCard = `
+            <div class="category-card text-center p-3" style="background-color: ${category.color}; min-width: 150px; border-radius: 10px; position: relative;">
+                <div class="text-white">
+                    <i class="fa-solid fa-${category.icon}" style="font-size: 2rem;"></i>
+                    <h5 class="mt-2">${category.name}</h5>
+                    <p class="small mb-0">${category.focus}</p>
+                </div>
+            </div>
+        `;
+        categoriesContainer.innerHTML += categoryCard;
+    });
+}
+
+// Activates the button event listener for profile info editing
+function registerProfileEventListeners() {
+    document.addEventListener('click', function(e) {
+        // Edit profile button
+        if (e.target.closest('.edit-profile-button')) {
+            e.preventDefault();
+            openProfileEditModal();
+        }
+    });
+}
+
+// Update profile information
+function openProfileEditModal() {
+    // Remove existing modal
+    const existingModal = document.getElementById('editProfileModal');
+    if (existingModal) existingModal.remove();
+
+    // Create edit modal
+    const editModalHTML = `
+        <div class="modal fade sharp-corners" id="editProfileModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content dark-mode">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Profile</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-profile-form">
+                            <div class="mb-3">
+                                <label>Username:</label>
+                                <input type="text" class="form-control" id="edit-username" value="${userData.info.username}" required>
+                            </div>
+                            <button type="submit" class="my-button-light-bg w-100">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', editModalHTML);
+    const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+    modal.show();
+
+    // Handle form submission
+    document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let newUsername = document.getElementById('edit-username').value.trim();
+        if (newUsername) {
+            userData.info.username = newUsername;
+            saveToLocalStorage();
+            profileDisplay();
+            
+            if (document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
+            }
+            modal.hide();
+            showFeedbackModal('success', 'PROFILE UPDATED!', 'Username updated successfully');
+        }
+    });
+
+    // Cleanup
+    document.getElementById('editProfileModal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
+}
+
+
+// ==========================================
 // *** PAGE INITIALIZATION ***
 // ==========================================
 
@@ -1121,6 +1235,10 @@ document.addEventListener('DOMContentLoaded', function () {
         updateTaskList();
     } else if (currentPage === 'milestones.html') {
         updateMilestoneList();
+    } else if (currentPage === 'profile.html') {
+        profileDisplay();
+        displayLifeCategories();
+        registerProfileEventListeners();
     }
 
     // Add logout functionality to all authenticated pages
