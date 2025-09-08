@@ -60,7 +60,7 @@ function loadFromLocalStorage() {
 }
 
 // *** LOGIN LOGIC *** //
-// * get data from login form, compares and validate
+// * Get data from login form, compares and validate
 if (window.location.pathname.includes('login.html')) {
     document.querySelector('#login-form').addEventListener('submit', function login(e) {
         e.preventDefault();
@@ -368,7 +368,8 @@ function openDeleteConfirmModal(itemType, itemIndex, itemTitle, deleteCallback) 
 // *** DASHBOARD FUNCTIONS ***
 // ==========================================
 
-// * Prepare and print percentages of each category tasks to update the life sync chart
+// *** PROGRESS LOGIC *** //
+// Prepare and print percentages of each category tasks to update the life sync chart
 function updateChart() {
     if (!userData) {
         console.log("User data not loaded yet.");
@@ -465,7 +466,7 @@ function updateChart() {
     });
 }
 
-// * Function to print date and reuse for dynamic tasks
+// Print date and reuse for dynamic tasks
 function updateDateInfo() {
     let today = new Date();
 
@@ -498,8 +499,7 @@ function updateDateInfo() {
     }
 }
 
-// *** PROGRESS BARS LOGIC *** //
-// * Function to update 
+// Update progress bars
 function updateProgressBars(weekStart, weekEnd) {
     let today = formatDate(new Date());
 
@@ -544,7 +544,7 @@ function updateProgressBars(weekStart, weekEnd) {
 
 }
 
-// updateWeeklyPercentageDisplay()
+// Update for icons and percentages on week-box
 function updateWeeklyPercentageDisplay() {
     let weeklyDisplay = document.getElementById('weekly-percentage-display');
     if (!weeklyDisplay || !userData) return;
@@ -595,6 +595,98 @@ function updateWeeklyPercentageDisplay() {
 // ==========================================
 // *** TASK MANAGEMENT ***
 // ==========================================
+
+// Update tasks list
+function updateTaskList() {
+    let today = new Date();
+    let todayStr = formatDate(today);
+
+    let { weekStart, weekEnd } = getCurrentWeekRange(today);
+
+
+    let categories = {
+        today: { title: `Today [${todayStr}]`, tasks: [] },
+        week: { title: "This Week", tasks: [] },
+        after: { title: "After", tasks: [] },
+        done: { title: "Done", tasks: [] },
+        expired: { title: "Expired", tasks: [] }
+    };
+
+    // sort tasks into categories
+    userData.tasks.forEach(task => {
+        let taskDate = task.toDoDate;
+        let taskDateObj = parseDate(task.toDoDate);
+        let deadlineDateObj = task.deadline ? parseDate(task.deadline) : null;
+
+        if (taskDate === todayStr) categories.today.tasks.push(task);
+        if (taskDateObj >= weekStart && taskDateObj <= weekEnd) categories.week.tasks.push(task); // Now uses Date objects
+        if (taskDateObj > weekEnd) categories.after.tasks.push(task);
+        if (task.done) categories.done.tasks.push(task);
+        if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
+    });
+
+    // updates task list in dashboard page
+    if (window.location.pathname.includes('dashboard.html')) {
+        let todayTaskList = document.getElementById("today-task-list");
+        todayTaskList.innerHTML = "";
+        categories.today.tasks.forEach(task => {
+            let taskIndex = userData.tasks.findIndex(t => t === task);
+            let categoryColor = getCategoryColor(task.category);
+            let todayTaskHTML = `
+                <li class="task-row" style="color: ${categoryColor};">
+                    <input type="checkbox" class="task-checkbox" data-task-index="${taskIndex}" ${task.done ? "checked" : ""}>
+                    <span class="task-title">${task.title}</span>
+                </li>
+            `;
+            todayTaskList.innerHTML += todayTaskHTML;
+        });
+    }
+
+    // updates task list in task displays
+    if (window.location.pathname.includes('tasks.html')) {
+        let taskContainer = document.getElementById('tasksAccordion');
+        taskContainer.innerHTML = ""; // Clear previous content
+
+        Object.keys(categories).forEach((key, index) => {
+            let section = categories[key];
+            let tasksHTML = section.tasks.map(task => {
+                let taskIndex = userData.tasks.findIndex(t => t === task);
+                let categoryColor = getCategoryColor(task.category);
+                return `
+                    <div class="task-row justify-content-between">
+                        <div>
+                            <input type="checkbox" class="task-checkbox" data-task-index="${taskIndex}" ${task.done ? "checked" : ""}>
+                            <span style="color: ${categoryColor};" class="task-title">${task.title}</span>
+                        </div>
+                        <div class="task-dates-actions text-end">
+                            <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
+                            <button class="edit-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-pencil"></i></button>
+                            <button class="delete-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    `;
+            }).join("");
+
+            let accordionHTML = `
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button dark-mode" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#taskSection${index}" aria-expanded="${index === 0 ? 'true' : 'false'}" 
+                            aria-controls="taskSection${index}">
+                            ${section.title}
+                        </button>
+                    </h2>
+                    <div id="taskSection${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}">
+                        <div class="accordion-body">
+                            ${tasksHTML || "<p class='text-muted'>No tasks</p>"}
+                        </div>
+                    </div>
+                </div>
+            `;
+            taskContainer.innerHTML += accordionHTML;
+        })
+    }
+}
 
 // Add a new task
 function registerTaskFormListener() {
@@ -686,100 +778,6 @@ function initializeTaskUpdateAndDelete() {
     })
 }
 
-
-
-// Update tasks list afer submitting new task
-function updateTaskList() {
-    let today = new Date();
-    let todayStr = formatDate(today);
-
-    let { weekStart, weekEnd } = getCurrentWeekRange(today);
-
-
-    let categories = {
-        today: { title: `Today [${todayStr}]`, tasks: [] },
-        week: { title: "This Week", tasks: [] },
-        after: { title: "After", tasks: [] },
-        done: { title: "Done", tasks: [] },
-        expired: { title: "Expired", tasks: [] }
-    };
-
-    // sort tasks into categories
-    userData.tasks.forEach(task => {
-        let taskDate = task.toDoDate;
-        let taskDateObj = parseDate(task.toDoDate);
-        let deadlineDateObj = task.deadline ? parseDate(task.deadline) : null;
-
-        if (taskDate === todayStr) categories.today.tasks.push(task);
-        if (taskDateObj >= weekStart && taskDateObj <= weekEnd) categories.week.tasks.push(task); // Now uses Date objects
-        if (taskDateObj > weekEnd) categories.after.tasks.push(task);
-        if (task.done) categories.done.tasks.push(task);
-        if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
-    });
-
-    // updates task list in dashboard page
-    if (window.location.pathname.includes('dashboard.html')) {
-        let todayTaskList = document.getElementById("today-task-list");
-        todayTaskList.innerHTML = "";
-        categories.today.tasks.forEach(task => {
-            let taskIndex = userData.tasks.findIndex(t => t === task);
-            let categoryColor = getCategoryColor(task.category);
-            let todayTaskHTML = `
-                <li class="task-row" style="color: ${categoryColor};">
-                    <input type="checkbox" class="task-checkbox" data-task-index="${taskIndex}" ${task.done ? "checked" : ""}>
-                    <span class="task-title">${task.title}</span>
-                </li>
-            `;
-            todayTaskList.innerHTML += todayTaskHTML;
-        });
-    }
-
-    // updates task list in tasks page
-    if (window.location.pathname.includes('tasks.html')) {
-        let taskContainer = document.getElementById('tasksAccordion');
-        taskContainer.innerHTML = ""; // Clear previous content
-
-        Object.keys(categories).forEach((key, index) => {
-            let section = categories[key];
-            let tasksHTML = section.tasks.map(task => {
-                let taskIndex = userData.tasks.findIndex(t => t === task);
-                let categoryColor = getCategoryColor(task.category);
-                return `
-                    <div class="task-row justify-content-between">
-                        <div>
-                            <input type="checkbox" class="task-checkbox" data-task-index="${taskIndex}" ${task.done ? "checked" : ""}>
-                            <span style="color: ${categoryColor};" class="task-title">${task.title}</span>
-                        </div>
-                        <div class="task-dates-actions text-end">
-                            <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
-                            <button class="edit-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-pencil"></i></button>
-                            <button class="delete-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-                    </div>
-                    `;
-            }).join("");
-
-            let accordionHTML = `
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button dark-mode" type="button" data-bs-toggle="collapse" 
-                            data-bs-target="#taskSection${index}" aria-expanded="${index === 0 ? 'true' : 'false'}" 
-                            aria-controls="taskSection${index}">
-                            ${section.title}
-                        </button>
-                    </h2>
-                    <div id="taskSection${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}">
-                        <div class="accordion-body">
-                            ${tasksHTML || "<p class='text-muted'>No tasks</p>"}
-                        </div>
-                    </div>
-                </div>
-            `;
-            taskContainer.innerHTML += accordionHTML;
-        })
-    }
-}
-
 // Refresh tasks
 function refreshTasksAfterCRUD() {
     updateTaskList();
@@ -793,6 +791,24 @@ function refreshTasksAfterCRUD() {
         updateWeeklyPercentageDisplay(); // Update week box
     }
 }
+
+
+// ==========================================
+// *** MILESTONE MANAGEMENT ***
+// ==========================================
+
+// Update milestones 
+function updateMilestoneList() {}
+
+// Add a new milestone
+function registerMilestoneFormListener() {}
+
+// Update and delete functions for milestones
+function initializeMilestoneUpdateAndDelete() {}
+
+// Updates milestone list in milestone displays
+function refreshMilestonesAfterCRUD() {}
+
 
 // ==========================================
 // *** PAGE INITIALIZATION ***
