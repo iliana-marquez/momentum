@@ -446,8 +446,6 @@ function openDeleteConfirmModal(itemType, itemIndex, itemTitle, deleteCallback) 
 }
 
 
-
-
 // ==========================================
 // *** DASHBOARD FUNCTIONS ***
 // ==========================================
@@ -688,6 +686,7 @@ function updateWeeklyPercentageDisplay() {
     weeklyDisplay.innerHTML = displayHTML;
 }
 
+
 // ==========================================
 // *** TASK MANAGEMENT ***
 // ==========================================
@@ -874,7 +873,7 @@ function initializeTaskUpdateAndDelete() {
     })
 }
 
-// Refresh tasks
+// Refresh tasks for progress and percentage calculations
 function refreshTasksAfterCRUD() {
     updateTaskList();
     if (window.location.pathname.includes('dashboard.html')) {
