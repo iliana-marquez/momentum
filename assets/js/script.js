@@ -427,6 +427,42 @@ function updateChart() {
 
     // Apply to the pie chart
     document.querySelector(".circle").style.background = gradientString;
+
+
+    // Clear existing icons
+    document.querySelectorAll('.pie-icon').forEach(el => el.remove());
+
+    // Add icon to center of each slice
+    let currentAngle = 0;
+    userData.lifeGoalCategories.forEach((category) => {
+        let categoryCount = totalCategoryTasks[category.name];
+        let categoryPercentage = (categoryCount / totalTasks) * 100;
+        let sliceAngle = (categoryPercentage / 100) * 360;
+
+        // Find middle of this slice
+        let middleAngle = currentAngle + (sliceAngle / 2);
+
+        // Convert to position (adjust distance from center near to the border)
+        let radians = (middleAngle - 90) * (Math.PI / 180);
+        let x = Math.cos(radians) * 120;
+        let y = Math.sin(radians) * 120;
+
+        // Create icon element
+        let icon = document.createElement('i');
+        icon.className = `fa-solid fa-${category.icon} pie-icon`;
+        icon.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(calc(-50% + ${x}px), calc(-50% + ${y}px));
+            font-size: 2rem;
+            color: #1d0221;
+            pointer-events: none;
+        `;
+
+        document.querySelector('.pie-chart').appendChild(icon);
+        currentAngle += sliceAngle;
+    });
 }
 
 // * Function to print date and reuse for dynamic tasks
