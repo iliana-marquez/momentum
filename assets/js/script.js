@@ -458,7 +458,7 @@ function updateDateInfo() {
         document.getElementById('today-date').innerHTML = `Today, ${todayFormat}`;
         document.getElementById('actual-week').innerHTML = `Week ${weekNumber}, ${weekRange}`;
         //calls the function here to recycle date arguments 
-        updateProgressBars(todayFormat, weekStart, weekEnd);
+        updateProgressBars(weekStart, weekEnd);
     }
 }
 
@@ -751,15 +751,7 @@ function refreshTasksAfterCRUD() {
         let today = new Date();
         let { weekStart, weekEnd } = getCurrentWeekRange(today);
 
-        // Create the abbreviated format that updateProgressBars expects
-        let weekdayOptions = { weekday: 'short' };
-        let dayAbbreviation = today.toLocaleDateString('en-US', weekdayOptions);
-        let day = String(today.getDate()).padStart(2, '0');
-        let month = String(today.getMonth() + 1).padStart(2, '0');
-        let todayFormatForProgressBars = `${dayAbbreviation}-${day}.${month}.`;
-
-
-        updateProgressBars(todayFormatForProgressBars, weekStart, weekEnd); // Update progress bars
+        updateProgressBars(weekStart, weekEnd); // Update progress bars
         updateWeeklyPercentageDisplay(); // Update week box
     }
 }
