@@ -84,6 +84,8 @@
 
     <!-- Dashboard Section -->
     <section id="dashboard" class="container-fluid m-light-background">
+      <div class="welcome-message text-center">
+      </div>
       <div class="row justify-content-center">
         <div class="dashboard-grid">
           <div class="pie-chart">
@@ -113,23 +115,7 @@
         <div class="row milestones-box text-center m-dark-background"> 
           <!-- Section to be printed dynamically from userData.milestones -->
             <p class="m-0 pt-2 pb-2">Milestones next due</p>
-            <div class="d-flex flex-row flex-wrap flex-md-nowrap justify-content-center align-items-center gap-2 pb-1">
-              <div class="due-milestone">
-                  <i class="fs-1 fa-solid fa-briefcase"></i>
-                  <p class="small">Confirm Order</p>
-              </div>
-              <div class="due-milestone">
-                  <i class="fs-1 fa-solid fa-laptop-code "></i>
-                  <p class="small">Job Application</p>
-              </div>
-              <div class="due-milestone">
-                  <i class="fs-1 fa-solid fa-laptop-code"></i>
-                  <p class="small">Hacathon</p>
-              </div>
-              <div class="due-milestone">
-                  <i class="fs-1 fa-solid fa-heart-pulse"></i>
-                  <p class="small">Workout 4x/week</p>
-              </div>
+            <div id="next-due-milestones" class="d-flex flex-row flex-wrap flex-md-nowrap justify-content-center align-items-center gap-2 pb-1">
             </div>
         </div>
 
