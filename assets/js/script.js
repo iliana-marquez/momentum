@@ -1136,8 +1136,73 @@ function displayLifeCategories() {
     categoriesContainer.innerHTML += addCard;
 }
 
+// Activates the button event listener for profile info editing
+function registerProfileEventListeners() {
+    document.addEventListener('click', function(e) {
+        // Edit profile button
+        if (e.target.closest('.edit-profile-button')) {
+            e.preventDefault();
+            openProfileEditModal();
+        }
+    });
+}
 
+// Update profile information
+function openProfileEditModal() {
+    // Remove existing modal
+    const existingModal = document.getElementById('editProfileModal');
+    if (existingModal) existingModal.remove();
 
+    // Create edit modal
+    const editModalHTML = `
+        <div class="modal fade sharp-corners" id="editProfileModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content dark-mode">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Profile</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-profile-form">
+                            <div class="mb-3">
+                                <label>Username:</label>
+                                <input type="text" class="form-control" id="edit-username" value="${userData.info.username}" required>
+                            </div>
+                            <button type="submit" class="my-button-light-bg w-100">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', editModalHTML);
+    const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+    modal.show();
+
+    // Handle form submission
+    document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let newUsername = document.getElementById('edit-username').value.trim();
+        if (newUsername) {
+            userData.info.username = newUsername;
+            saveToLocalStorage();
+            profileDisplay();
+            
+            if (document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
+            }
+            modal.hide();
+            showFeedbackModal('success', 'PROFILE UPDATED!', 'Username updated successfully');
+        }
+    });
+
+    // Cleanup
+    document.getElementById('editProfileModal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
+}
 
 
 // ==========================================
@@ -1187,6 +1252,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (currentPage === 'profile.html') {
         profileDisplay();
         displayLifeCategories();
+        registerProfileEventListeners();
     }
 
     // Add logout functionality to all authenticated pages
