@@ -196,10 +196,15 @@ function showFeedbackModal(type, title, message = '') {
     const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
     modal.show();
     
-    // Clean up after modal is hidden
-    document.getElementById('feedbackModal').addEventListener('hidden.bs.modal', function() {
-        this.remove();
+    // Also clear focus when modal is hiding (before hidden)
+    document.getElementById('feedbackModal').addEventListener('hide.bs.modal', function() {
+        if (document.activeElement && document.activeElement.blur) {
+            document.activeElement.blur();
+        }
+        document.body.focus();
     });
+
+
 }
 
 
