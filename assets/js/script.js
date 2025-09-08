@@ -456,30 +456,31 @@ function registerTaskFormListener() {
     }
 }
 
-// Checkbox togle for task completition
-function initializeTaskCheckboxes() {
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('task-checkbox')) {
-            e.preventDefault();
+// Update and delete functions for tasks
+function initializeTaskUpdateAndDelete() {
+   document.addEventListener('click', function(e) {
+       let taskIndex;
+       
+       // Update - Checkbox toggle
+       if (e.target.classList.contains('task-checkbox')) {
+           e.preventDefault();
+           taskIndex = parseInt(e.target.getAttribute('data-task-index'));
+           userData.tasks[taskIndex].done = !userData.tasks[taskIndex].done;
+           e.target.checked = userData.tasks[taskIndex].done;
+           saveToLocalStorage();
+           refreshTasksAfterCRUD();
+           let status = userData.tasks[taskIndex].done ? 'completed' : 'marked as pending';
+           showFeedbackModal('success', 'TASK UPDATED!', `Task ${status}`);
+       }
+       
+       // Update - Edit task
 
-            let checkbox = e.target;
-            let taskIndex = parseInt(checkbox.getAttribute('data-task-index'));
+       
+       // Delete task
 
-            // use index to find the exact task
-            let task = userData.tasks[taskIndex];
-            if (task) {
-                task.done = !task.done;
-                checkbox.checked = task.done;
-
-                saveToLocalStorage();
-                refreshTasksAfterCRUD();
-
-                let status = task.done ? 'completed' : 'marked as pending';
-                showFeedbackModal('success', 'TASK UPDATED!', `${task.title} ${status}`);
-            }
-        }
-    })
+   })
 }
+
 
 
 // Update tasks list afer submitting new task
@@ -651,7 +652,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // NEW TASK FORM EVENT LISTENER ONCE PER PAGE LOAD!
     if (currentPage === 'dashboard.html' || currentPage === 'tasks.html') {
         registerTaskFormListener();
-        initializeTaskCheckboxes(); 
+        initializeTaskUpdateAndDelete();
     }
 
 })
