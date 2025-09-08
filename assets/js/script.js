@@ -657,7 +657,7 @@ function updateTaskList() {
     // updates task list in task displays
     if (window.location.pathname.includes('tasks.html')) {
         let taskContainer = document.getElementById('tasksAccordion');
-        taskContainer.innerHTML = ""; // Clear previous content
+        taskContainer.innerHTML = ""; 
 
         Object.keys(categories).forEach((key, index) => {
             let section = categories[key];
@@ -838,7 +838,7 @@ function updateMilestoneList() {
     // Update dashboard milestones section
     if (window.location.pathname.includes('dashboard.html')) {
         let nextDueMilestones = document.getElementById("next-due-milestones");
-        nextDueMilestones. innerHTML = "";
+        nextDueMilestones.innerHTML = "";
         // Get next 4-5 upcoming milestones sorted by due date across all categories
         let allMilestones = userData.milestones
             .filter(m => !m.done)
@@ -859,8 +859,60 @@ function updateMilestoneList() {
             nextDueMilestones.innerHTML += nextDueMilestoneHTML;
         });
     }
-}
 
+    // Update milestones page
+    if (window.location.pathname.includes('milestones.html')) { 
+        let milestonesContainer = document.getElementById('milestonesAccordion');
+        milestonesContainer.innerHTML = "";
+
+        // Loop through each category
+        Object.keys(categories).forEach((categoryName, index) => {
+            let category = categories[categoryName];
+
+            // Generate milestones HTML for this category
+            let milestonesHTML = category.milestones.map(milestone => {
+                let milestoneIndex = userData.milestones.findIndex(m => m === milestone);
+                return `
+                    <div class="task-row justify-content-between">
+                        <div>
+                            <input type="checkbox" class="task-checkbox" milestone="${milestoneIndex}" ${milestone.done ? "checked" : ""}>
+                            <span class="task-title" style="color: ${category.color};">${milestone.title}</span>
+                        </div>
+                        <div class="task-dates-actions text-end">
+                            <span class="task-dates">Due: ${milestone.due}</span>
+                            <button class="edit-milestone-btn custom-button my-button-light-bg my-button-icon" data-milestone-index="${milestoneIndex}">
+                                <i class="fa-solid fa-pencil"></i>
+                            </button>
+                            <button class="delete-milestone-btn custom-button my-button-light-bg my-button-icon" data-milestone-index="${milestoneIndex}">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            // Create accordion section for this category
+            let accordionHTML = `
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button dark-mode" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#milestone${index}" aria-expanded="${index === 0 ? 'true' : 'false'}" 
+                            aria-controls="milestone${index}" style="color: ${category.color};">
+                            <i class="fa-solid fa-${category.icon}" style="margin-right: 10px;"></i>
+                            ${category.title}
+                        </button>
+                    </h2>
+                    <div id="milestone${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}">
+                        <div class="accordion-body">
+                            ${milestonesHTML || "<p class='text-muted'>No milestones</p>"}
+                        </div>
+                    </div>
+                </div>
+            `;
+            milestonesContainer.innerHTML += accordionHTML;
+        });
+    }
+}
 
 // Add a new milestone
 function registerMilestoneFormListener() {}
@@ -870,7 +922,7 @@ function initializeMilestoneUpdateAndDelete() {}
 
 // Updates milestone list in milestone displays
 function refreshMilestonesAfterCRUD() {}
-
+ 
 
 // ==========================================
 // *** PAGE INITIALIZATION ***
@@ -914,6 +966,8 @@ document.addEventListener('DOMContentLoaded', function () {
         updateMilestoneList()
     } else if (currentPage === 'tasks.html') {
         updateTaskList();
+    } else if (currentPage === 'milestones.html') {
+        updateMilestoneList();
     }
 
     // Add logout functionality to all authenticated pages
