@@ -42,7 +42,6 @@ let userData = {
 function saveToLocalStorage() {
     localStorage.setItem('momentumUserData', JSON.stringify(userData));
     localStorage.setItem('momentumLoggedIn', 'true');
-    console.log('data saved to localStorage')
 }
 
 function loadFromLocalStorage() {
@@ -51,10 +50,8 @@ function loadFromLocalStorage() {
 
     if (savedData && isLoggedIn === 'true') {
         userData = JSON.parse(savedData);
-        console.log('data loaded from localStorage');
         return true;
     } else {
-        console.log('using default data for new user')
         return false;
     }
 }
@@ -68,16 +65,13 @@ if (window.location.pathname.includes('login.html')) {
         let password = document.querySelector('#password').value;
 
         if (!userData) {
-            console.log('Data not loaded—try again');
             return;
         }
         if (userData.info.email === email && userData.info.password === password) {
-            console.log('Login success:', userData.info.username);
             // add the save to local storage function for data-persistance after login
             saveToLocalStorage();
             window.location.href = 'dashboard.html';
         } else {
-            console.log('Login failed');
             document.getElementById('errorMessage').innerHTML = `Invalid username or password. Please try again`;
         };
     });
@@ -466,7 +460,6 @@ function updateWelcomeMessage() {
 // Prepare and print percentages of each category tasks to update the life sync chart
 function updateChart() {
     if (!userData) {
-        console.log("User data not loaded yet.");
         return;
     }
 
@@ -632,10 +625,6 @@ function updateProgressBars(weekStart, weekEnd) {
         weekProgress.max = weekTotal;
         weekProgress.value = weekDone;
     }
-
-    console.log(`Today's Progress: ${todayDone}/${todayTotal}`);
-    console.log(`Week's Progress: ${weekDone}/${weekTotal}`);
-
 }
 
 // Update for icons and percentages on week-box
@@ -835,9 +824,7 @@ function registerTaskFormListener() {
                 if (!userData.tasks) {
                     userData.tasks = [];
                 }
-                console.log("Before Push:", userData.tasks);
                 userData.tasks.push(newTask);
-                console.log("After Push:", userData.tasks);
                 saveToLocalStorage();
                 refreshTasksAfterCRUD();
                 // gives feed back in tasks page for tasks that arent displyed by default (within the dashboard display or collapsed lists)
@@ -1215,29 +1202,24 @@ function openProfileEditModal() {
 document.addEventListener('DOMContentLoaded', function () {
     // Determine which page is loaded
     const currentPage = window.location.pathname.split('/').pop();
-    console.log('initializing page', currentPage)
     // Load saved data and check for authenticatio
     if (currentPage === 'login.html') {
         // Special case: login page should redirect if already logged in
         const isAlreadyLoggedIn = loadFromLocalStorage();
         if (isAlreadyLoggedIn) {
-            console.log('User already logged in, redirecting to dashboard');
             window.location.href = 'dashboard.html';
             return;
         }
     } else if (currentPage === 'index.html') {
         // Landing page: load data for potential navigation benefits
         loadFromLocalStorage();
-        console.log('Data loaded on landing page for navigation');
     } else {
         // Protected pages: load data and check athentication
         const isLoggedIn = loadFromLocalStorage();
         if (!isLoggedIn) {
-            console.log('Not authenticaded, redirecting to login');
             window.location.href = 'login.html';
             return;
         }
-        console.log('User data loaded for authenticated page:', currentPage);
     }
     // Run page-specific initialization in the correct order
     if (currentPage === 'dashboard.html') {
