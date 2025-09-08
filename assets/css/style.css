@@ -288,6 +288,10 @@ a {
     grid-row: 3;      
 }
 
+.dashboard-grid > .week-box i {
+    font-size: 2rem;
+}
+
 .milestones-box {
     color: var(--m-dark-bg-highlight);
     width: 326px;
@@ -309,31 +313,6 @@ a {
 .task-title {
     flex: 1;
     font-weight: bold;
-}
-
-.task-title.coding {
-    color: var(--coding);
-}
-
-.task-title.health {
-    color: var(--health);
-}
-
-.task-title.relationships {
-    color: var(--relationships);
-}
-
-.task-title.work {
-    color: var(--work);
-}
-
-.task-title.finances {
-    color: var(--finances);
-}
-
-.task-dates {
-    font-size: 0.9rem;
-    color: var(--light);
 }
 
 /* PROFILE PAGE */
@@ -434,6 +413,10 @@ footer img {
         background-color: var(--m-dark);
         border-radius: 10px;
         padding: 20px;
+    }
+
+    .dashboard-grid > .week-box i {
+    font-size: 3rem;
     }
 
     .milestones-box {

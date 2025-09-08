@@ -542,11 +542,13 @@ function updateWeeklyPercentageDisplay() {
     let displayHTML = '';
     userData.lifeGoalCategories.forEach(category => {
         let categoryCount = weekCategoryTasks[category.name];
+        let categoryIcon = category.icon;
         let percentage = totalWeekTasks > 0 ? Math.round((categoryCount / totalWeekTasks) * 100) : 0;
 
         displayHTML += `
             <li title="${category.name}: ${categoryCount} tasks (${percentage}%)">
-                <span style="color: ${category.color};">●</span> ${percentage}%
+                <i style="color: ${category.color};" class="fa-solid fa-${categoryIcon}"></i><br>
+                <span>${percentage}%</span>
             </li>
         `;
     });
