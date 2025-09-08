@@ -1078,6 +1078,30 @@ function initializeMilestoneUpdateAndDelete() {
  
 
 // ==========================================
+// *** PROFILE MANAGEMENT ***
+// ==========================================
+
+function profileDisplay() {
+    if (!window.location.pathname.includes('profile.html')) return;
+    
+    // Update motivation message
+    let motivationSection = document.querySelector('.profile-motivation');
+    if (motivationSection && userData.info) {
+        let username = userData.info.username || userData.info.firstname;
+        motivationSection.innerHTML = `<h2>${username},</h2><h3>the conquerer!</h3>`;
+    }
+
+    // Update the profile display spans 
+    document.getElementById('username-display').textContent = userData.info.username;
+    document.getElementById('firstname-display').textContent = userData.info.firstname;
+    document.getElementById('lastname-display').textContent = userData.info.lastname;
+    document.getElementById('email-display').textContent = userData.info.email;
+    document.getElementById('birthdate-display').textContent = userData.info.dateOfBirth;
+}
+
+
+
+// ==========================================
 // *** PAGE INITIALIZATION ***
 // ==========================================
 
@@ -1121,6 +1145,8 @@ document.addEventListener('DOMContentLoaded', function () {
         updateTaskList();
     } else if (currentPage === 'milestones.html') {
         updateMilestoneList();
+    } else if (currentPage === 'profile.html') {
+        updateProfileDisplay();
     }
 
     // Add logout functionality to all authenticated pages
