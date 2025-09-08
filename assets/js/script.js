@@ -73,7 +73,7 @@ if (window.location.pathname.includes('login.html')) {
         }
         if (userData.info.email === email && userData.info.password === password) {
             console.log('Login success:', userData.info.username);
-             // add the save to local storage function for data-persistance after login
+            // add the save to local storage function for data-persistance after login
             saveToLocalStorage();
             window.location.href = 'dashboard.html';
         } else {
@@ -118,7 +118,7 @@ function getWeekNumber(date) {
 // Calculates Monday-Sunday week range for any given date
 function getCurrentWeekRange(date = new Date()) {
     let weekStart = new Date(date);
-    
+
     if (date.getDay() === 0) {
         // If Sunday, go back 6 days to get previous Monday
         weekStart.setDate(date.getDate() - 6);
@@ -132,7 +132,7 @@ function getCurrentWeekRange(date = new Date()) {
         weekEnd.setDate(weekStart.getDate() + 6);
         return { weekStart, weekEnd };
     }
-    
+
 }
 
 // Gets the color of lifeGoalCategories
@@ -148,10 +148,10 @@ function showFeedbackModal(type, title, message = '') {
     if (existingModal) {
         existingModal.remove();
     }
-    
+
     // Configure icon and color based on type
     let iconClass, bgClass;
-    switch(type) {
+    switch (type) {
         case 'success':
             iconClass = 'fa-solid fa-check fa-2x';
             bgClass = 'bg-success';
@@ -168,7 +168,7 @@ function showFeedbackModal(type, title, message = '') {
             iconClass = 'fa-solid fa-bell fa-2x';
             bgClass = 'bg-secondary';
     }
-    
+
     // Create modal HTML
     const modalHTML = `
         <div class="modal fade sharp-corners" id="feedbackModal" tabindex="-1" aria-hidden="true">
@@ -188,16 +188,16 @@ function showFeedbackModal(type, title, message = '') {
             </div>
         </div>
     `;
-    
+
     // Insert into DOM
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
+
     // Show modal
     const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
     modal.show();
-    
+
     // Also clear focus when modal is hiding (before hidden)
-    document.getElementById('feedbackModal').addEventListener('hide.bs.modal', function() {
+    document.getElementById('feedbackModal').addEventListener('hide.bs.modal', function () {
         if (document.activeElement && document.activeElement.blur) {
             document.activeElement.blur();
         }
@@ -207,7 +207,7 @@ function showFeedbackModal(type, title, message = '') {
 
 }
 
-// Date conversion
+// Date conversion to dd.mm.yyyy
 function convertDateToUserFormat(dateInput) {
     const parts = dateInput.split('-');
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
@@ -224,11 +224,11 @@ function convertToDateInput(dateString) {
 function openTaskEditModal(taskIndex) {
     let task = userData.tasks[taskIndex];
     if (!task) return;
-    
+
     // Remove existing modal
     const existingModal = document.getElementById('editTaskModal');
     if (existingModal) existingModal.remove();
-    
+
     // Create edit modal
     const editModalHTML = `
         <div class="modal fade sharp-corners" id="editTaskModal" tabindex="-1" aria-hidden="true">
@@ -245,9 +245,9 @@ function openTaskEditModal(taskIndex) {
                             </div>
                             <div class="mb-3">
                                 <select class="form-select" id="edit-task-category" required>
-                                    ${userData.lifeGoalCategories.map(cat => 
-                                        `<option value="${cat.name}" ${task.category === cat.name ? 'selected' : ''}>${cat.name}</option>`
-                                    ).join('')}
+                                    ${userData.lifeGoalCategories.map(cat =>
+        `<option value="${cat.name}" ${task.category === cat.name ? 'selected' : ''}>${cat.name}</option>`
+    ).join('')}
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -271,15 +271,15 @@ function openTaskEditModal(taskIndex) {
             </div>
         </div>
     `;
-    
+
     document.body.insertAdjacentHTML('beforeend', editModalHTML);
     const modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
     modal.show();
-    
+
     // Handle form submission
-    document.getElementById('edit-task-form').addEventListener('submit', function(e) {
+    document.getElementById('edit-task-form').addEventListener('submit', function (e) {
         e.preventDefault();
-        
+
         let title = document.getElementById('edit-task-title').value.trim();
         title = title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 
@@ -291,26 +291,74 @@ function openTaskEditModal(taskIndex) {
             deadline: convertDateToUserFormat(document.getElementById('edit-task-deadline').value),
             done: document.getElementById('edit-task-done').checked
         };
-        
+
         if (document.activeElement && document.activeElement.blur) {
             document.activeElement.blur();
         }
         modal.hide();
-        
+
         setTimeout(() => {
             saveToLocalStorage();
             refreshTasksAfterCRUD();
             showFeedbackModal('success', 'TASK UPDATED!', 'Task updated successfully');
         }, 0);
     });
-    
+
     // Cleanup
-    document.getElementById('editTaskModal').addEventListener('hidden.bs.modal', function() {
+    document.getElementById('editTaskModal').addEventListener('hidden.bs.modal', function () {
         this.remove();
     });
 }
 
-
+// Creates a dynamic modal for delete confirmation
+function openDeleteConfirmModal(itemType, itemIndex, itemTitle, deleteCallback) {
+    // Remove existing modal
+    const existingModal = document.getElementById('deleteConfirmModal');
+    if (existingModal) existingModal.remove();
+    
+    // Create universal delete confirmation modal
+    const deleteModalHTML = `
+        <div class="modal fade sharp-corners" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content dark-mode text-center">
+                    <div class="modal-body py-4">
+                        <div class="mb-3">
+                            <span class="badge bg-danger rounded-circle p-3">
+                                <i class="fa-solid fa-trash-can fa-2x"></i>
+                            </span>
+                        </div>
+                        <h5>Delete ${itemType}</h5>
+                        <p class="text-muted">Are you sure you want to delete "${itemTitle}"?</p>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', deleteModalHTML);
+    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    modal.show();
+    
+    // Handle delete confirmation
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        if (document.activeElement && document.activeElement.blur) {
+            document.activeElement.blur();
+        }
+        modal.hide();
+        
+        // Execute the callback function for the specific delete operation
+        deleteCallback();
+    });
+    
+    // Cleanup
+    document.getElementById('deleteConfirmModal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
+}
 
 
 // ==========================================
@@ -404,10 +452,10 @@ function updateDateInfo() {
 
     // inject in dashboard
     if (window.location.pathname.includes('dashboard.html')) {
-    document.getElementById('today-date').innerHTML = `Today, ${todayFormat}`;
-    document.getElementById('actual-week').innerHTML = `Week ${weekNumber}, ${weekRange}`;
-    //calls the function here to recycle date arguments 
-    updateProgressBars(todayFormat, weekStart, weekEnd);
+        document.getElementById('today-date').innerHTML = `Today, ${todayFormat}`;
+        document.getElementById('actual-week').innerHTML = `Week ${weekNumber}, ${weekRange}`;
+        //calls the function here to recycle date arguments 
+        updateProgressBars(todayFormat, weekStart, weekEnd);
     }
 }
 
@@ -432,7 +480,7 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
         let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
 
         // check if task is today
-        if (task.toDoDate === todayFormatted || task.toDoDate.includes(todayStr)) { 
+        if (task.toDoDate === todayFormatted || task.toDoDate.includes(todayStr)) {
             todayTotal++;
             if (task.done) todayDone++;
         }
@@ -487,7 +535,7 @@ function updateWeeklyPercentageDisplay() {
     userData.tasks.forEach(task => {
         let taskDateStr = task.toDoDate.split('.');
         let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
-        
+
         if (taskDate >= weekStart && taskDate <= weekEnd) {
             totalWeekTasks++;
             if (weekCategoryTasks[task.category] !== undefined) {
@@ -501,7 +549,7 @@ function updateWeeklyPercentageDisplay() {
     userData.lifeGoalCategories.forEach(category => {
         let categoryCount = weekCategoryTasks[category.name];
         let percentage = totalWeekTasks > 0 ? Math.round((categoryCount / totalWeekTasks) * 100) : 0;
-        
+
         displayHTML += `
             <li title="${category.name}: ${categoryCount} tasks (${percentage}%)">
                 <span style="color: ${category.color};">●</span> ${percentage}%
@@ -520,13 +568,13 @@ function updateWeeklyPercentageDisplay() {
 function registerTaskFormListener() {
     let taskForm = document.querySelector('#add-task-form');
     if (taskForm) {
-        taskForm.addEventListener('submit', function(e) {
+        taskForm.addEventListener('submit', function (e) {
             e.preventDefault();
             let title = document.querySelector('#task-title').value.trim();
-            title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();   
+            title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();
             let category = document.querySelector('#task-category').value;
-            let toDoDate = document.querySelector('#task-todo').value.split('-'); 
-            toDoDate = `${toDoDate[2]}.${toDoDate[1]}.${toDoDate[0]}`; 
+            let toDoDate = document.querySelector('#task-todo').value.split('-');
+            toDoDate = `${toDoDate[2]}.${toDoDate[1]}.${toDoDate[0]}`;
             let deadline = document.querySelector('#task-deadline').value.split('-');
             deadline = `${deadline[2]}.${deadline[1]}.${deadline[0]}`;
             let newTask = {
@@ -558,41 +606,52 @@ function registerTaskFormListener() {
                 refreshTasksAfterCRUD();
                 // gives feed back in tasks page for tasks that arent displyed by default (within the dashboard display or collapsed lists)
                 if (window.location.pathname.includes('dashboard.html') || window.location.pathname.includes('tasks.html')) {
-                  showFeedbackModal('success', 'TASK ADDED!', `${title} has been added successfully`);
-                }  
+                    showFeedbackModal('success', 'TASK ADDED!', `${title} has been added successfully`);
+                }
             }, 0);
-            
+
         });
     }
 }
 
 // Update and delete functions for tasks
 function initializeTaskUpdateAndDelete() {
-   document.addEventListener('click', function(e) {
-       let taskIndex;
-       
-       // Update - Checkbox toggle
-       if (e.target.classList.contains('task-checkbox')) {
-           e.preventDefault();
-           taskIndex = parseInt(e.target.getAttribute('data-task-index'));
-           userData.tasks[taskIndex].done = !userData.tasks[taskIndex].done;
-           e.target.checked = userData.tasks[taskIndex].done;
-           saveToLocalStorage();
-           refreshTasksAfterCRUD();
-           let status = userData.tasks[taskIndex].done ? 'completed' : 'marked as pending';
-           showFeedbackModal('success', 'TASK UPDATED!', `Task ${status}`);
-       }
-       
-       // Update - Edit task
-       if (e.target.closest('.edit-task-btn')) {
-           e.preventDefault();
-           taskIndex = parseInt(e.target.closest('.edit-task-btn').getAttribute('data-task-index'));
-           openTaskEditModal(taskIndex);
-        }
-       
-       // Delete task
+    document.addEventListener('click', function (e) {
+        let taskIndex;
 
-   })
+        // Update - Checkbox toggle
+        if (e.target.classList.contains('task-checkbox')) {
+            e.preventDefault();
+            taskIndex = parseInt(e.target.getAttribute('data-task-index'));
+            userData.tasks[taskIndex].done = !userData.tasks[taskIndex].done;
+            e.target.checked = userData.tasks[taskIndex].done;
+            saveToLocalStorage();
+            refreshTasksAfterCRUD();
+            let status = userData.tasks[taskIndex].done ? 'completed' : 'marked as pending';
+            showFeedbackModal('success', 'TASK UPDATED!', `Task ${status}`);
+        }
+
+        // Update - Edit task
+        if (e.target.closest('.edit-task-btn')) {
+            e.preventDefault();
+            taskIndex = parseInt(e.target.closest('.edit-task-btn').getAttribute('data-task-index'));
+            openTaskEditModal(taskIndex);
+        }
+
+        // Delete task
+        if (e.target.closest('.delete-task-btn')) {
+            e.preventDefault();
+            taskIndex = parseInt(e.target.closest('.delete-task-btn').getAttribute('data-task-index'));
+            let taskTitle = userData.tasks[taskIndex].title;
+                
+            openDeleteConfirmModal('Task', taskIndex, taskTitle, function() {
+                userData.tasks.splice(taskIndex, 1);
+                saveToLocalStorage();
+                refreshTasksAfterCRUD();
+                showFeedbackModal('success', 'TASK DELETED!', `${taskTitle} has been removed`);
+            });
+        }
+    })
 }
 
 
@@ -662,11 +721,11 @@ function updateTaskList() {
                         <div class="task-dates-actions text-end">
                             <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
                             <button class="edit-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-pencil"></i></button>
-                            <button class="edit-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-trash-can"></i></button>
+                            <button class="delete-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
                     `;
-                }).join("");
+            }).join("");
 
             let accordionHTML = `
                 <div class="accordion-item">
@@ -694,10 +753,10 @@ function refreshTasksAfterCRUD() {
     updateTaskList();
     if (window.location.pathname.includes('dashboard.html')) {
         updateChart(); // Update life sync chart
-        
+
         let today = new Date();
         let { weekStart, weekEnd } = getCurrentWeekRange(today);
-        
+
         // Create the abbreviated format that updateProgressBars expects
         let weekdayOptions = { weekday: 'short' };
         let dayAbbreviation = today.toLocaleDateString('en-US', weekdayOptions);
@@ -715,18 +774,18 @@ function refreshTasksAfterCRUD() {
 // *** PAGE INITIALIZATION ***
 // ==========================================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Determine which page is loaded
     const currentPage = window.location.pathname.split('/').pop();
     console.log('initializing page', currentPage)
     // Load saved data and check for authenticatio
-    if (currentPage === 'login.html'){
+    if (currentPage === 'login.html') {
         // Special case: login page should redirect if already logged in
         const isAlreadyLoggedIn = loadFromLocalStorage();
         if (isAlreadyLoggedIn) {
             console.log('User already logged in, redirecting to dashboard');
             window.location.href = 'dashboard.html';
-            return; 
+            return;
         }
     } else if (currentPage === 'index.html') {
         // Landing page: load data for potential navigation benefits
@@ -735,7 +794,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         // Protected pages: load data and check athentication
         const isLoggedIn = loadFromLocalStorage();
-        if(!isLoggedIn){
+        if (!isLoggedIn) {
             console.log('Not authenticaded, redirecting to login');
             window.location.href = 'login.html';
             return;
@@ -743,7 +802,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('User data loaded for authenticated page:', currentPage);
     }
     // Run page-specific initialization in the correct order
-    if (currentPage === 'dashboard.html'){
+    if (currentPage === 'dashboard.html') {
         // Functions needed on the dashboard
         updateDateInfo();
         updateChart();
@@ -755,12 +814,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add logout functionality to all authenticated pages
     if (currentPage === 'dashboard.html' || currentPage === 'tasks.html' || currentPage === 'profile.html' || currentPage === 'milestones.html') {
-    document.querySelectorAll('a[href="index.html"][title="Logout"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            logout();
+        document.querySelectorAll('a[href="index.html"][title="Logout"]').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                logout();
+            });
         });
-    });
     }
 
     // NEW TASK FORM EVENT LISTENER ONCE PER PAGE LOAD!
