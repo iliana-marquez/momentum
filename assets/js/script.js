@@ -207,6 +207,111 @@ function showFeedbackModal(type, title, message = '') {
 
 }
 
+// Date conversion
+function convertDateToUserFormat(dateInput) {
+    const parts = dateInput.split('-');
+    return `${parts[2]}.${parts[1]}.${parts[0]}`;
+}
+
+// Convert dd.mm.yyyy to yyyy-mm-dd for HTML date inputs
+function convertToDateInput(dateString) {
+    if (!dateString) return '';
+    const parts = dateString.split('.');
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+}
+
+// Creates a taskUpdateModal form for task editing
+function openTaskEditModal(taskIndex) {
+    let task = userData.tasks[taskIndex];
+    if (!task) return;
+    
+    // Remove existing modal
+    const existingModal = document.getElementById('editTaskModal');
+    if (existingModal) existingModal.remove();
+    
+    // Create edit modal
+    const editModalHTML = `
+        <div class="modal fade sharp-corners" id="editTaskModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content dark-mode">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Task</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-task-form">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="edit-task-title" value="${task.title}" required>
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select" id="edit-task-category" required>
+                                    ${userData.lifeGoalCategories.map(cat => 
+                                        `<option value="${cat.name}" ${task.category === cat.name ? 'selected' : ''}>${cat.name}</option>`
+                                    ).join('')}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label>To Do Date:</label>
+                                <input type="date" class="form-control" id="edit-task-todo" value="${convertToDateInput(task.toDoDate)}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label>Deadline:</label>
+                                <input type="date" class="form-control" id="edit-task-deadline" value="${convertToDateInput(task.deadline)}" required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="edit-task-done" ${task.done ? 'checked' : ''}>
+                                    <label class="form-check-label">Mark as completed</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="my-button-light-bg w-100">Update Task</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', editModalHTML);
+    const modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
+    modal.show();
+    
+    // Handle form submission
+    document.getElementById('edit-task-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let title = document.getElementById('edit-task-title').value.trim();
+        title = title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+
+        // Update all task properties
+        userData.tasks[taskIndex] = {
+            title: document.getElementById('edit-task-title').value.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '),
+            category: document.getElementById('edit-task-category').value,
+            toDoDate: convertDateToUserFormat(document.getElementById('edit-task-todo').value),
+            deadline: convertDateToUserFormat(document.getElementById('edit-task-deadline').value),
+            done: document.getElementById('edit-task-done').checked
+        };
+        
+        if (document.activeElement && document.activeElement.blur) {
+            document.activeElement.blur();
+        }
+        modal.hide();
+        
+        setTimeout(() => {
+            saveToLocalStorage();
+            refreshTasksAfterCRUD();
+            showFeedbackModal('success', 'TASK UPDATED!', 'Task updated successfully');
+        }, 0);
+    });
+    
+    // Cleanup
+    document.getElementById('editTaskModal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
+}
+
+
+
 
 // ==========================================
 // *** DASHBOARD FUNCTIONS ***
@@ -479,7 +584,11 @@ function initializeTaskUpdateAndDelete() {
        }
        
        // Update - Edit task
-
+       if (e.target.closest('.edit-task-btn')) {
+           e.preventDefault();
+           taskIndex = parseInt(e.target.closest('.edit-task-btn').getAttribute('data-task-index'));
+           openTaskEditModal(taskIndex);
+        }
        
        // Delete task
 
@@ -552,8 +661,8 @@ function updateTaskList() {
                         </div>
                         <div class="task-dates-actions text-end">
                             <span class="task-dates">To Do: ${task.toDoDate} | Deadline: ${task.deadline || "No Deadline"}</span>
-                            <button class="custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-pencil"></i></button>
-                            <button class="custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-trash-can"></i></button>
+                            <button class="edit-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-pencil"></i></button>
+                            <button class="edit-task-btn custom-button my-button-light-bg my-button-icon" data-task-index="${taskIndex}"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
                     `;
