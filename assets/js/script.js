@@ -2,8 +2,8 @@
 let userData = {
     "info": {
         "username": "Ili",
-        "email": "iliana.marquez@mail.com",
-        "password": "MyPassword123",
+        "email": "test@mail.com",
+        "password": "test",
         "firstname": "Iliana",
         "lastname": "Marquez",
         "dateOfBirth": "15.09.1986"
@@ -875,7 +875,7 @@ function updateMilestoneList() {
                 return `
                     <div class="task-row justify-content-between">
                         <div>
-                            <input type="checkbox" class="task-checkbox" milestone="${milestoneIndex}" ${milestone.done ? "checked" : ""}>
+                            <input type="checkbox" class="milestone-checkbox" data-milestone-index="${milestoneIndex}" ${milestone.done ? "checked" : ""}>
                             <span class="task-title" style="color: ${category.color};">${milestone.title}</span>
                         </div>
                         <div class="task-dates-actions text-end">
@@ -915,7 +915,43 @@ function updateMilestoneList() {
 }
 
 // Add a new milestone
-function registerMilestoneFormListener() {}
+function registerMilestoneFormListener() {
+    let milestoneForm = document.querySelector('#add-milestone-form');
+    if (milestoneForm) {
+        milestoneForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            let title = document.querySelector('#milestone-title').value.trim();
+            title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();
+            let category = document.querySelector('#milestone-category').value;
+            let due = document.querySelector('#milestone-due').value.split('-');
+            due = `${due[2]}.${due[1]}.${due[0]}`;
+            
+            let newMilestone = {
+                title: title,
+                category: category,
+                due: due,
+                done: false
+            };
+
+            // Clear focus and close modal
+            if (document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
+            }
+            milestoneForm.closest('.modal').querySelector('.btn-close').click();
+            milestoneForm.reset();
+
+            setTimeout(() => {
+                if (!userData.milestones) {
+                    userData.milestones = [];
+                }
+                userData.milestones.push(newMilestone);
+                saveToLocalStorage();
+                updateMilestoneList(); // Refresh the display
+                showFeedbackModal('success', 'MILESTONE ADDED!', `${title} has been added successfully`);
+            }, 0);
+        });
+    }
+}
 
 // Update and delete functions for milestones
 function initializeMilestoneUpdateAndDelete() {}
@@ -981,9 +1017,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // NEW TASK FORM EVENT LISTENER ONCE PER PAGE LOAD!
-    if (currentPage === 'dashboard.html' || currentPage === 'tasks.html') {
+    if (currentPage === 'dashboard.html' || currentPage === 'tasks.html' || currentPage === 'milestones.html' ) {
         registerTaskFormListener();
         initializeTaskUpdateAndDelete();
+        registerMilestoneFormListener();
     }
 
 })

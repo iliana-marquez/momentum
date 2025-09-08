@@ -86,12 +86,46 @@
     <main id="milestone-page" class="container pt-5">
         <div class="d-flex justify-content-between py-3">
           <h2>Climb your milestones up high!</h2>
-          <a class="custom-button my-button-light-bg" href=""><i class="fa-solid fa-plus"></i></a>
+          <button class="custom-button btn my-button-light-bg mb-3" data-bs-toggle="modal" data-bs-target="#addMilestoneModal"><i class="fa-solid fa-plus"></i></button>
         </div>  
         <!-- Accordion for Milestones -->
         <div class="accordion" id="milestonesAccordion">
         </div>
     </main>
+
+    <!-- Modal form to add new milestone -->
+    <div class="modal fade sharp-corners" id="addMilestoneModal" tabindex="-1" aria-labelledby="addMilestoneModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content dark-mode">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="addMilestoneModalLabel">Add New Milestone</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <form id="add-milestone-form">
+                      <div class="mb-3">
+                          <input type="text" class="form-control" id="milestone-title" placeholder="Milestone Title" required>
+                      </div>
+                      <div class="mb-3">
+                          <select class="form-select" id="milestone-category" required>
+                              <option value="" disabled selected>Select Category</option>
+                              <option value="Coding">Coding</option>
+                              <option value="Health">Health</option>
+                              <option value="Relationships">Relationships</option>
+                              <option value="Work">Work</option>
+                              <option value="Finances">Finances</option>
+                          </select>
+                      </div>
+                      <div class="mb-3">
+                          <label for="milestone-due">Due date:</label>
+                          <input type="date" class="form-control" id="milestone-due" required>
+                      </div>
+                      <button type="submit" class="my-button-light-bg w-100">Add Milestone</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+    </div>
 
     <!--  Footer -->
     <footer class="mt-auto m-dark-background text center py-1">
