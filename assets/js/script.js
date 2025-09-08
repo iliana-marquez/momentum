@@ -1108,7 +1108,7 @@ function displayLifeCategories() {
     categoriesContainer.innerHTML = '';
     
     // Display existing categories
-    userData.lifeGoalCategories.forEach((category, index) => {
+    userData.lifeGoalCategories.forEach((category) => {
         let categoryCard = `
             <div class="category-card text-center p-3" style="background-color: ${category.color}; min-width: 150px; border-radius: 10px; position: relative;">
                 <button class="btn btn-sm position-absolute top-0 end-0 m-1" style="background: rgba(0,0,0,0.3); border: none;" disabled>
@@ -1123,17 +1123,6 @@ function displayLifeCategories() {
         `;
         categoriesContainer.innerHTML += categoryCard;
     });
-    
-    // Add "Add Category" placeholder card
-    let addCard = `
-        <div class="category-card text-center p-3 d-flex flex-column justify-content-center" style="background-color: #6c757d; min-width: 150px; border-radius: 10px; min-height: 150px;">
-            <div class="text-white">
-                <i class="fa-solid fa-plus" style="font-size: 2rem;"></i>
-                <p class="mt-2 mb-0">Add Category</p>
-            </div>
-        </div>
-    `;
-    categoriesContainer.innerHTML += addCard;
 }
 
 // Activates the button event listener for profile info editing
