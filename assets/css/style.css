@@ -179,7 +179,7 @@ a {
 }
 
 #navbar i {
-    font-size: 2rem;
+    font-size: 1.6rem;
 }
 
 .navbar-toggler:focus, 
@@ -273,6 +273,10 @@ a {
     border-radius: 50%;
     border: 30px solid #1d0221;
     box-sizing: border-box; 
+}
+
+.dashboard-grid > .pie-chart i {
+    display: none;
 }
 
 .dashboard-grid .content {
@@ -401,6 +405,10 @@ footer img {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+    }
+
+    .dashboard-grid > .pie-chart i {
+    display: block;
     }
     
     /* Today Box: Horizontal Rectangle */
