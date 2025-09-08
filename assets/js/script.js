@@ -120,16 +120,19 @@ function getCurrentWeekRange(date = new Date()) {
     let weekStart = new Date(date);
 
     if (date.getDay() === 0) {
-        // If Sunday, go back 6 days to get previous Monday
         weekStart.setDate(date.getDate() - 6);
-        // Week end should be today (Sunday), not tomorrow
         let weekEnd = new Date(date);
+        // Reset time to avoid comparison issues
+        weekStart.setHours(0, 0, 0, 0);
+        weekEnd.setHours(23, 59, 59, 999);
         return { weekStart, weekEnd };
     } else {
-        // For other days, use normal calculation
         weekStart.setDate(date.getDate() - date.getDay() + 1);
         let weekEnd = new Date(weekStart);
         weekEnd.setDate(weekStart.getDate() + 6);
+        // Reset time to avoid comparison issues
+        weekStart.setHours(0, 0, 0, 0);
+        weekEnd.setHours(23, 59, 59, 999);
         return { weekStart, weekEnd };
     }
 
@@ -445,7 +448,7 @@ function updateDateInfo() {
     // get start and end of current-week w/ extracted utility function
     let { weekStart, weekEnd } = getCurrentWeekRange(today);
 
-    // format week range
+    // convert Date objects back to display format only for UI
     let startDay = String(weekStart.getDate()).padStart(2, '0');
     let endDay = String(weekEnd.getDate()).padStart(2, '0');
     let weekRange = `${startDay}.-${endDay}.${month}`;
@@ -461,11 +464,8 @@ function updateDateInfo() {
 
 // *** PROGRESS BARS LOGIC *** //
 // * Function to update 
-function updateProgressBars(todayFormat, weekStart, weekEnd) {
-    // get date from todayFormat (today's day)
-    let todayStr = todayFormat.split('-')[1];
-    let currentYear = new Date().getFullYear();
-    let todayFormatted = `${todayStr}${currentYear}`;
+function updateProgressBars(weekStart, weekEnd) {
+    let today = formatDate(new Date());
 
     // counters 
     let todayTotal = 0;
@@ -475,40 +475,34 @@ function updateProgressBars(todayFormat, weekStart, weekEnd) {
 
     // counts tasks for today and week
     userData.tasks.forEach(task => {
-        // Convert task date (dd.mm.yyyy) to a Date object
-        let taskDateStr = task.toDoDate.split('.');
-        let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
-
-        // check if task is today
-        if (task.toDoDate === todayFormatted || task.toDoDate.includes(todayStr)) {
+        // Today comparison (string is fine for exact match)
+        if (task.toDoDate === today) {
             todayTotal++;
             if (task.done) todayDone++;
         }
 
-        // check if task is in this week (using Date objects for comparison)
+        // Week comparison: Convert task date to Date object for reliable comparison
+        let taskDate = parseDate(task.toDoDate); // Convert "dd.mm.yyyy" to Date object
         if (taskDate >= weekStart && taskDate <= weekEnd) {
             weekTotal++;
             if (task.done) weekDone++;
         }
     });
 
-    // update progress bars
+    // Update progress bars (unchanged)
     let todayProgress = document.getElementById('today-progress');
     let weekProgress = document.getElementById('week-progress');
 
-    // get max and value for today's progress
     if (todayProgress) {
         todayProgress.max = todayTotal;
         todayProgress.value = todayDone;
     }
 
-    // get max and value for this week's progress
     if (weekProgress) {
         weekProgress.max = weekTotal;
         weekProgress.value = weekDone;
     }
 
-    // to print in overlay on progress bar - for the future
     console.log(`Today's Progress: ${todayDone}/${todayTotal}`);
     console.log(`Week's Progress: ${weekDone}/${weekTotal}`);
 
@@ -533,9 +527,9 @@ function updateWeeklyPercentageDisplay() {
 
     // Count this week's tasks per category
     userData.tasks.forEach(task => {
-        let taskDateStr = task.toDoDate.split('.');
-        let taskDate = new Date(`${taskDateStr[2]}-${taskDateStr[1]}-${taskDateStr[0]}`);
-
+        // convert task date to Date object for comparison
+        let taskDate = parseDate(task.toDoDate);
+        
         if (taskDate >= weekStart && taskDate <= weekEnd) {
             totalWeekTasks++;
             if (weekCategoryTasks[task.category] !== undefined) {
@@ -679,7 +673,7 @@ function updateTaskList() {
         let deadlineDateObj = task.deadline ? parseDate(task.deadline) : null;
 
         if (taskDate === todayStr) categories.today.tasks.push(task);
-        if (taskDateObj >= weekStart && taskDateObj <= weekEnd) categories.week.tasks.push(task);
+        if (taskDateObj >= weekStart && taskDateObj <= weekEnd) categories.week.tasks.push(task); // Now uses Date objects
         if (taskDateObj > weekEnd) categories.after.tasks.push(task);
         if (task.done) categories.done.tasks.push(task);
         if (deadlineDateObj && deadlineDateObj < today) categories.expired.tasks.push(task);
