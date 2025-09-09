@@ -9,18 +9,17 @@ Momentum is a life-tracking web app that helps you stay present while building y
 
 ## User Experience (UX)
 
-### User Stories
-- **As a user,** I want to add tasks easily, so I can track my goals without hassle.
-- **As a user,** I want a chart to see how my life balances, so I can adjust my focus.
-- **As a user,** I want progress bars for today and the week, so I feel present and motivated.
-- **As a user,** I want a simple login, so I can jump into my day fast.
-- **As a user,** I want tasks sorted by Today, Week, After, Done, Expired, so I stay organized.
+### Current User Story Goals#
 
-#### Original Ideas (Time Ran Out)
-- Daily checkup—intuitive questions to reflect on life goals.
-- Edit/delete tasks—full CRUD control.
-- Dynamic register—new users join.
-- Milestones/profile—track big wins, personalize.
+As User, I want:
+- To easily understand the main purpose of the site and learn how it can help me balance different areas of my life.
+- To quickly log in and see my current progress across all life areas through the dashboard's Life Sync pie chart and progress bars.
+- To add, edit, complete or delete tasks efficiently while seeing immediate visual feedback through dynamic modals.
+- To add, edit, complete or delete milestones efficiently while seeing immediate visual feedback.
+- To see my tasks automatically categorized (Today, This Week, Overdue, Done, Expired) and my milestones organized by life goal categories.
+- To see real-time updates to the Life Sync chart and progress percentages as I complete tasks.
+- To visualize my next due milestones prominently on the dashboard so I stay focused on important deadlines and prevent "out of sight, out of mind" forgetting.
+- My data to persist during my browser session so I don't lose updates while navigating between pages.
 
 ### Design
 
