@@ -311,9 +311,28 @@ $ git clone https://github.com/iliana-marquez/momentum.git
 
 ## Credits
 
-- **Bootstrap:** Wireframes, images and icons.
-- **Canva:** Layout, modal framework.
-- **Font Awesome:** Icons.
-- **Code Institute:** README inspiration.
+### Content
+
+- All content was written by the developer based on personal productivity needs and life-tracking goals
+- Task categorization logic developed specifically for balanced life management
+- User interface text designed to motivate and encourage consistent progress
+
+### Media
+
+- All images and visual assets created by the developer
+- FontAwesome icons used throughout the interface for consistent iconography
+
+### Acknowledgements
+
+- [Code Institute](https://codeinstitute.net/global/): for detailed assessment feedback that guided this refactoring and for the great learning materials and tools shared, such as the Love Running project README.md as, which was my structural guide for this documentation
+
 
 ---
+
+## Key Takeaways
+
+- **Debug Systematically:** Track symptoms to root causes - the pie chart discrepancy revealed invisible "ghost" tasks, leading to categorization fixes.
+- **CRUD Foundation:** Master Create, Read, Update, Delete operations with proper validation - they form the backbone of most applications.
+- **State Synchronization:** Keep multiple UI elements (charts, lists, progress bars) automatically updated when underlying data changes.
+- **Event Management:** Prevent memory leaks and performance issues through proper event listener handling and delegation patterns.
+
