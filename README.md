@@ -18,6 +18,7 @@ Momentum is a life-tracking web app that helps you stay present while building y
   - [Languages](#languages)
   - [Frameworks, Libraries & Tools](#frameworks-libraries--tools)
 - [Testing](#testing)
+  - [Code Validation](#code-validation)
   - [Instructions](#instructions)
   - [Testing User Stories from User Experience (UX) Section](#testing-user-stories-from-user-experience-ux-section)
   - [Feature Testing](#feature-testing)
