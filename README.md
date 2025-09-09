@@ -6,10 +6,16 @@ Momentum is a life-tracking web app that helps you stay present while building y
 **[Try it out!](https://iliana-marquez.github.io/momentum/)**
 
 ---
+## Table of Contents
 
+- [User Experience (UX)](#user-experience-ux)
+  - [User Stories](#user-stories)
+  - [Design](#design)
+
+---
 ## User Experience (UX)
 
-### Current User Story Goals#
+### Current User Story Goals
 
 As User, I want:
 - To easily understand the main purpose of the site and learn how it can help me balance different areas of my life.
@@ -23,11 +29,32 @@ As User, I want:
 
 ### Design
 
+#### Colour Scheme
+- The primary colors are dark purple (#1d0221) and light grey (#f2f2f2) creating a calmed, focused atmosphere
+- Accent colors include highlight purple (#590b5a) and light highlight (#b1b1b1)
 ![Image 2](assets/images/design-elements.png)
 
-- **Responsive:** Mobile/tablet-first—larger screens need polish.
+- Category-specific colors: Coding (#f89e37), Health (#cb0e16), Relationships (#900c5e), Work (#bdbdbd), Finances (#92bf1c)
+![Image 2](assets/images/life-category-goal-colors.png)
 
-![Image 3](assets/images/dashboard-responsiveness.png)
+#### Typography
+- Montserrat is used for headings, providing a clean, professional look
+- Poppins is used for content text, ensuring excellent readability
+- Both fonts include fallbacks to ensure cross-platform compatibility
+
+### Wireframes
+Created using Canva during the design planning phase (desktop and mobile versions):
+- Landing Page Wireframe - With Hero, About, Contact and Q&A sections
+- Login Page Wireframe - Form to log in
+- Dashboard Page Wireframe - Focused on pie chart visualization and progress tracking
+- Tasks Page Wireframe - Emphasizing CRUD operations and categorization
+- Milestones Page Wireframe - Emphasizing CRUD operations and categorization
+- Profile Page Wireframe - Emphasizing on User Profile Info display
+
+#### Imagery
+- Clean, minimalist design with images form Canva and category-specific icons from FontAwesome
+- Visual progress charts including a "Life Sync" pie chart showing category balance
+- Consistent color-coding throughout the interface for immediate category recognition
 
 ---
 ## Features
