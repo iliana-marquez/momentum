@@ -18,8 +18,7 @@ Momentum is a life-tracking web app that helps you stay present while building y
   - [Languages](#languages)
   - [Frameworks, Libraries & Tools](#frameworks-libraries--tools)
 - [Testing](#testing)
-  - [For Assessors and Users Testing the Application](#for-assessors-and-users-testing-the-application)
-  - [Code Validation](#code-validation)
+  - [Instructions](#instructions)
   - [Testing User Stories from User Experience (UX) Section](#testing-user-stories-from-user-experience-ux-section)
   - [Feature Testing](#feature-testing)
   - [Browser and Device Testing](#browser-and-device-testing)
@@ -116,13 +115,16 @@ Created using Canva during the design planning phase (desktop and mobile version
 - VSCode: code editing.
 
 ---
-### Testing:
+## Testing
+
+### Instructions:
 
 Use this credentials for testing 
 > email: test@mail.com <br>
 > password: test
 
-#### Testing User Stories from User Experience (UX) Section
+### Testing User Stories from User Experience (UX) Section
+
 1. **Understanding the main purpose and life balance concept**
 - Upon entering the site, users see clear landing page explaining "Sync your life effortlessly with Momentum"
 - About section details how it helps achieve balance without burnout across 5 life categories
