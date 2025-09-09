@@ -740,7 +740,7 @@ function updateTaskList() {
         taskCategories.today.tasks.forEach(task => {
             let categoryColor = getCategoryColor(task.category);
             todayTaskList.innerHTML += `
-                <li class="task-row" style="color: ${categoryColor};">
+                <li class="todays-tasks" style="color: ${categoryColor};">
                     <input type="checkbox" class="task-checkbox" data-task-index="${task.arrayIndex}" ${task.done ? "checked" : ""}>
                     <span class="task-title">${task.title}</span>
                 </li>

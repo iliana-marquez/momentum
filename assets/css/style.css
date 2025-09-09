@@ -304,6 +304,10 @@ a {
     overflow-y: auto;     
 }
 
+.todays-tasks {
+    padding-left: 1rem;
+}
+
 .dashboard-grid > .week-box {
     grid-column: 1;   
     grid-row: 3;      
@@ -337,7 +341,8 @@ a {
 /* Task Rows */
 .task-row {
     margin-bottom: 0.5rem;
-    padding-left: 1rem;
+    display: flex;
+    align-items: center;
 }
 
 .task-checkbox {
