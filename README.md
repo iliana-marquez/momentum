@@ -130,9 +130,14 @@ Created using Canva during the design planning phase (desktop and mobile version
 
 ### Instructions:
 
-Use these credentials for testing 
+1. Use login credentials: 
 > email: test@mail.com <br>
 > password: test
+2. The initial userData (tasks and milestones) provided at the beginning of script.js is sample data to give you content to experiment with immediately - all of this data can be modified, deleted, or expanded throughout your testing session
+3. Add, edit, delete, and complete tasks/milestones to test CRUD operations
+4. Navigate between pages to verify data persistence
+5. Check responsiveness across different screen sizes
+6. Logout and login again to verify session management
 
 ### Testing User Stories from User Experience (UX) Section
 
