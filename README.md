@@ -1,12 +1,9 @@
 # Momentum 
 
-![Image 1](assets/images/public-landing-homepage.png)
+Momentum is a life-tracking web app that helps you stay present while building your future. It prevents overwhelm by syncing your life areas into one clear dashboard, where task management, progress bars, and the Life Sync Chart make balance visual and intuitive — guiding steady, meaningful progress toward your full potential.
+
+![Image 1](assets/images/momentum-presentation.png)
 **[Live Project](https://iliana-marquez.github.io/momentum/)**
-
-## Project Goals
-
-Momentum is a web app designed to help anyone who wants to grow and stay present—whether you're leveling up life or just keeping it together. It solves the real-life problem of feeling overwhelmed by syncing your goals—work, health, relationships—into one clear view. Unlike rigid planners, Momentum’s innovative Life Sync Chart and daily/weekly progress bars make balance visual and intuitive, nudging you to live now while building tomorrow.
-
 ---
 
 ## User Experience (UX)
