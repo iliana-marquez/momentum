@@ -449,7 +449,7 @@ function updateWelcomeMessage() {
     let welcomeContainer = document.querySelector('.welcome-message');
     if (!welcomeContainer || !userData) return;
     
-    let username = userData.info.firstname;
+    let username = userData.info.username;
     
     welcomeContainer.innerHTML = `
         <h3>Hey ${username}, your edge is sharp today!</h3>
