@@ -265,7 +265,19 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
+
+.life-sync-svg {
+    position: absolute;
+    top: -10px; 
+    left: 47.5%;
+    transform: translateX(-50%); 
+}
+
+.chart-icon-hidden {
+     display: none !important;
+ }
 
 .dashboard-grid > .pie-chart .circle {
     width: 250px;     
@@ -276,7 +288,7 @@ a {
 }
 
 .dashboard-grid > .pie-chart i {
-    display: none;
+    font-size: 1rem;
 }
 
 .dashboard-grid .content {
@@ -324,9 +336,8 @@ a {
 /* TASKS PAGE */
 /* Task Rows */
 .task-row {
-    display: flex;
-    align-items: center;
     margin-bottom: 0.5rem;
+    padding-left: 1rem;
 }
 
 .task-checkbox {
@@ -396,6 +407,11 @@ footer img {
         grid-column: span 2; 
         grid-row: span 2;    
     }
+
+    .life-sync-svg {
+        left: 50%;
+        top: -40px; 
+    }
     
     .dashboard-grid > .pie-chart .circle {
         width: 350px;  
@@ -408,9 +424,9 @@ footer img {
     }
 
     .dashboard-grid > .pie-chart i {
-    display: block;
+        font-size: 2rem;
     }
-    
+  
     /* Today Box: Horizontal Rectangle */
     .dashboard-grid > .today-box {
         position: relative;
