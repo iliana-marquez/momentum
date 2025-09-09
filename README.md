@@ -75,10 +75,12 @@ Created using Canva during the design planning phase (desktop and mobile version
 - Visual progress charts including a "Life Sync" pie chart showing category balance
 - Consistent color-coding throughout the interface for immediate category recognition
 
+[Back to Table of Contents](#table-of-contents)
+
 ---
 ## Features
 
-### Existing Features
+#### Existing Features
 
 - **Authentication System:** Login/logout with session persistence
 - **Dashboard - Life Sync Chart:** Interactive pie chart automatically syncing with all tasks to show overall balance across 5 life categories
@@ -93,7 +95,7 @@ Created using Canva during the design planning phase (desktop and mobile version
 - **Profile Management:** Username information editing, profile information and life category display
 - **Smart Categorization:** Automatic task sorting into Today, This Week, Overdue, Done, Expired - **Interactive Feedback:** Dynamic modals for user actions with immediate confirmation
 
-### Features Left to Implement
+#### Features Left to Implement
 
 - Daily check-up questionnaire for reflection and motivation
 - Advanced analytics and progress history tracking
@@ -104,8 +106,9 @@ Created using Canva during the design planning phase (desktop and mobile version
 - Historical progress tracking showing improvement patterns over weeks/months
 - User profile customization and personalized life goal categories
 
----
+[Back to Table of Contents](#table-of-contents)
 
+---
 ## Technologies Used
 
 ### Languages:
@@ -118,6 +121,8 @@ Created using Canva during the design planning phase (desktop and mobile version
 - Canva: design, wireframes, images, icons.
 - Github: version control.
 - VSCode: code editing.
+
+[Back to Table of Contents](#table-of-contents)
 
 ---
 ## Testing
@@ -259,8 +264,9 @@ Use these credentials for testing
 ### Known Bugs
 - **Large Screen Layout**: Dashboard milestone box may wraps oddly on very large screens - aesthetic issue that doesn't affect functionality
 
----
+[Back to Table of Contents](#table-of-contents)
 
+---
 ## Deployment
 
 ### GitHub Pages
@@ -307,8 +313,9 @@ $ git clone https://github.com/iliana-marquez/momentum.git
 3. Use a local server (such as Live Server extension in VS Code) to run the application
 4. No additional build process or dependencies required - the app runs entirely in the browser
 
----
+[Back to Table of Contents](#table-of-contents)
 
+---
 ## Credits
 
 ### Content
@@ -326,9 +333,9 @@ $ git clone https://github.com/iliana-marquez/momentum.git
 
 - [Code Institute](https://codeinstitute.net/global/): for detailed assessment feedback that guided this refactoring and for the great learning materials and tools shared, such as the Love Running project README.md as, which was my structural guide for this documentation
 
+[Back to Table of Contents](#table-of-contents)
 
 ---
-
 ## Key Takeaways
 
 - **Debug Systematically:** Track symptoms to root causes - the pie chart discrepancy revealed invisible "ghost" tasks, leading to categorization fixes.
