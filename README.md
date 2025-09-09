@@ -30,6 +30,7 @@ Momentum is a life-tracking web app that helps you stay present while building y
   - [Forking the GitHub Repository](#forking-the-github-repository)
   - [Making a Local Clone](#making-a-local-clone)
   - [Local Development Setup](#local-development-setup)
+- [Key Takeaways](#key-takeaways)
 
 ---
 ## User Experience (UX)
