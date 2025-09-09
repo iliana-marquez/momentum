@@ -128,6 +128,13 @@ Created using Canva during the design planning phase (desktop and mobile version
 ---
 ## Testing
 
+### Code Validation
+
+The W3C Markup Validator, W3C CSS Validator, and VSCode linting were used to validate the project code to ensure no syntax errors.
+- [W3C Markup Validator](https://validator.w3.org/) - All HTML pages pass validation with no errors
+- [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) - CSS passes validation with no errors  
+- **JavaScript**: VSCode editor shows no syntax errors or warnings in script.js
+
 ### Instructions:
 
 1. Use login credentials: 
