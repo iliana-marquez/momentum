@@ -11,6 +11,12 @@ Momentum is a life-tracking web app that helps you stay present while building y
 - [User Experience (UX)](#user-experience-ux)
   - [User Stories](#user-stories)
   - [Design](#design)
+- [Features](#features)
+  - [Existing Features](#existing-features)
+  - [Features Left to Implement](#features-left-to-implement)
+- [Technologies Used](#technologies-used)
+  - [Languages](#languages)
+  - [Frameworks, Libraries & Tools](#frameworks-libraries--tools)
 
 ---
 ## User Experience (UX)
@@ -42,7 +48,7 @@ As User, I want:
 - Poppins is used for content text, ensuring excellent readability
 - Both fonts include fallbacks to ensure cross-platform compatibility
 
-### Wireframes
+#### Wireframes
 Created using Canva during the design planning phase (desktop and mobile versions):
 - Landing Page Wireframe - With Hero, About, Contact and Q&A sections
 - Login Page Wireframe - Form to log in
@@ -59,21 +65,46 @@ Created using Canva during the design planning phase (desktop and mobile version
 ---
 ## Features
 
-- **Login:** Quick access—“iliana.marquez@mail.com” / “MyPassord123”—starts your flow.
-- **Dashboard:** Life Sync Chart (category %) visualizes balance—Today/Week Progress Bars track presence.
-- **Tasks:** Add tasks via modal—sorts into Today, Week, After, Done, Expired—keeps you grounded.
-- **Future:** Edit/delete, milestones, daily checkup—growth tools (time cut short).
+### Existing Features
 
-![Image 4](assets/images/dashboard-md-device.png)
-![Image 5](assets/images/task-page.png)
+- **Authentication System:** Login/logout with session persistence
+- **Dashboard - Life Sync Chart:** Interactive pie chart automatically syncing with all tasks to show overall balance across 5 life categories
+- **Dashboard- Progress Visualization:** Today and weekly progress bars with percentage tracking
+- **Dashboard - Week Category Balance:** Real-time percentage distribution showing completed vs incomplete tasks for each category during the current week
+- **Dashboard- Next Due Milestones:** Visual section showing upcoming milestone deadlines to maintain focus and prevent oversight
+- **Dashboard - Balance Monitoring:** Analytics enabling users to identify when one life area gains disproportionate weight while others diminish
+- **Task and Milestone Management:** Complete CRUD operations (Create, Read, Update, Delete) for tasks
+- **Milestone Tracking:** Full milestone management with due date tracking
+- **Data Persistence:** All user data saved to localStorage for session continuity
+- **Responsive Design:** Mobile-first approach working across all device sizes
+- **Profile Management:** Username information editing, profile information and life category display
+- **Smart Categorization:** Automatic task sorting into Today, This Week, Overdue, Done, Expired - **Interactive Feedback:** Dynamic modals for user actions with immediate confirmation
+
+### Features Left to Implement
+
+- Daily check-up questionnaire for reflection and motivation
+- Advanced analytics and progress history tracking
+- Social features for sharing progress with accountability partners
+- Integration with external calendars, management tools and fitness trackers
+- AI-powered goal recommendations and coaching insights
+- True cross-session data persistence ("build momentum over time")
+- Historical progress tracking showing improvement patterns over weeks/months
+- User profile customization and personalized life goal categories
 
 ---
 
 ## Technologies Used
 
-- HTML, CSS, JavaScript—core build.
-- Bootstrap—responsive layout, modal.
-- Font Awesome—icons (e.g., plus, trash).
+### Languages:
+- HTML, CSS, JavaScript
+
+### Frameworks, Libraries & Tools:
+- Bootstrap: responsive layout, modal components, and form styling.
+- Font Awesome: icons for life categories, navigation, and user interface elements
+- Google Font: typography.
+- Canva: design, wireframes, images, icons.
+- Github: version control.
+- VSCode: code editing.
 
 ---
 
