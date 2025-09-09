@@ -526,28 +526,31 @@ function updateChart() {
         let categoryCount = totalCategoryTasks[category.name];
         let categoryPercentage = (categoryCount / totalTasks) * 100;
         let sliceAngle = (categoryPercentage / 100) * 360;
-
-        // Find middle of this slice
-        let middleAngle = currentAngle + (sliceAngle / 2);
-
-        // Convert to position (adjust distance from center near to the border)
-        let radians = (middleAngle - 90) * (Math.PI / 180);
-        let x = Math.cos(radians) * 120;
-        let y = Math.sin(radians) * 120;
-
+    
         // Create icon element
         let icon = document.createElement('i');
         icon.className = `fa-solid fa-${category.icon} pie-icon`;
-        icon.style.cssText = `
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(calc(-50% + ${x}px), calc(-50% + ${y}px));
-            font-size: 2rem;
-            color: #1d0221;
-            pointer-events: none;
-        `;
+        
+        // Handle visibility and sizing based on task count and percentage
+        if (categoryCount === 0) {
+            icon.classList.add('chart-icon-hidden');
+        } else {
+            let radius = 65;
+            let middleAngle = currentAngle + (sliceAngle / 2);
+            let radians = (middleAngle - 90) * (Math.PI / 180);
+            let x = Math.cos(radians) * radius;
+            let y = Math.sin(radians) * radius;
 
+            icon.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(calc(-50% + ${x}px), calc(-50% + ${y}px));
+                color: #1d0221;
+                pointer-events: none;
+            `;
+        }
+    
         document.querySelector('.pie-chart').appendChild(icon);
         currentAngle += sliceAngle;
     });
@@ -715,13 +718,13 @@ function updateTaskList() {
         let taskWithIndex = { ...task, arrayIndex: index };
 
         if (task.done) {
-            taskCategories.done.tasks.push(taskWithIndex); 
-        } else if (deadlineDateObj && deadlineDateObj < today) {
-            taskCategories.expired.tasks.push(taskWithIndex); 
-        } else if (taskDate < today) {
-            taskCategories.overdue.tasks.push(taskWithIndex); 
+            taskCategories.done.tasks.push(taskWithIndex);
         } else if (task.toDoDate === todayStr) {
             taskCategories.today.tasks.push(taskWithIndex);
+        } else if (deadlineDateObj && deadlineDateObj < today) {
+            taskCategories.expired.tasks.push(taskWithIndex);
+        } else if (taskDate < today) {
+            taskCategories.overdue.tasks.push(taskWithIndex);
         } else if (taskDate >= weekStart && taskDate <= weekEnd) {
             taskCategories.week.tasks.push(taskWithIndex);
         } else if (taskDate > weekEnd) {

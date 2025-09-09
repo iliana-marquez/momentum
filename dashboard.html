@@ -90,6 +90,14 @@
         <div class="dashboard-grid">
           <div class="pie-chart">
             <div class="circle justify-content-center align-items-center">
+              <svg class="life-sync-svg" width="300" height="300">
+                  <defs>
+                      <path id="circle-path" d="M 150,150 m -120,0 a 120,120 0 1,1 240,0 a 120,120 0 1,1 -240,0"/>
+                  </defs>
+                  <text font-family="Arial" font-size="16" fill="#b1b1b1">
+                      <textPath href="#circle-path" startOffset="20%">LIFE SYNC</textPath>
+                  </text>
+              </svg>
               <p class="text-center"></p>
             </div>
           </div>
@@ -106,7 +114,7 @@
             <div class="content">
               <p class="pt-1" id="actual-week"></p>
               <progress id="week-progress" value="" max=""></progress>
-              <ul id="weekly-percentage-display" class="d-flex flex-row flex-wrap flex-md-nowrap justify-content-center align-items-center gap-1 gap-md-4 p-0">
+              <ul id="weekly-percentage-display" class="d-flex flex-row flex-wrap flex-md-nowrap justify-content-center align-items-center gap-1 gap-md-4 p-0 pb-3">
               </ul>
             </div>
           </div>
