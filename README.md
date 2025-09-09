@@ -202,6 +202,7 @@ Use these credentials for testing
 - **Weekly Display**: Accurately calculates and displays distribution % of tasks per category with Monday-Sunday range
 - **Next Due Milestones:** Displays up to 5 upcoming milestones sorted by due date with category indicators
 - **Balance Monitoring:** Visual indicators help identify category imbalances for proactive rebalancing
+**Dashboard Calculation Logic**: The Life Sync pie chart and week category percentages include all active tasks (completed and incomplete) to provide a comprehensive view of how your efforts are distributed across life areas. Only deleted tasks are excluded from calculations, ensuring the visualization reflects your actual commitment and action toward each goal category.
 
 #### Smart Categorization and Interactive Feedback
 - **Automatic Sorting:** Tasks properly categorize based on dates and completion status, while milestones categorize basend on life goal categories.
