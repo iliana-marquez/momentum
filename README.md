@@ -25,6 +25,11 @@ Momentum is a life-tracking web app that helps you stay present while building y
   - [Accessibility Testing](#accessibility-testing)
   - [Performance Testing](#performance-testing)
   - [Known Bugs](#known-bugs)
+- [Deployment](#deployment)
+  - [GitHub Pages](#github-pages)
+  - [Forking the GitHub Repository](#forking-the-github-repository)
+  - [Making a Local Clone](#making-a-local-clone)
+  - [Local Development Setup](#local-development-setup)
 
 ---
 ## User Experience (UX)
@@ -119,7 +124,7 @@ Created using Canva during the design planning phase (desktop and mobile version
 
 ### Instructions:
 
-Use this credentials for testing 
+Use these credentials for testing 
 > email: test@mail.com <br>
 > password: test
 
@@ -258,10 +263,49 @@ Use this credentials for testing
 
 ## Deployment
 
-Deployed via GitHub Pages:
-1. Pushed to `iliana-marquez/momentum` repo.
-2. Enabled Pages in settings—main branch.
-3. Live at `https://iliana-marquez.github.io/momentum/`.
+### GitHub Pages
+
+The project was deployed to GitHub Pages using the following steps:
+
+1. Log in to GitHub and locate the [Momentum Repository](https://github.com/iliana-marquez/momentum)
+2. At the top of the Repository, locate the "Settings" Button on the menu
+3. Scroll down the Settings page until you locate the "Pages" Section
+4. Under "Source", click the dropdown called "None" and select "Deploy from a branch"
+5. Select "main" branch and "/ (root)" folder
+6. Click "Save" and the page will automatically refresh
+7. Scroll back down through the page to locate the now published site [link](https://iliana-marquez.github.io/momentum/) in the "Pages" section
+
+### Forking the GitHub Repository
+
+By forking the GitHub Repository you make a copy of the original repository to view and/or make changes without affecting the original repository:
+
+1. Log in to GitHub and locate the [Momentum Repository](https://github.com/iliana-marquez/momentum)
+2. At the top of the Repository just above the "Settings" Button on the menu, locate the "Fork" Button
+3. Click the fork button and select your account as the destination
+4. You should now have a copy of the original repository in your GitHub account
+
+### Making a Local Clone
+
+1. Log in to GitHub and locate the [Momentum Repository](https://github.com/iliana-marquez/momentum)
+2. Under the repository name, click "Code"
+3. To clone the repository using HTTPS, under "Clone with HTTPS", copy the link
+4. Open Git Bash
+5. Change the current working directory to the location where you want the cloned directory
+6. Type `git clone`, and then paste the URL you copied in Step 3
+
+```bash
+$ git clone https://github.com/iliana-marquez/momentum.git
+```
+
+7. Press Enter. Your local clone will be created
+8. Open index.html in your browser to run the application locally
+
+### Local Development Setup
+
+1. Clone the repository as described above
+2. Open the project folder in your preferred code editor
+3. Use a local server (such as Live Server extension in VS Code) to run the application
+4. No additional build process or dependencies required - the app runs entirely in the browser
 
 ---
 
